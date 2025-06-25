@@ -1,0 +1,13 @@
+mcpServers:
+  # excel-stdio:
+  #   command: uv
+  #   args:
+  #     - run
+  #     - /Users/coco/dev/ospp/excel-mcp-server/.venv/bin/excel-mcp-server
+  #     - stdio
+  example-server:
+    type: stdio
+    command: node
+    args:
+      - example/server.js
+      # - /Users/coco/dev/gsoc2025-PersonalAIs/example/server.js
