@@ -21,21 +21,34 @@ server.registerTool("add",
   })
 );
 
-// Add a dynamic greeting resource
-server.registerResource(
-  "greeting",
-  new ResourceTemplate("greeting://{name}", { list: undefined }),
-  { 
-    title: "Greeting Resource",      // Display name for UI
-    description: "Dynamic greeting generator"
+// Add an addition tool
+server.registerTool("mul",
+  {
+    title: "Addition Tool 2",
+    description: "mul two numbers",
+    inputSchema: { a: z.number(), b: z.number() }
   },
-  async (uri, { name }) => ({
-    contents: [{
-      uri: uri.href,
-      text: `Hello, ${name}!`
-    }]
+  async ({ a, b }) => ({
+    content: [{ type: "text", text: String(a * b) }]
   })
 );
+
+
+// // Add a dynamic greeting resource
+// server.registerResource(
+//   "greeting",
+//   new ResourceTemplate("greeting://{name}", { list: undefined }),
+//   { 
+//     title: "Greeting Resource",      // Display name for UI
+//     description: "Dynamic greeting generator"
+//   },
+//   async (uri, { name }) => ({
+//     contents: [{
+//       uri: uri.href,
+//       text: `Hello, ${name}!`
+//     }]
+//   })
+// );
 
 // Start receiving messages on stdin and sending messages on stdout
 const transport = new StdioServerTransport();

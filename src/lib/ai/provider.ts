@@ -26,4 +26,6 @@ const qwen = createQwen({
 export const ModelProvider = {
     "openai": openai('o3-mini'),
     "qwen": qwen('qwen-vl-plus'),
+    "qwen-vl-max": qwen('qwen-vl-max'),
+    "qwen2.5-7b-instruct": qwen("qwen2.5-7b-instruct")
 }
