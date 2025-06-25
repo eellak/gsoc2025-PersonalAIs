@@ -8,7 +8,7 @@ export async function getSpotifyUser(accessToken: string) {
   });
 
   if (!response.ok) {
-    throw new Error('获取用户信息失败');
+    throw new Error('Fail to get user info');
   }
 
   return response.json();
@@ -22,12 +22,12 @@ export async function getCurrentPlayback(accessToken: string) {
   });
 
   if (response.status === 204) {
-    // 没有正在播放的内容
+    // nothing to play
     return null;
   }
 
   if (!response.ok) {
-    throw new Error('获取当前播放信息失败');
+    throw new Error('Fail to get current playback');
   }
 
   return response.json();
@@ -41,7 +41,7 @@ export async function getUserPlaylists(accessToken: string) {
   });
 
   if (!response.ok) {
-    throw new Error('获取播放列表失败');
+    throw new Error('Fail to get user playlists');
   }
 
   return response.json();
@@ -66,21 +66,21 @@ export async function getQueue(accessToken: string, retries = 3) {
 
       if (!response.ok) {
         if (response.status === 401) {
-          throw new Error('认证已过期，请重新登录');
+          throw new Error('Authentication failed, please check your access token');
         }
         if (response.status === 429) {
           const retryAfter = response.headers.get('Retry-After');
           await new Promise(resolve => setTimeout(resolve, (parseInt(retryAfter || '5') * 1000)));
           continue;
         }
-        throw new Error(`获取队列失败: ${response.status}`);
+        throw new Error(`Fail to get queue: ${response.status}`);
       }
 
       const data = await response.json();
       console.log('Queue data:', data);
       return data;
     } catch (err) {
-      console.error(`获取队列失败 (尝试 ${i + 1}/${retries}):`, err);
+      console.error(`Fail to get queue (try ${i + 1}/${retries}):`, err);
       if (i === retries - 1) {
         throw err;
       }
@@ -88,7 +88,7 @@ export async function getQueue(accessToken: string, retries = 3) {
       await new Promise(resolve => setTimeout(resolve, 1000 * (i + 1)));
     }
   }
-  throw new Error('获取队列失败，已达到最大重试次数');
+  throw new Error('Fail to get queue after multiple retries');
 }
 
 export async function getRecentlyPlayed(accessToken: string) {
@@ -113,7 +113,7 @@ export async function getUserSubscription(accessToken: string) {
   });
 
   if (!response.ok) {
-    throw new Error('获取用户订阅信息失败');
+    throw new Error('Failed to fetch user subscription data');
   }
 
   const data = await response.json();
