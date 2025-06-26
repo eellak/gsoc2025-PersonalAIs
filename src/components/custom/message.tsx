@@ -6,10 +6,12 @@ import { Markdown } from './markdown';
 import { message } from "@/interfaces/interfaces"
 import { MessageActions } from '@/components/custom/actions';
 import Image from 'next/image';
+import dynamic from 'next/dynamic';
+const ReactJson = dynamic(() => import('react-json-view'), { ssr: false });
 
 export const PreviewMessage = ({ message }: { message: message; }) => {
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
-
+  console.log("PreviewMessage", message);
   return (
     <motion.div
       className="w-full mx-auto max-w-3xl px-4 group/message"
@@ -17,6 +19,7 @@ export const PreviewMessage = ({ message }: { message: message; }) => {
       animate={{ y: 0, opacity: 1 }}
       data-role={message.role}
     >
+
       <div className='flex'>
       {message.role === 'assistant' ? (
         <div className="size-8 flex items-center rounded-full justify-center ring-1 shrink-0 ring-border mr-2 bg-gradient-to-br from-green-400 via-emerald-400 to-lime-300 shadow-lg">
@@ -49,6 +52,26 @@ export const PreviewMessage = ({ message }: { message: message; }) => {
                 />
               </div>
             ))}
+
+          {message.toolInvocations?.length > 0 && (
+            <div className="text-sm text-gray-500 dark:text-gray-400 mb-2">
+              {message.toolInvocations.map((tool, index) => (
+                <div key={index} className="mb-2">
+                  <div className="font-semibold mb-1">Tool use result #{index + 1}</div>
+                  <ReactJson
+                    src={tool}
+                    name={false}
+                    collapsed={false}
+                    enableClipboard={false}
+                    displayDataTypes={false}
+                    style={{ fontSize: 12, background: 'transparent' }}
+                    theme="rjv-default"
+                  />
+                </div>
+              ))}
+            </div>
+          )}
+        
           {message.content && (
             <div className="flex flex-col gap-4 text-left">
               <Markdown>{message.content}</Markdown>

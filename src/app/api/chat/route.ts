@@ -8,7 +8,7 @@ import yaml from 'js-yaml';
 import { StdioClientTransport } from "@modelcontextprotocol/sdk/client/stdio.js";
 
 export async function POST(req: Request) {
-  const { messages }: { messages: Message[] } = await req.json();
+  const { messages } = await req.json();
   console.log("Received messages:", messages);
 
   const configPath = path.resolve(process.cwd(), 'mcp_servers_config.yaml');
@@ -30,18 +30,13 @@ export async function POST(req: Request) {
             command: s.command,
             args: [...s.args],
           });
-          console.log('stdioTransport:', stdioTransport);
           client = await experimental_createMCPClient({
             transport: stdioTransport,
           });
           const toolSetOne = await client.tools();
-          console.log('toolSetOne:', toolSetOne);
           const tools = {
             ...toolSetOne,
-            // note: this approach causes subsequent tool sets to override tools with the same name
           };
-          console.log('tools:', tools);
-          // clientTools[server_name] = tools;
           clientTools = {
             ...clientTools,
             ...tools,
@@ -51,7 +46,6 @@ export async function POST(req: Request) {
           continue;
         }
       }
-
     } else {
       console.log('mcp_servers_config.yaml is empty or there are no mcpServers');
     }
@@ -59,33 +53,20 @@ export async function POST(req: Request) {
     console.error('Read mcp_servers_config.yaml error:', err);
   }
   console.log('clientTools:', clientTools);
+
   const result = streamText({
-    // model: ModelProvider['qwen'],  // NOTE: qwen-vl not support function call
-    model: ModelProvider['qwen2.5-7b-instruct'], // Select the desired AI model
+    model: ModelProvider['qwen2.5-7b-instruct'],
+    // model: ModelProvider['gpt-3.5-turbo-1106'],
     messages,
     tools: clientTools,
+    toolCallStreaming: true,
     system: `You are a helpful assistant. When using tools, you MUST:
 1. Process and analyze the tool results
 2. Incorporate the tool results into your response
 3. Provide meaningful responses based on the tool results
-4. Never return empty content`,
+4. Never return empty content
+5. You can call multiple tools in a single response if needed.`,
   });
-
-  // const response = await result.toDataStreamResponse();
-
-  // console.log('Stream Response:', {
-  //   status: response.status,
-  //   headers: Object.fromEntries(response.headers.entries()),
-  // });
-  // const reader = response.body?.getReader();
-  // if (reader) {
-  //   while (true) {
-  //     const { done, value } = await reader.read();
-  //     if (done) break;
-  //     const text = new TextDecoder().decode(value);
-  //     console.log('Chunk received:', text);
-  //   }
-  // }
 
   return result.toDataStreamResponse({
     getErrorMessage: error => {
