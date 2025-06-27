@@ -3,4 +3,10 @@ mcpServers:
     type: stdio
     command: node
     args:
-      - example/server.js
+      - example/simple_server.js
+
+  spotify-profile:
+    type: stdio
+    command: node
+    args:
+      - example/spotify/profile.js
