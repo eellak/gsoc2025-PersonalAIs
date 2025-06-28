@@ -1,5 +1,6 @@
 import NextAuth from "next-auth";
 import SpotifyProvider from "next-auth/providers/spotify";
+import fs from "fs";
 
 const handler = NextAuth({
   providers: [
@@ -25,7 +26,7 @@ const handler = NextAuth({
   ],
   callbacks: {
     async jwt({ token, account }) {
-      // 首次登录时保存访问令牌
+      // first time sign in, save access token
       if (account) {
         token.accessToken = account.access_token;
         token.refreshToken = account.refresh_token;
@@ -34,10 +35,27 @@ const handler = NextAuth({
       return token;
     },
     async session({ session, token }) {
-      // 将访问令牌添加到会话中
+      // save access token to session
       session.accessToken = token.accessToken;
       session.refreshToken = token.refreshToken;
       session.expiresAt = token.expiresAt;
+      // write into .env.local (only support personal use)
+      if (token.accessToken) {
+        try {
+          const envPath = ".env.local";
+          let envContent = "";
+          if (fs.existsSync(envPath)) {
+            envContent = fs.readFileSync(envPath, "utf-8");
+            // remove old SPOTIFY_ACCESS_TOKEN
+            envContent = envContent.replace(/^SPOTIFY_ACCESS_TOKEN=.*$/gm, "");
+            envContent = envContent.replace(/\s+$/g, "");
+          }
+          envContent += `\n\nSPOTIFY_ACCESS_TOKEN=${token.accessToken}\n`;
+          fs.writeFileSync(envPath, envContent, "utf-8");
+        } catch (e) {
+          console.error("Failed to write access token to .env.local:", e);
+        }
+      }
       return session;
     }
   },
