@@ -24,6 +24,11 @@ const qwen = createQwen({
 });
 
 export const ModelProvider = {
-    "openai": openai('o3-mini'),
-    "qwen": qwen('qwen-vl-plus'),
+    "gpt-o3-mini": openai('o3-mini'),
+    "gpt-4o": openai('gpt-4o'),
+    "gpt-4-turbo": openai('gpt-4-turbo'),
+    "gpt-3.5-turbo-1106": openai('gpt-3.5-turbo-1106'),  // support multi-tools
+    "qwen-vl-plus": qwen('qwen-vl-plus'),  // not support FC
+    "qwen-vl-max": qwen('qwen-vl-max'),  // not support FC
+    "qwen2.5-7b-instruct": qwen("qwen2.5-7b-instruct")  // support FC, but single-tool
 }

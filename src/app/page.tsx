@@ -125,11 +125,14 @@ export default function Chat() {
             {messages.length === 0 ? (
               <Greeting />
             ) : (
-              messages.map((m) => (
-                <div key={m.id} className="mb-6">
-                  <PreviewMessage message={m} />
-                </div>
-              ))
+              (() => {
+                // console.log('PreviewMSG:', messages);
+                return messages.map((m) => (
+                  <div key={m.id} className="mb-6">
+                    <PreviewMessage message={m} />
+                  </div>
+                ));
+              })()
             )}
 
             {isLoading && <ThinkingMessage />}
