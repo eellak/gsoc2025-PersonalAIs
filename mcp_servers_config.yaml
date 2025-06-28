@@ -5,6 +5,13 @@ mcpServers:
     args:
       - example/simple_server.js
 
+  python-minus:
+    type: stdio
+    command: fastmcp
+    args:
+      - run
+      - example/python_simple_server.py
+
   spotify-profile:
     type: stdio
     command: node
