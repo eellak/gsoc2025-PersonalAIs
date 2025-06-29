@@ -50,7 +50,6 @@
 
 ![get](./asserts/get_tracks_in_playlist.png)
 
-12. set 
 
 
 
