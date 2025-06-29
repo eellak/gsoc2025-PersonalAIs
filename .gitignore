@@ -43,3 +43,4 @@ next-env.d.ts
 .history
 __pycache__
 .python-version
+.cache

@@ -58,15 +58,30 @@ export const PreviewMessage = ({ message }: { message: message; }) => {
               {message.toolInvocations.map((tool, index) => (
                 <div key={index} className="mb-2">
                   <div className="font-semibold mb-1">Tool use result #{index + 1}</div>
-                  <ReactJson
+                  {tool.result?.content?.[0]?.text ? (
+                    <div className="bg-gray-50 dark:bg-gray-800 rounded-lg p-3 border">
+                      <Markdown>{tool.result.content[0].text}</Markdown>
+                    </div>
+                  ) : (
+                    <ReactJson
+                      src={tool}
+                      name={false}
+                      collapsed={false}
+                      enableClipboard={false}
+                      displayDataTypes={false}
+                      style={{ fontSize: 12, background: 'transparent' }}
+                      theme="rjv-default"
+                    />
+                  )}
+
+                  {/* <ReactJson
                     src={tool}
                     name={false}
                     collapsed={false}
                     enableClipboard={false}
                     displayDataTypes={false}
                     style={{ fontSize: 12, background: 'transparent' }}
-                    theme="rjv-default"
-                  />
+                    theme="rjv-default" */}
                 </div>
               ))}
             </div>
