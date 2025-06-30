@@ -1,19 +1,25 @@
 mcpServers:
-  example-server:
-    type: stdio
-    command: node
-    args:
-      - example/simple_server.js
+  # example-server:
+  #   type: stdio
+  #   command: node
+  #   args:
+  #     - example/simple_server.js
 
-  python-minus:
-    type: stdio
-    command: fastmcp
-    args:
-      - run
-      - example/python_simple_server.py
+  # python-minus:
+  #   type: stdio
+  #   command: fastmcp
+  #   args:
+  #     - run
+  #     - example/python_simple_server.py
 
-  spotify-profile:
+  # spotify-profile:
+  #   type: stdio
+  #   command: node
+  #   args:
+  #     - example/spotify/profile.js
+
+  spotify-mcp-server:
     type: stdio
-    command: node
+    command: python
     args:
-      - example/spotify/profile.js
+      - spotify_mcp_server/main.py
