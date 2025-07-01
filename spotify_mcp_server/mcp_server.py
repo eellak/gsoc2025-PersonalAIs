@@ -6,7 +6,8 @@ import json
 from typing import Dict, List, Any, Optional
 from fastmcp import FastMCP
 
-from spotify_client import SpotifyClient
+# from spotify_client import SpotifyClient
+from spotify_client import SpotifySuperClient as SpotifyClient
 
 
 class SpotifyMCPServer:
@@ -434,30 +435,66 @@ class SpotifyMCPServer:
 """
             
             return content
-        
-        @self.mcp.tool()
-        def get_available_devices() -> str:
-            """Get available playback devices"""
-            result = self.spotify_client.get_available_devices()
-            if not result["success"]:
-                return f"Failed to get device list: {result['message']}"
-            
-            devices = result["data"]
-            content = f"# Available Devices (Total: {len(devices['devices'])})\n\n"
-            
-            for device in devices['devices']:
-                content += f"""## {device['name']}
-
-- **Type:** {device['type']}
-- **ID:** {device['id']}
-- **Is Active:** {'Yes' if device['is_active'] else 'No'}
-- **Volume:** {device.get('volume_percent', 0)}%
-- **Is Restricted:** {'Yes' if device.get('is_restricted') else 'No'}
-
-"""
-            
-            return content
 
     def run(self):
         """Run MCP server"""
-        self.mcp.run() 
+        self.mcp.run()
+
+
+class SpotifyMCPSuperServer(SpotifyMCPServer):
+    """Super MCP Server with recall tools"""
+    def __init__(self, spotify_client: SpotifyClient):
+        """
+        Initialize MCP server
+        
+        Args:
+            spotify_client: Spotify client instance
+        """
+        self.spotify_client = spotify_client
+        self.mcp = FastMCP("spotify-mcp-server")
+        self.setup_tools()
+
+    def setup_tools(self):
+        # 先注册父类的工具
+        super().setup_tools()
+
+        # 注册 recall 相关工具
+        @self.mcp.tool()
+        def recall_artists(
+            top_limit: int = 30,
+            recent_limit: int = 50,
+            playlist_limit: int = 50,
+            album_limit: int = 50,
+            saved_tracks_limit: int = 50
+        ) -> list:
+            artist_ids = self.spotify_client.recall_artists(
+                top_limit=top_limit,
+                recent_limit=recent_limit,
+                playlist_limit=playlist_limit,
+                album_limit=album_limit,
+                saved_tracks_limit=saved_tracks_limit
+            )
+            return {
+                "artist_ids": artist_ids,
+                "message": f"Successfully recalled {len(artist_ids)} artists"
+            }
+
+        @self.mcp.tool()
+        async def recall_all_tracks() -> str:
+            tracks = await self.spotify_client.recall_all_tracks()
+            data = tracks['data']
+            search_tracks = data.get('tracks', [])
+            search_track_ids = data.get('track_ids', [])
+            search_artist_names = data.get('artist_names', [])
+            
+            # markdown
+            content = "# Recalled Tracks\n\n"
+            content += f"**Total Tracks:** {len(search_tracks)}\n\n"
+            content += "## Tracks:\n\n"
+            for i, track in enumerate(search_tracks, 1):
+                content += f"{i}. **{track['name']}** - {', '.join([artist['name'] for artist in track['artists']])}\n"
+                content += f"   - **Album:** {track['album']['name']}\n"
+                content += f"   - **Duration:** {self.spotify_client.format_duration(track['duration_ms'])}\n"
+                content += f"   - **Spotify URI:** {track['uri']}\n"
+            content += "\n\n"
+            return content
