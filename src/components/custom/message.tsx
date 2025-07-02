@@ -2,14 +2,15 @@ import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { cx } from 'classix';
 import { SparklesIcon } from './icons';
-import { Markdown } from './markdown';
-import { message } from "@/interfaces/interfaces"
+import ReactMarkdown from 'react-markdown';
+import 'github-markdown-css/github-markdown.css';
+import { UIMessage } from '@ai-sdk/ui-utils';
 import { MessageActions } from '@/components/custom/actions';
 import Image from 'next/image';
 import dynamic from 'next/dynamic';
 const ReactJson = dynamic(() => import('react-json-view'), { ssr: false });
 
-export const PreviewMessage = ({ message }: { message: message; }) => {
+export const PreviewMessage = ({ message }: { message: UIMessage; }) => {
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
   console.log("PreviewMessage", message);
   return (
@@ -53,35 +54,19 @@ export const PreviewMessage = ({ message }: { message: message; }) => {
               </div>
             ))}
 
-          {message.toolInvocations?.length > 0 && (
+          {((message.parts || []).filter(part => part.type === 'tool-invocation').length > 0) && (
             <div className="text-sm text-gray-500 dark:text-gray-400 mb-2">
-              {message.toolInvocations.map((tool, index) => (
+              {(message.parts || []).filter((part: any) => part.type === 'tool-invocation').map((part: any, index) => (
                 <div key={index} className="mb-2">
+                  {/* {console.log('Debug tool part:', part)} */}
                   <div className="font-semibold mb-1">Tool use result #{index + 1}</div>
-                  {tool.result?.content?.[0]?.text ? (
-                    <div className="bg-gray-50 dark:bg-gray-800 rounded-lg p-3 border">
-                      <Markdown>{tool.result.content[0].text}</Markdown>
+                  <div className="bg-gray-50 dark:bg-gray-800 rounded-lg p-3 border">
+                    <div className="markdown-body">
+                    <ReactMarkdown>
+                      {part.toolInvocation.result?.content?.map((item: any) => item.text).join('\n\n') || '# 调试标题\n\n这是一段测试文本\n\n## 二级标题\n\n- 列表项1\n- 列表项2'}
+                    </ReactMarkdown>
                     </div>
-                  ) : (
-                    <ReactJson
-                      src={tool}
-                      name={false}
-                      collapsed={false}
-                      enableClipboard={false}
-                      displayDataTypes={false}
-                      style={{ fontSize: 12, background: 'transparent' }}
-                      theme="rjv-default"
-                    />
-                  )}
-
-                  {/* <ReactJson
-                    src={tool}
-                    name={false}
-                    collapsed={false}
-                    enableClipboard={false}
-                    displayDataTypes={false}
-                    style={{ fontSize: 12, background: 'transparent' }}
-                    theme="rjv-default" */}
+                  </div>
                 </div>
               ))}
             </div>
@@ -89,7 +74,7 @@ export const PreviewMessage = ({ message }: { message: message; }) => {
         
           {message.content && (
             <div className="flex flex-col gap-4 text-left">
-              <Markdown>{message.content}</Markdown>
+              <ReactMarkdown>{message.content}</ReactMarkdown>
             </div>
           )}
 
