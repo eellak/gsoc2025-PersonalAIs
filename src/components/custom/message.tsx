@@ -63,7 +63,7 @@ export const PreviewMessage = ({ message }: { message: UIMessage; }) => {
                   <div className="bg-gray-50 dark:bg-gray-800 rounded-lg p-3 border">
                     <div className="markdown-body">
                     <ReactMarkdown>
-                      {part.toolInvocation.result?.content?.map((item: any) => item.text).join('\n\n') || '# 调试标题\n\n这是一段测试文本\n\n## 二级标题\n\n- 列表项1\n- 列表项2'}
+                      {part.toolInvocation.result?.content?.map((item: any) => item.text).join('\n\n')}
                     </ReactMarkdown>
                     </div>
                   </div>
