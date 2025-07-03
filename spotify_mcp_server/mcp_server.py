@@ -506,10 +506,28 @@ class SpotifyMCPSuperServer(SpotifyMCPServer):
             content = "# Recalled Tracks\n\n"
             content += f"**Total Tracks:** {len(search_tracks)}\n\n"
             content += "## Tracks:\n\n"
+            recall_tracks = []
+            flag_id = []
             for i, track in enumerate(search_tracks, 1):
                 content += f"{i}. **{track['name']}** - {', '.join([artist['name'] for artist in track['artists']])}\n"
-                content += f"   - **Album:** {track['album']['name']}\n"
-                content += f"   - **Duration:** {self.spotify_client.format_duration(track['duration_ms'])}\n"
-                content += f"   - **Spotify URI:** {track['uri']}\n"
+                content += f"- **Album:** {track['album']['name']}\n"
+                content += f"- **Duration:** {self.spotify_client.format_duration(track['duration_ms'])}\n"
+                content += f"- **Spotify URI:** {track['uri']}\n"
+                if track['id'] in flag_id:
+                    continue
+                flag_id.append(track['id'])
+                recall_tracks.append({
+                    "id": track['id'],
+                    "name": track['name'],
+                    "artists": [artist['name'] for artist in track['artists']],
+                    "album": track['album']['name'],
+                    "duration_ms": track['duration_ms'],
+                })
             content += "\n\n"
-            return content
+            return {
+                "success": True,
+                # "content": content,
+                "message": f"Successfully recalled {len(search_tracks)} tracks",
+                # "recall_tracks": search_tracks,  # NOTE: Do not add here, would cause much context in history
+                "recall_tracks": recall_tracks,
+            }
