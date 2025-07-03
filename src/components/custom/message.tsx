@@ -14,7 +14,6 @@ import { Button } from '@/components/ui/button';
 import { toast } from 'sonner';
 import { getOrCreateRecommendPlaylist, addTrackToPlaylist } from '@/lib/spotify';
 import { X } from 'lucide-react';
-const ReactJson = dynamic(() => import('react-json-view'), { ssr: false });
 
 export const PreviewMessage = ({ message }: { message: UIMessage; }) => {
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
@@ -140,11 +139,17 @@ export const PreviewMessage = ({ message }: { message: UIMessage; }) => {
                   <div className="bg-gray-50 dark:bg-gray-800 rounded-lg p-3 border">
                     <div className="markdown-body">
                     <ReactMarkdown>
+                      
                     {part.toolInvocation.toolName !== 'recall_all_tracks' ? 
                       part.toolInvocation.result?.content?.map((item: any) => item.text).join('\n\n') :
                       (() => {
+                        const state = part.toolInvocation.state;
+                        if (state === 'call') {
+                          return "Recalling tracks, please wait...";
+                        } 
                         return "No more available recall tracks";
                       })()}
+
                   </ReactMarkdown>
                     </div>
                   </div>
