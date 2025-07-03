@@ -7,8 +7,8 @@ Using fastmcp library
 import os
 import asyncio
 from dotenv import load_dotenv
-from spotify_client import SpotifyClient
-from mcp_server import SpotifyMCPServer
+from spotify_client import SpotifySuperClient as SpotifyClient
+from mcp_server import SpotifyMCPSuperServer as SpotifyMCPServer
 
 
 def main():

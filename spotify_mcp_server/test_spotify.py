@@ -5,11 +5,12 @@ Spotify Client Test Script
 
 import os
 from dotenv import load_dotenv
-from spotify_client import SpotifyClient
+from spotify_client import SpotifySuperClient as SpotifyClient
+from tqdm import tqdm
+import asyncio
 
-
-def test_spotify_client():
-    """Test Spotify client functionality"""
+async def test_spotify_client():
+    """Test Spotify client functionality (async)"""
     # Load environment variables
     load_dotenv()
     
@@ -78,14 +79,45 @@ def test_spotify_client():
         print("\n❤️ Testing user's saved tracks retrieval...")
         result = client.get_user_playlists()
         print(f"Retrieved {len(result['data']['items'])} playlists")
-        print(result)
 
-
+        # recall tracks testing
+        _, artist_names = client.recall_artists()
+        # artist_ids = await client.get_tivo_artist_ids(artist_names[:3])
+        artist_ids = await client.get_tivo_artist_ids(artist_names)
+        # de-duplicate artist_ids
+        artist_ids = list(set(artist_ids))
+        print('artist_names:', artist_names)
+        artist_album_dict = await client.get_tivo_artist_album_ids(artist_ids)
+        tivo_tracks = await client.get_tivo_tracks_in_artist_album_dict(artist_album_dict)
+        recall_track_titles = [track['title'] for track in tivo_tracks]
+        search_tracks = []  
+        search_track_ids = []
+        search_artist_names = []
+        # search_tracks: dict_keys(['album', 'artists', 'available_markets', 'disc_number', 'duration_ms', 'explicit', 'external_ids', 'external_urls', 'href', 'id', 'is_local', 'is_playable', 'name', 'popularity', 'preview_url', 'track_number', 'type', 'uri'])
+        for track_title in tqdm(recall_track_titles, desc="Searching tracks"):
+            search_track = client.search_tracks(track_title)
+            if search_track['success'] and len(search_track['data']['tracks']['items']) > 0:
+                search_item = search_track['data']['tracks']['items'][0]
+                if search_item['id'] in search_track_ids:
+                    continue
+                search_tracks.append(search_item)
+                search_track_ids.append(search_item['id'])
+                search_artist_names.append(', '.join([artist['name'] for artist in search_item['artists']]))
+        result = {
+            'success': True,
+            'data': {
+                'tracks': search_tracks,
+                'track_ids': search_track_ids,
+                'artist_names': search_artist_names,
+            },
+            'message': "Successfully recall tracks",
+        }
         print("\n🎉 All tests completed!")
+        import pdb; pdb.set_trace()
         
     except Exception as e:
         print(f"❌ Test failed: {e}")
 
 
 if __name__ == "__main__":
-    test_spotify_client() 
+    asyncio.run(test_spotify_client()) 

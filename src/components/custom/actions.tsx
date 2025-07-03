@@ -1,10 +1,10 @@
 import { Button } from "@/components/ui/button"
 import { Copy, ThumbsUp, ThumbsDown, Check } from 'lucide-react'
 import { useState } from "react"
-import { message } from "@/interfaces/interfaces"
+import { UIMessage } from '@ai-sdk/ui-utils';
 
 interface MessageActionsProps {
-  message: message
+  message: UIMessage
 }
 
 export function MessageActions({ message }: MessageActionsProps) {
