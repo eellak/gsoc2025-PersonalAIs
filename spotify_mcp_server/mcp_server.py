@@ -325,7 +325,7 @@ class SpotifyMCPServer:
             return content
         
         @self.mcp.tool()
-        def create_playlist(name: str, description: str, public: bool = False) -> str:
+        async def create_playlist(name: str, description: str, public: bool = False, random_fill: bool = False, num_tracks=10) -> str:
             """Create new playlist"""
             result = self.spotify_client.create_playlist(name, description, public)
             if not result["success"]:
@@ -342,8 +342,23 @@ class SpotifyMCPServer:
 
 **Spotify URI:** {playlist['uri']}
 
-**External Link:** {playlist['external_urls'].get('spotify', 'None')}"""
+**External Link:** {playlist['external_urls'].get('spotify', 'None')}
+
+**Auto random fill:** {'Enabled' if random_fill else 'Disabled'}"""
             
+
+            if random_fill:
+                # Fill playlist with random tracks
+                random_tracks_result = await self.spotify_client.random_fill(num_tracks=num_tracks)  # Default to 10 random tracks
+                if not random_tracks_result["success"]:
+                    return f"Failed to fill playlist with random tracks: {random_tracks_result['message']}"
+                
+                track_uris = [track['uri'] for track in random_tracks_result['data']['tracks']]
+                add_result = self.spotify_client.add_tracks_to_playlist(playlist['id'], track_uris)
+                if not add_result["success"]:
+                    return f"Failed to add random tracks to playlist: {add_result['message']}"
+                
+                content += f"\n\nAdded {len(track_uris)} random tracks to the playlist."
             return content
         
         @self.mcp.tool()
