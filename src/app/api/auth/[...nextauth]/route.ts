@@ -10,15 +10,25 @@ const handler = NextAuth({
       authorization: {
         params: {
           scope: [
-            'user-read-email',
-            'user-read-private',
-            'user-read-currently-playing',
+            'ugc-image-upload',
             'user-read-playback-state',
             'user-modify-playback-state',
-            'user-read-recently-played',
+            'user-read-currently-playing',
+            'app-remote-control',
+            'streaming',
             'playlist-read-private',
             'playlist-read-collaborative',
-            'streaming'
+            'playlist-modify-public',
+            'playlist-modify-private',
+            'user-follow-modify',
+            'user-follow-read',
+            'user-read-playback-position',
+            'user-top-read',
+            'user-read-recently-played',
+            'user-library-modify',
+            'user-library-read',
+            'user-read-email',
+            'user-read-private'
           ].join(' ')
         }
       }

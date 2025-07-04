@@ -46,6 +46,8 @@ export default function Chat() {
   const [messagesContainerRef, messagesEndRef] = useScrollToBottom<HTMLDivElement>();
   const [suggestionText, setSuggestionText] = useState<string | null>(null);
 
+  const isAtBottomRef = useRef(true);
+
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files && event.target.files.length > 0) {
       setFiles(event.target.files);
@@ -104,6 +106,24 @@ export default function Chat() {
     };
   }, [isDragging, queueWidth]);
 
+  useEffect(() => {
+    const container = messagesContainerRef.current;
+    if (!container) return;
+    const handleScroll = () => {
+      const threshold = 20;
+      const atBottom = container.scrollHeight - container.scrollTop - container.clientHeight < threshold;
+      isAtBottomRef.current = atBottom;
+    };
+    container.addEventListener('scroll', handleScroll);
+    return () => container.removeEventListener('scroll', handleScroll);
+  }, [messagesContainerRef]);
+
+  useEffect(() => {
+    if (isAtBottomRef.current && messagesEndRef.current) {
+      messagesEndRef.current.scrollIntoView({ behavior: 'smooth' });
+    }
+  }, [messages, messagesEndRef]);
+
   return (
     <div className="flex flex-col h-screen overflow-hidden bg-background">
       {messages.length > 0 && (
@@ -126,7 +146,7 @@ export default function Chat() {
               <Greeting />
             ) : (
               (() => {
-                // console.log('PreviewMSG:', messages);
+                console.log('PreviewMSG:', messages);
                 return messages.map((m) => (
                   <div key={m.id} className="mb-6">
                     <PreviewMessage message={m} />
