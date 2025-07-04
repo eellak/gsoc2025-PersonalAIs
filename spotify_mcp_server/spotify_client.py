@@ -575,7 +575,7 @@ class SpotifyClient:
                 response = await client.get(url)
                 data = response.json()
                 if data['hits'] and len(data['hits']) > 0:
-                    artist_album_dict[artist_id] = [hit['id'] for hit in data['hits'][:2]]  # Get first 10 albums for the artist
+                    artist_album_dict[artist_id] = [hit['id'] for hit in data['hits'][:2]]  # Get first k albums for the artist
                 else:
                     continue
         return artist_album_dict
@@ -729,6 +729,8 @@ class SpotifySuperClient(SpotifyClient):
 
         return result_artist_ids, result_artist_names
 
+    # async def get_tivo_track_obj(self, tivo_track_id)
+
     # def recall_tracks(self, artist_ids: Set[str], artist_top_limit: int = 10, album_limit: int = 5) -> Set[str]:
     #     """
     #     Recall track ids based on artist ids.
@@ -788,4 +790,43 @@ class SpotifySuperClient(SpotifyClient):
             'message': "Successfully recall tracks",
         }
 
+        return recall_result
+
+    async def random_fill(self, num_tracks=10) -> List[Dict[str, Any]]:
+        """
+        Randomly fill k tracks for new playlist
+        """
+        # 1. recall artist
+        _, artist_names = self.recall_artists()
+        #### 2. recall track based on artist ids  # NOTE: rate limited
+        # track_set = self.recall_tracks(artist_ids, artist_top_limit=10, album_limit=5)
+        # 2. spotify id to tivo id, artist to album to tracks
+        artist_ids = await self.get_tivo_artist_ids(artist_names)  # third-party API to get tivo artist ids
+        artist_album_dict = await self.get_tivo_artist_album_ids(artist_ids)
+        tivo_tracks = await self.get_tivo_tracks_in_artist_album_dict(artist_album_dict)
+        # tivo_tracks: dict_keys(['id', 'title', 'performers', 'composers', 'duration', 'disc', 'phyTrackNum', 'isPick'])
+        # random sample 10
+        tivo_tracks = random.sample(tivo_tracks, min(num_tracks, len(tivo_tracks)))
+        recall_track_titles = [track['title'] for track in tivo_tracks]
+        search_tracks = []  
+        search_track_ids = []
+        search_artist_names = []
+        # 3. track titles to spotify track by search
+        # search_tracks: dict_keys(['album', 'artists', 'available_markets', 'disc_number', 'duration_ms', 'explicit', 'external_ids', 'external_urls', 'href', 'id', 'is_local', 'is_playable', 'name', 'popularity', 'preview_url', 'track_number', 'type', 'uri'])
+        for track_title in tqdm(recall_track_titles, desc="Searching tracks for random fill"):
+            search_track = self.search_tracks(track_title)
+            if search_track['success'] and len(search_track['data']['tracks']['items']) > 0:
+                search_item = search_track['data']['tracks']['items'][0]
+                search_tracks.append(search_item)
+                search_track_ids.append(search_item['id'])
+                search_artist_names.append(', '.join([artist['name'] for artist in search_item['artists']]))
+        recall_result = {
+            'success': True,
+            'data': {
+                'tracks': search_tracks,
+                'track_ids': search_track_ids,
+                'artist_names': search_artist_names,
+            },
+            'message': "Successfully random fill",
+        }
         return recall_result
