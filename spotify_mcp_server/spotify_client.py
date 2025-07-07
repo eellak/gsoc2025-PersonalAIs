@@ -737,18 +737,22 @@ class SpotifySuperClient(SpotifyClient):
 
         # 8. third-party crawler to get artists
         # e.g. crawl_music_map_artists, crawl_boil_the_frog_artists_and_tracks
+        print('Crawling third-party artists...')
         selected_artists = random.sample(artist_names, min(3, len(artist_names)))  # Randomly select 5 artists for crawling
-        music_map_artists_list, boil_the_frog_artists_list = [], []
+        # music_map_artists_list, boil_the_frog_artists_list = [], []
+        music_map_artists_list = []
         for artist_name in selected_artists:
             # Crawl music map artists
             music_map_artists = crawl_music_map_artists(artist_name)
-            boil_the_frog_pairs = crawl_boil_the_frog_artists_and_tracks(artist_name)
-            boil_the_frog_artists = [pair['artist'] for pair in boil_the_frog_pairs]
-            music_map_artists_list.extend(music_map_artists)
-            boil_the_frog_artists_list.extend(boil_the_frog_artists)
+            selected_music_map_artists = random.sample(music_map_artists, min(6, len(music_map_artists)))  # Randomly select 3 artists
+            # boil_the_frog_pairs = crawl_boil_the_frog_artists_and_tracks(artist_name)
+            # boil_the_frog_artists = [pair['artist'] for pair in boil_the_frog_pairs]
+            music_map_artists_list.extend(selected_music_map_artists)
+            # boil_the_frog_artists_list.extend(boil_the_frog_artists)
         # De-duplicate third-party crawled artists
-        third_party_crawled_artists = list(set(music_map_artists_list + boil_the_frog_artists_list))
-        for artist_name in third_party_crawled_artists:
+        # third_party_crawled_artists = list(set(music_map_artists_list + boil_the_frog_artists_list))
+        third_party_crawled_artists = list(set(music_map_artists_list))
+        for artist_name in tqdm(third_party_crawled_artists, desc="Crawling third-party artists"):
             # search spotify artist by name
             search_artist = self.search_artist(artist_name, limit=1)
             if search_artist["success"] and len(search_artist["data"]["artists"]["items"]) > 0:
@@ -810,15 +814,16 @@ class SpotifySuperClient(SpotifyClient):
         random.shuffle(tivo_tracks)  # Shuffle tracks to ensure randomness
         recall_track_titles = [track['title'] for track in tivo_tracks]
 
-        # 3. third-party crawl to get more tracks by artist names
-        # e.g. crawl_boil_the_frog_artists_and_tracks
-        selected_artists = random.sample(artist_names, min(3, len(artist_names)))
-        for artist_name in selected_artists:
-            boil_the_frog_pairs = crawl_boil_the_frog_artists_and_tracks(artist_name)
-            boil_the_frog_tracks = [pair['track'] for pair in boil_the_frog_pairs]
-            recall_track_titles.extend(boil_the_frog_tracks)
-        # De-duplicate track titles
-        recall_track_titles = list(set(recall_track_titles))
+        # # 3. third-party crawl to get more tracks by artist names
+        # # e.g. crawl_boil_the_frog_artists_and_tracks
+        # print('Crawling third-party artists and tracks...')
+        # selected_artists = random.sample(artist_names, min(3, len(artist_names)))
+        # for artist_name in tqdm(selected_artists, desc="Crawling third-party artists and tracks"):
+        #     boil_the_frog_pairs = crawl_boil_the_frog_artists_and_tracks(artist_name)
+        #     boil_the_frog_tracks = [pair['track'] for pair in boil_the_frog_pairs]
+        #     recall_track_titles.extend(boil_the_frog_tracks)
+        # # De-duplicate track titles
+        # recall_track_titles = list(set(recall_track_titles))
 
         search_tracks = []  
         search_track_ids = []
