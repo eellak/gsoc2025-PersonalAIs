@@ -12,6 +12,7 @@ import random
 import requests
 from tqdm import tqdm
 import httpx
+from util.third_party_crawler import crawl_music_map_artists, crawl_boil_the_frog_artists_and_tracks
 
 class SpotifyClient:
     """Spotify Client Class"""
@@ -150,6 +151,22 @@ class SpotifyClient:
                 "success": False,
                 "error": str(e),
                 "message": "Search failed"
+            }
+        
+    def search_artist(self, query: str, limit: int = 1) -> Dict[str, Any]:
+        """Search for artists"""
+        try:
+            results = self.sp.search(q=query, type='artist', limit=limit)
+            return {
+                "success": True,
+                "data": results,
+                "message": f"Search successful, found {len(results['artists']['items'])} artists"
+            }
+        except Exception as e:
+            return {
+                "success": False,
+                "error": str(e),
+                "message": "Artist search failed"
             }
     
     def play_track(self, track_uri: str) -> Dict[str, Any]:
@@ -718,6 +735,29 @@ class SpotifySuperClient(SpotifyClient):
                     artist_ids.append(artist["id"])
                     artist_names.append(artist["name"])
 
+        # 8. third-party crawler to get artists
+        # e.g. crawl_music_map_artists, crawl_boil_the_frog_artists_and_tracks
+        selected_artists = random.sample(artist_names, min(3, len(artist_names)))  # Randomly select 5 artists for crawling
+        music_map_artists_list, boil_the_frog_artists_list = [], []
+        for artist_name in selected_artists:
+            # Crawl music map artists
+            music_map_artists = crawl_music_map_artists(artist_name)
+            boil_the_frog_pairs = crawl_boil_the_frog_artists_and_tracks(artist_name)
+            boil_the_frog_artists = [pair['artist'] for pair in boil_the_frog_pairs]
+            music_map_artists_list.extend(music_map_artists)
+            boil_the_frog_artists_list.extend(boil_the_frog_artists)
+        # De-duplicate third-party crawled artists
+        third_party_crawled_artists = list(set(music_map_artists_list + boil_the_frog_artists_list))
+        for artist_name in third_party_crawled_artists:
+            # search spotify artist by name
+            search_artist = self.search_artist(artist_name, limit=1)
+            if search_artist["success"] and len(search_artist["data"]["artists"]["items"]) > 0:
+                artist = search_artist["data"]["artists"]["items"][0]
+                artist_ids.append(artist["id"])
+                artist_names.append(artist["name"])
+                
+
+
         # de-duplicate artist ids and names
         result_artist_ids = []
         result_artist_names = []
@@ -768,10 +808,21 @@ class SpotifySuperClient(SpotifyClient):
         tivo_tracks = await self.get_tivo_tracks_in_artist_album_dict(artist_album_dict)
         # tivo_tracks: dict_keys(['id', 'title', 'performers', 'composers', 'duration', 'disc', 'phyTrackNum', 'isPick'])
         recall_track_titles = [track['title'] for track in tivo_tracks]
+
+        # 3. third-party crawl to get more tracks by artist names
+        # e.g. crawl_boil_the_frog_artists_and_tracks
+        selected_artists = random.sample(artist_names, min(3, len(artist_names)))
+        for artist_name in selected_artists:
+            boil_the_frog_pairs = crawl_boil_the_frog_artists_and_tracks(artist_name)
+            boil_the_frog_tracks = [pair['track'] for pair in boil_the_frog_pairs]
+            recall_track_titles.extend(boil_the_frog_tracks)
+        # De-duplicate track titles
+        recall_track_titles = list(set(recall_track_titles))
+
         search_tracks = []  
         search_track_ids = []
         search_artist_names = []
-        # 3. track titles to spotify track by search
+        # 4. track titles to spotify track by search
         # search_tracks: dict_keys(['album', 'artists', 'available_markets', 'disc_number', 'duration_ms', 'explicit', 'external_ids', 'external_urls', 'href', 'id', 'is_local', 'is_playable', 'name', 'popularity', 'preview_url', 'track_number', 'type', 'uri'])
         for track_title in tqdm(recall_track_titles, desc="Searching tracks"):
             search_track = self.search_tracks(track_title)
