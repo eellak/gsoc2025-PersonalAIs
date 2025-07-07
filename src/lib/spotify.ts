@@ -122,4 +122,55 @@ export async function getUserSubscription(accessToken: string) {
     isPremium: data.product === 'premium',
     country: data.country,
   };
+}
+
+export async function getOrCreateRecommendPlaylist(accessToken: string): Promise<string> {
+  // get all playlists
+  const userId = await getCurrentUserId(accessToken);
+  const playlistsRes = await fetch(`${SPOTIFY_API_BASE}/me/playlists?`, {
+    headers: { Authorization: `Bearer ${accessToken}` }
+  });
+  const playlists = await playlistsRes.json();
+  console.log('playlists: ', playlists)
+
+  let recommend = playlists.items.find((p: any) => p.name === 'recommend');
+  console.log('recommend: ', recommend)
+  let playlistId = recommend?.id;
+  if (playlistId) return playlistId;
+  // create if not found
+  console.log('userId: ', userId)
+
+  if (!userId) throw new Error('No user id found');
+  const createRes = await fetch(`https://api.spotify.com/v1/users/${userId}/playlists`, {
+    method: 'POST',
+    headers: {
+      Authorization: `Bearer ${accessToken}`,
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({ name: 'recommend', public: false, description: 'Recommended tracks' })
+  });
+  const created = await createRes.json();
+  console.log('created: ', created)
+
+  return created.id;
+}
+
+export async function addTrackToPlaylist(accessToken: string, playlistId: string, trackUri: string): Promise<void> {
+  await fetch(`https://api.spotify.com/v1/playlists/${playlistId}/tracks`, {
+    method: 'POST',
+    headers: {
+      Authorization: `Bearer ${accessToken}`,
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({ uris: [trackUri] })
+  });
+}
+
+export async function getCurrentUserId(accessToken: string): Promise<string> {
+  const res = await fetch(`${SPOTIFY_API_BASE}/me`, {
+    headers: { Authorization: `Bearer ${accessToken}` }
+  });
+  if (!res.ok) throw new Error('Fail to get user id');
+  const data = await res.json();
+  return data.id;
 } 
