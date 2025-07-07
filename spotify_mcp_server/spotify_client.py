@@ -738,7 +738,7 @@ class SpotifySuperClient(SpotifyClient):
         # 8. third-party crawler to get artists
         # e.g. crawl_music_map_artists, crawl_boil_the_frog_artists_and_tracks
         print('Crawling third-party artists...')
-        selected_artists = random.sample(artist_names, min(3, len(artist_names)))  # Randomly select 5 artists for crawling
+        selected_artists = random.sample(artist_names, min(5, len(artist_names)))  # Randomly select 5 artists for crawling
         # music_map_artists_list, boil_the_frog_artists_list = [], []
         music_map_artists_list = []
         for artist_name in selected_artists:
@@ -752,13 +752,16 @@ class SpotifySuperClient(SpotifyClient):
         # De-duplicate third-party crawled artists
         # third_party_crawled_artists = list(set(music_map_artists_list + boil_the_frog_artists_list))
         third_party_crawled_artists = list(set(music_map_artists_list))
+        print('Crawled third-party artists:', third_party_crawled_artists)
         for artist_name in tqdm(third_party_crawled_artists, desc="Crawling third-party artists"):
-            # search spotify artist by name
-            search_artist = self.search_artist(artist_name, limit=1)
-            if search_artist["success"] and len(search_artist["data"]["artists"]["items"]) > 0:
-                artist = search_artist["data"]["artists"]["items"][0]
-                artist_ids.append(artist["id"])
-                artist_names.append(artist["name"])
+            # # search spotify artist by name
+            # search_artist = self.search_artist(artist_name, limit=1)
+            # if search_artist["success"] and len(search_artist["data"]["artists"]["items"]) > 0:
+            #     artist = search_artist["data"]["artists"]["items"][0]
+            #     artist_ids.append(artist["id"])
+            #     artist_names.append(artist["name"])
+            artist_names.append(artist_name)
+            artist_ids.append("-1")
                 
 
 
@@ -807,7 +810,7 @@ class SpotifySuperClient(SpotifyClient):
         #### 2. recall track based on artist ids  # NOTE: rate limited
         # track_set = self.recall_tracks(artist_ids, artist_top_limit=10, album_limit=5)
         # 2. spotify id to tivo id, artist to album to tracks
-        artist_ids = await self.get_tivo_artist_ids(artist_names[:3])  # third-party API to get tivo artist ids
+        artist_ids = await self.get_tivo_artist_ids(artist_names[:10])  # third-party API to get tivo artist ids
         artist_album_dict = await self.get_tivo_artist_album_ids(artist_ids)
         tivo_tracks = await self.get_tivo_tracks_in_artist_album_dict(artist_album_dict)
         # tivo_tracks: dict_keys(['id', 'title', 'performers', 'composers', 'duration', 'disc', 'phyTrackNum', 'isPick'])
