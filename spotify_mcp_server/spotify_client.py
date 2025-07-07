@@ -803,10 +803,11 @@ class SpotifySuperClient(SpotifyClient):
         #### 2. recall track based on artist ids  # NOTE: rate limited
         # track_set = self.recall_tracks(artist_ids, artist_top_limit=10, album_limit=5)
         # 2. spotify id to tivo id, artist to album to tracks
-        artist_ids = await self.get_tivo_artist_ids(artist_names)  # third-party API to get tivo artist ids
+        artist_ids = await self.get_tivo_artist_ids(artist_names[:3])  # third-party API to get tivo artist ids
         artist_album_dict = await self.get_tivo_artist_album_ids(artist_ids)
         tivo_tracks = await self.get_tivo_tracks_in_artist_album_dict(artist_album_dict)
         # tivo_tracks: dict_keys(['id', 'title', 'performers', 'composers', 'duration', 'disc', 'phyTrackNum', 'isPick'])
+        random.shuffle(tivo_tracks)  # Shuffle tracks to ensure randomness
         recall_track_titles = [track['title'] for track in tivo_tracks]
 
         # 3. third-party crawl to get more tracks by artist names
@@ -828,15 +829,18 @@ class SpotifySuperClient(SpotifyClient):
             search_track = self.search_tracks(track_title)
             if search_track['success'] and len(search_track['data']['tracks']['items']) > 0:
                 search_item = search_track['data']['tracks']['items'][0]
+                if search_item['id'] in search_track_ids:
+                    continue
                 search_tracks.append(search_item)
-                search_track_ids.append(search_item['id'])
-                search_artist_names.append(', '.join([artist['name'] for artist in search_item['artists']]))
+                # search_track_ids.append(search_item['id'])
+                # search_artist_names.append(', '.join([artist['name'] for artist in search_item['artists']]))
+        random.shuffle(search_tracks)
         recall_result = {
             'success': True,
             'data': {
                 'tracks': search_tracks,
-                'track_ids': search_track_ids,
-                'artist_names': search_artist_names,
+                # 'track_ids': search_track_ids,
+                # 'artist_names': search_artist_names,
             },
             'message': "Successfully recall tracks",
         }
