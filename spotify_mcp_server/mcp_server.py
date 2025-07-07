@@ -513,3 +513,5 @@ class SpotifyMCPSuperServer(SpotifyMCPServer):
                 content += f"   - **Spotify URI:** {track['uri']}\n"
             content += "\n\n"
             return content
+
+        
