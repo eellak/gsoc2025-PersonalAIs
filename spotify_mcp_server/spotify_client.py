@@ -855,27 +855,38 @@ class SpotifySuperClient(SpotifyClient):
                         search_tracks.append(track)
                         search_track_ids.append(track['id'])
                         search_artist_names.append(', '.join([artist['name'] for artist in track['artists']]))
-        
-        import pdb; pdb.set_trace()
-        reccobeats_tracks = await self.get_reccobeats_tracks_details(search_track_ids)
-        recall_all_tracks = []
-        recall_all_track_ids = []
-        recall_all_artist_names = []
-        if reccobeats_tracks['success']:
-            for track in tqdm(reccobeats_tracks['data']['tracks'], desc="Adding Reccobeats tracks"):
-                recall_all_tracks.append(track)
-                recall_all_track_ids.append(track['id'])
-                recall_all_artist_names.append(', '.join([artist['name'] for artist in track['artists']]))
-        random.shuffle(recall_all_tracks)
+        random.shuffle(search_tracks)
         recall_result = {
             'success': True,
             'data': {
-                'tracks': recall_all_tracks,
-                # 'track_ids': recall_all_track_ids,
-                # 'artist_names': recall_all_artist_names,
+                'tracks': search_track,
+                # 'track_ids': search_track_ids,
+                # 'artist_names': search_artist_names,
             },
             'message': "Successfully recall tracks",
         }
+
+
+        # import pdb; pdb.set_trace()
+        # reccobeats_tracks = await self.get_reccobeats_tracks_details(search_track_ids)
+        # recall_all_tracks = []
+        # recall_all_track_ids = []
+        # recall_all_artist_names = []
+        # if reccobeats_tracks['success']:
+        #     for track in tqdm(reccobeats_tracks['data']['tracks'], desc="Adding Reccobeats tracks"):
+        #         recall_all_tracks.append(track)
+        #         recall_all_track_ids.append(track['id'])
+        #         recall_all_artist_names.append(', '.join([artist['name'] for artist in track['artists']]))
+        # random.shuffle(recall_all_tracks)
+        # recall_result = {
+        #     'success': True,
+        #     'data': {
+        #         'tracks': recall_all_tracks,
+        #         # 'track_ids': recall_all_track_ids,
+        #         # 'artist_names': recall_all_artist_names,
+        #     },
+        #     'message': "Successfully recall tracks",
+        # }
 
         return recall_result
 
