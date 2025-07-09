@@ -13,6 +13,7 @@ import requests
 from tqdm import tqdm
 import httpx
 from util.third_party_crawler import crawl_music_map_artists, crawl_boil_the_frog_artists_and_tracks
+import json
 
 class SpotifyClient:
     """Spotify Client Class"""
@@ -828,6 +829,7 @@ class SpotifySuperClient(SpotifyClient):
         # # De-duplicate track titles
         # recall_track_titles = list(set(recall_track_titles))
 
+
         search_tracks = []  
         search_track_ids = []
         search_artist_names = []
@@ -842,6 +844,18 @@ class SpotifySuperClient(SpotifyClient):
                 search_tracks.append(search_item)
                 # search_track_ids.append(search_item['id'])
                 # search_artist_names.append(', '.join([artist['name'] for artist in search_item['artists']]))
+
+        # recall more from reccobeats with spotify track ids
+        random_selected_tracks = random.sample(search_tracks, min(10, len(search_tracks)))
+        for seed_spotify_track in tqdm(random_selected_tracks, desc="Getting Reccobeats recommendations"):
+            reccobeat_recommendation = await self.recall_reccobeats_tracks(seed_spotify_track['id'], num_tracks=5)
+            if reccobeat_recommendation['success']:
+                for track in reccobeat_recommendation['data']['tracks']:
+                    if track['id'] not in search_track_ids:
+                        search_tracks.append(track)
+                        search_track_ids.append(track['id'])
+                        search_artist_names.append(', '.join([artist['name'] for artist in track['artists']]))
+        
         random.shuffle(search_tracks)
         recall_result = {
             'success': True,
@@ -893,3 +907,61 @@ class SpotifySuperClient(SpotifyClient):
             'message': "Successfully random fill",
         }
         return recall_result
+
+    async def recall_reccobeats_tracks(self, track_seed, num_tracks=20):
+        """
+        Get track recommendations from Reccobeats API
+        """
+        url = f"https://api.reccobeats.com/v1/track/recommendation?size={num_tracks}&seeds={track_seed}"
+        
+        payload = {}
+        headers = {
+            'Accept': 'application/json'
+        }
+        
+        try:
+            response = requests.request("GET", url, headers=headers, data=payload)
+            response.raise_for_status()  # 检查 HTTP 错误
+            
+            data = response.json()['content']
+
+            
+            recommended_tracks = []
+            if len(data):
+                for track in data:
+                    # 将 Reccobeats 格式转换为 Spotify 格式
+                    spotify_track_id = track.get('href', '').split('/')[-1]
+                    spotify_track = {
+                        'id': spotify_track_id,
+                        'name': track.get('trackTitle', ''),
+                        'artists': [{'name': artist['name']} for artist in track.get('artists', [])],
+                        'artists_ids': [artist['href'].split('/')[-1] for artist in track.get('artists', [])],
+                        'duration_ms': track.get('durationMs', 0),
+                        'uri': f"spotify:track:{spotify_track_id}",
+                        'album': "",
+                    }
+                    recommended_tracks.append(spotify_track)
+            
+            return {
+                'success': True,
+                'data': {
+                    'tracks': recommended_tracks,
+                    'track_names': [track['name'] for track in recommended_tracks],
+                    'total': len(recommended_tracks)
+                },
+                'message': f"Successfully got {len(recommended_tracks)} recommendations from Reccobeats"
+            }
+            
+        except requests.exceptions.RequestException as e:
+            return {
+                'success': False,
+                'data': None,
+                'message': f"Failed to get recommendations from Reccobeats: {str(e)}"
+            }
+        except json.JSONDecodeError as e:
+            return {
+                'success': False,
+                'data': None,
+                'message': f"Failed to parse Reccobeats response: {str(e)}"
+            }
+        
