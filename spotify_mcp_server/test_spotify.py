@@ -116,7 +116,9 @@ async def test_spotify_client():
 
         # tivo_tracks = await client.recall_all_tivo_tracks_obj()
         result = await client.recall_all_tracks()
-
+        with open('result.json', 'w') as f:
+            import json
+            json.dump(result, f, indent=4)
         print("\n🎉 All tests completed!")
         import pdb; pdb.set_trace()
         

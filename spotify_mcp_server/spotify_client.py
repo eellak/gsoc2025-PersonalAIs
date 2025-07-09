@@ -842,15 +842,15 @@ class SpotifySuperClient(SpotifyClient):
                 if search_item['id'] in search_track_ids:
                     continue
                 search_tracks.append(search_item)
-                # search_track_ids.append(search_item['id'])
-                # search_artist_names.append(', '.join([artist['name'] for artist in search_item['artists']]))
+                search_track_ids.append(search_item['id'])
+                search_artist_names.append(', '.join([artist['name'] for artist in search_item['artists']]))
 
         # recall more from reccobeats with spotify track ids
         random_selected_tracks = random.sample(search_tracks, min(10, len(search_tracks)))
         for seed_spotify_track in tqdm(random_selected_tracks, desc="Getting Reccobeats recommendations"):
             reccobeat_recommendation = await self.recall_reccobeats_tracks(seed_spotify_track['id'], num_tracks=5)
             if reccobeat_recommendation['success']:
-                for track in reccobeat_recommendation['data']['tracks']:
+                for track in tqdm(reccobeat_recommendation['data']['tracks'], desc="Converting to Reccobeats tracks"):
                     if track['id'] not in search_track_ids:
                         search_tracks.append(track)
                         search_track_ids.append(track['id'])
@@ -859,7 +859,7 @@ class SpotifySuperClient(SpotifyClient):
         recall_result = {
             'success': True,
             'data': {
-                'tracks': search_track,
+                'tracks': search_tracks,
                 # 'track_ids': search_track_ids,
                 # 'artist_names': search_artist_names,
             },
@@ -868,25 +868,27 @@ class SpotifySuperClient(SpotifyClient):
 
 
         # import pdb; pdb.set_trace()
-        # reccobeats_tracks = await self.get_reccobeats_tracks_details(search_track_ids)
-        # recall_all_tracks = []
-        # recall_all_track_ids = []
-        # recall_all_artist_names = []
-        # if reccobeats_tracks['success']:
-        #     for track in tqdm(reccobeats_tracks['data']['tracks'], desc="Adding Reccobeats tracks"):
-        #         recall_all_tracks.append(track)
-        #         recall_all_track_ids.append(track['id'])
-        #         recall_all_artist_names.append(', '.join([artist['name'] for artist in track['artists']]))
-        # random.shuffle(recall_all_tracks)
-        # recall_result = {
-        #     'success': True,
-        #     'data': {
-        #         'tracks': recall_all_tracks,
-        #         # 'track_ids': recall_all_track_ids,
-        #         # 'artist_names': recall_all_artist_names,
-        #     },
-        #     'message': "Successfully recall tracks",
-        # }
+        reccobeats_tracks = await self.get_reccobeats_tracks_details(search_track_ids)
+        recall_all_tracks = []
+        recall_all_track_ids = []
+        recall_all_artist_names = []
+        if reccobeats_tracks['success']:
+            for track in tqdm(reccobeats_tracks['data']['tracks'], desc="Adding Reccobeats tracks"):
+                track['features'] = await self.get_reccobeats_track_audio_features(track['reccobeats_id'])
+                recall_all_tracks.append(track)
+                recall_all_track_ids.append(track['id'])
+                recall_all_artist_names.append(', '.join([artist['name'] for artist in track['artists']]))
+
+        random.shuffle(recall_all_tracks)
+        recall_result = {
+            'success': True,
+            'data': {
+                'tracks': recall_all_tracks,
+                # 'track_ids': recall_all_track_ids,
+                # 'artist_names': recall_all_artist_names,
+            },
+            'message': "Successfully recall tracks",
+        }
 
         return recall_result
 
@@ -959,6 +961,7 @@ class SpotifySuperClient(SpotifyClient):
                         'duration_ms': track.get('durationMs', 0),
                         'uri': f"spotify:track:{spotify_track_id}",
                         'album': "",
+                        'reccobeats_id': track.get('id', ''),
                     }
                     recommended_tracks.append(spotify_track)
             
@@ -1023,8 +1026,9 @@ class SpotifySuperClient(SpotifyClient):
                 tracks_details = []
                 if 'content' in data and len(data['content']):
                     for track in data['content']:
+                        spotify_id = track.get('href', '').split('/')[-1]
                         track_detail = {
-                            'id': track.get('id', ''),
+                            'reccobeats_id': track.get('id', ''),
                             'name': track.get('trackTitle', ''),
                             'artists': [{'name': artist['name'], 'id': artist.get('id', '')} for artist in track.get('artists', [])],
                             'duration_ms': track.get('durationMs', 0),
@@ -1032,6 +1036,7 @@ class SpotifySuperClient(SpotifyClient):
                             'external_urls': {
                                 'spotify': track.get('href', '')
                             },
+                            'id': spotify_id,
                             'uri': f"spotify:track:{track.get('id', '')}",
                         }
                         tracks_details.append(track_detail)
@@ -1068,4 +1073,68 @@ class SpotifySuperClient(SpotifyClient):
                 'batches_processed': (len(track_ids) + batch_size - 1) // batch_size
             },
             'message': f"Successfully retrieved details for {len(all_tracks_details)} tracks from Reccobeats in {(len(track_ids) + batch_size - 1) // batch_size} batches"
-        } 
+        }
+
+    async def get_reccobeats_track_audio_features(self, reccobeats_id: str) -> Dict[str, Any]:
+        """
+        Get audio features for a single track from Reccobeats API
+        """
+        if not reccobeats_id:
+            return {
+                'success': False,
+                'data': None,
+                'message': "No Reccobeats ID provided"
+            }
+        
+        url = f"https://api.reccobeats.com/v1/track/{reccobeats_id}/audio-features"
+        
+        payload = {}
+        headers = {
+            'Accept': 'application/json'
+        }
+        
+        try:
+            response = requests.request("GET", url, headers=headers, data=payload)
+            response.raise_for_status()
+            
+            data = response.json()
+            
+            audio_features = {
+                'id': reccobeats_id,
+                'acousticness': data.get('acousticness', 0),
+                'danceability': data.get('danceability', 0),
+                'energy': data.get('energy', 0),
+                'instrumentalness': data.get('instrumentalness', 0),
+                'liveness': data.get('liveness', 0),
+                'loudness': data.get('loudness', 0),
+                'speechiness': data.get('speechiness', 0),
+                'tempo': data.get('tempo', 0),
+                'valence': data.get('valence', 0)
+            }
+            
+            return {
+                'success': True,
+                'data': audio_features,
+                'message': f"Successfully retrieved audio features for track {reccobeats_id}"
+            }
+            
+        except requests.exceptions.RequestException as e:
+            return {
+                'success': False,
+                'data': None,
+                'message': f"Failed to get audio features from Reccobeats: {str(e)}"
+            }
+        except json.JSONDecodeError as e:
+            return {
+                'success': False,
+                'data': None,
+                'message': f"Failed to parse Reccobeats response: {str(e)}"
+            }
+        except Exception as e:
+            return {
+                'success': False,
+                'data': None,
+                'message': f"Unexpected error: {str(e)}"
+            }
+
+  
