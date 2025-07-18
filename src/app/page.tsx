@@ -32,6 +32,73 @@ const suggestedActions = [
   },
 ];
 
+// 问卷分数映射，双层字典结构
+const questionnaireScores: Record<string, Record<string, [number, number]>> = {
+  q1: {
+    'Strongly Agree': [0, 0],
+    'Agree': [0.125, 0.125],
+    'Can’t Say': [0, 0],
+    'Disagree': [0.375, 0.375],
+    'Strongly Disagree': [0.5, 0.5],
+  },
+  q2: {
+    'Strongly Agree': [0, 0],
+    'Agree': [0.125, 0.125],
+    'Can’t Say': [0, 0],
+    'Disagree': [0.375, 0.375],
+    'Strongly Disagree': [0.5, 0.5],
+  },
+  q3: {
+    'Strongly Agree': [0, 0],
+    'Agree': [0.25, 0.25],
+    'Can’t Say': [0, 0],
+    'Disagree': [0.75, 0.75],
+    'Strongly Disagree': [1, 1],
+  },
+  q4: {
+    'Strongly Agree': [1, 1],
+    'Agree': [0.75, 0.75],
+    'Can’t Say': [0, 0],
+    'Disagree': [0.25, 0.25],
+    'Strongly Disagree': [0, 0],
+  },
+  q5: {
+    'Strongly Agree': [1, 1],
+    'Agree': [0.75, 0.75],
+    'Can’t Say': [0, 0],
+    'Disagree': [0.25, 0.25],
+    'Strongly Disagree': [0, 0],
+  },
+  q6: {
+    'Strongly Agree': [1, 1],
+    'Agree': [0.75, 0.75],
+    'Can’t Say': [0, 0],
+    'Disagree': [0.25, 0.25],
+    'Strongly Disagree': [0, 0],
+  },
+  q7: {
+    'Strongly Agree': [0, 1],
+    'Agree': [0.25, 1],
+    'Can’t Say': [0, 0],
+    'Disagree': [0.75, 1],
+    'Strongly Disagree': [1, 1],
+  },
+  q8: {
+    'Strongly Agree': [1, 0],
+    'Agree': [0.75, 0],
+    'Can’t Say': [0, 0],
+    'Disagree': [0.25, 0],
+    'Strongly Disagree': [0, 0],
+  },
+  q9: {
+    'Strongly Agree': [0, 1],
+    'Agree': [0.25, 0.75],
+    'Can’t Say': [0, 0],
+    'Disagree': [0.75, 0.25],
+    'Strongly Disagree': [1, 0],
+  },
+};
+
 export default function Chat() {
   const { messages, input, setInput, handleSubmit, setMessages } = useChat();
   const [queueWidth, setQueueWidth] = useState(320); // 默认宽度
@@ -324,7 +391,13 @@ export default function Chat() {
                       { type: 'radio', label: 'I get irritated easily.', name: 'q9', options: ['Strongly Agree', 'Agree', 'Can’t Say', 'Disagree', 'Strongly Disagree'] }
                     ]}
                     onSubmit={result => {
-                      console.log(result);
+                      const scores = Object.entries(result).reduce((acc, [key, value]) => {
+                        const score = questionnaireScores[key]?.[value] || [0, 0];
+                        acc[0] += score[0];
+                        acc[1] += score[1];
+                        return acc;
+                      }, [0, 0]);
+                      console.log('Scores:', scores);
                       setOpenQuestionnaire(false);
                     }}
                   />
