@@ -32,7 +32,7 @@ const suggestedActions = [
   },
 ];
 
-// 问卷分数映射，双层字典结构
+// Questionnaire score mapping, double dictionary structure
 const questionnaireScores: Record<string, Record<string, [number, number]>> = {
   q1: {
     'Strongly Agree': [0, 0],
@@ -101,7 +101,7 @@ const questionnaireScores: Record<string, Record<string, [number, number]>> = {
 
 export default function Chat() {
   const { messages, input, setInput, handleSubmit, setMessages } = useChat();
-  const [queueWidth, setQueueWidth] = useState(320); // 默认宽度
+  const [queueWidth, setQueueWidth] = useState(320); // Default width
   const [isDragging, setIsDragging] = useState(false);
   const dragStartX = useRef(0);
   const dragStartWidth = useRef(0);
@@ -265,7 +265,7 @@ export default function Chat() {
           )}
 
           <div className='flex mx-auto px-4 bg-background pb-4 md:pb-6 gap-2 w-full md:max-w-3xl'>
-            {/* form和问卷按钮同一行 */}
+            {/* form and questionnaire button in the same row */}
             <div className="flex w-full flex-row items-start gap-2">
               <form
                 ref={formRef}
@@ -361,7 +361,7 @@ export default function Chat() {
                   </Button>
                 </div>
               </form>
-              {/* 问卷弹窗按钮 */}
+              {/* Questionnaire modal button */}
               <div className="flex items-center ml-2 mt-0">
                 <Button
                   type="button"
