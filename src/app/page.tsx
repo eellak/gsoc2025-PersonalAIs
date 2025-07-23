@@ -18,6 +18,7 @@ import { MusicIcon } from 'lucide-react';
 import Queue from '@/components/spotify/queue';
 import Greeting from '@/components/custom/greeting';
 import Questionnaire, { Question } from '@/components/custom/questionnaire';
+import CartesianPlane from '@/components/custom/cartesianplane';
 
 const suggestedActions = [
   {
@@ -114,6 +115,10 @@ export default function Chat() {
   const [messagesContainerRef, messagesEndRef] = useScrollToBottom<HTMLDivElement>();
   const [suggestionText, setSuggestionText] = useState<string | null>(null);
   const [openQuestionnaire, setOpenQuestionnaire] = useState(false);
+  const [points, setPoints] = useState<{ x: number; y: number }[]>([
+    { x: 1, y: 2 },
+    { x: -2, y: -1 },
+  ]);
 
   const isAtBottomRef = useRef(true);
 
@@ -412,6 +417,37 @@ export default function Chat() {
           onMouseDown={handleMouseDown}
         />
         <div className="hidden lg:block border-l bg-muted/50" style={{ width: `${queueWidth}px` }}>
+          <div className="p-4 border-b">
+            <h3 className="text-sm font-medium mb-2">坐标系</h3>
+            <CartesianPlane
+              points={points}
+              onAddPoint={(point) => {
+                setPoints([...points, point]);
+              }}
+            />
+            <div className="mt-2 flex gap-2">
+              <Button
+                className="flex-1"
+                onClick={() =>
+                  setPoints([
+                    ...points,
+                    {
+                      x: parseFloat((Math.random() * 2 - 1).toFixed(3)),
+                      y: parseFloat((Math.random() * 2 - 1).toFixed(3)),
+                    },
+                  ])
+                }
+              >
+                Add Random Point
+              </Button>
+              <Button
+                className="flex-1"
+                onClick={() => setPoints([])}
+              >
+                Clean
+              </Button>
+            </div>
+          </div>
           <Queue />
         </div>
       </div>
