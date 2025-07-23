@@ -17,6 +17,7 @@ import UserProfile from '@/components/spotify/user-profile';
 import { MusicIcon } from 'lucide-react';
 import Queue from '@/components/spotify/queue';
 import Greeting from '@/components/custom/greeting';
+import Questionnaire, { Question } from '@/components/custom/questionnaire';
 
 const suggestedActions = [
   {
@@ -31,9 +32,76 @@ const suggestedActions = [
   },
 ];
 
+// Questionnaire score mapping, double dictionary structure
+const questionnaireScores: Record<string, Record<string, [number, number]>> = {
+  q1: {
+    'Strongly Agree': [0, 0],
+    'Agree': [0.125, 0.125],
+    'Can’t Say': [0, 0],
+    'Disagree': [0.375, 0.375],
+    'Strongly Disagree': [0.5, 0.5],
+  },
+  q2: {
+    'Strongly Agree': [0, 0],
+    'Agree': [0.125, 0.125],
+    'Can’t Say': [0, 0],
+    'Disagree': [0.375, 0.375],
+    'Strongly Disagree': [0.5, 0.5],
+  },
+  q3: {
+    'Strongly Agree': [0, 0],
+    'Agree': [0.25, 0.25],
+    'Can’t Say': [0, 0],
+    'Disagree': [0.75, 0.75],
+    'Strongly Disagree': [1, 1],
+  },
+  q4: {
+    'Strongly Agree': [1, 1],
+    'Agree': [0.75, 0.75],
+    'Can’t Say': [0, 0],
+    'Disagree': [0.25, 0.25],
+    'Strongly Disagree': [0, 0],
+  },
+  q5: {
+    'Strongly Agree': [1, 1],
+    'Agree': [0.75, 0.75],
+    'Can’t Say': [0, 0],
+    'Disagree': [0.25, 0.25],
+    'Strongly Disagree': [0, 0],
+  },
+  q6: {
+    'Strongly Agree': [1, 1],
+    'Agree': [0.75, 0.75],
+    'Can’t Say': [0, 0],
+    'Disagree': [0.25, 0.25],
+    'Strongly Disagree': [0, 0],
+  },
+  q7: {
+    'Strongly Agree': [0, 1],
+    'Agree': [0.25, 1],
+    'Can’t Say': [0, 0],
+    'Disagree': [0.75, 1],
+    'Strongly Disagree': [1, 1],
+  },
+  q8: {
+    'Strongly Agree': [1, 0],
+    'Agree': [0.75, 0],
+    'Can’t Say': [0, 0],
+    'Disagree': [0.25, 0],
+    'Strongly Disagree': [0, 0],
+  },
+  q9: {
+    'Strongly Agree': [0, 1],
+    'Agree': [0.25, 0.75],
+    'Can’t Say': [0, 0],
+    'Disagree': [0.75, 0.25],
+    'Strongly Disagree': [1, 0],
+  },
+};
+
 export default function Chat() {
   const { messages, input, setInput, handleSubmit, setMessages } = useChat();
-  const [queueWidth, setQueueWidth] = useState(320); // 默认宽度
+  const [queueWidth, setQueueWidth] = useState(320); // Default width
   const [isDragging, setIsDragging] = useState(false);
   const dragStartX = useRef(0);
   const dragStartWidth = useRef(0);
@@ -45,6 +113,7 @@ export default function Chat() {
   const formRef = useRef<HTMLFormElement>(null);
   const [messagesContainerRef, messagesEndRef] = useScrollToBottom<HTMLDivElement>();
   const [suggestionText, setSuggestionText] = useState<string | null>(null);
+  const [openQuestionnaire, setOpenQuestionnaire] = useState(false);
 
   const isAtBottomRef = useRef(true);
 
@@ -196,100 +265,145 @@ export default function Chat() {
           )}
 
           <div className='flex mx-auto px-4 bg-background pb-4 md:pb-6 gap-2 w-full md:max-w-3xl'>
-            <form
-              ref={formRef}
-              className="w-full"
-              onSubmit={event => {
-                event.preventDefault();
-                if (!isLoading) {
-                  handleSubmit(event, {
-                    experimental_attachments: files,
-                  });
+            {/* form and questionnaire button in the same row */}
+            <div className="flex w-full flex-row items-start gap-2">
+              <form
+                ref={formRef}
+                className="w-full"
+                onSubmit={event => {
+                  event.preventDefault();
+                  if (!isLoading) {
+                    handleSubmit(event, {
+                      experimental_attachments: files,
+                    });
 
-                  setFiles(undefined);
-                  setPreviewUrl(null);
-                  if (fileInputRef.current) {
-                    fileInputRef.current.value = '';
-                  }
-                }
-              }}
-            >
-              <div className="relative w-full flex flex-col gap-4">
-                {previewUrl && (
-                  <div className="absolute -left-14 top-1/2 -translate-y-1/2 w-12 h-12 rounded-lg overflow-hidden border shrink-0">
-                    <Image
-                      src={previewUrl}
-                      alt="preview-img"
-                      fill
-                      className="object-cover"
-                    />
-                    <button
-                      type="button"
-                      onClick={() => {
-                        setPreviewUrl(null);
-                        setFiles(undefined);
-                      }}
-                      className="absolute top-0 right-0 bg-black/50 text-white p-1 rounded-bl"
-                    >
-                      ×
-                    </button>
-                  </div>
-                )}
-                <input
-                  type="file"
-                  className="absolute top-1/2 transform -translate-y-1/2 text-gray-500 opacity-0 cursor-pointer pl-1 w-10"
-                  onChange={handleFileChange}
-                  multiple
-                  ref={fileInputRef}
-                  accept="image/*"
-                />
-
-                <div className="absolute top-1/2 left-3 transform -translate-y-1/2 items-center justify-center text-gray-500 group-hover:text-black pointer-events-none">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="20"
-                    height="20"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  >
-                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
-                    <polyline points="17 8 12 3 7 8" />
-                    <line x1="12" y1="3" x2="12" y2="15" />
-                  </svg>
-                </div>
-
-                <Textarea
-                  placeholder="Send a message..."
-                  className={cx(
-                    'border-gray-300 min-h-[24px] max-h-[calc(75dvh)] overflow-hidden resize-none rounded-xl text-base bg-muted pl-10 focus-visible:ring-2 focus-visible:ring-black focus-visible:ring-offset-0',
-                  )}
-                  value={input}
-                  onChange={(e) => setInput(e.target.value)}
-                  onKeyDown={(e) => {
-                    if (e.key === 'Enter' && !e.shiftKey) {
-                      e.preventDefault();
-                      const form = e.currentTarget.form;
-                      if (form) {
-                        form.requestSubmit();
-                      }
+                    setFiles(undefined);
+                    setPreviewUrl(null);
+                    if (fileInputRef.current) {
+                      fileInputRef.current.value = '';
                     }
-                  }}
-                  rows={3}
-                  autoFocus
-                />
+                  }
+                }}
+              >
+                <div className="relative w-full flex flex-col gap-4">
+                  {previewUrl && (
+                    <div className="absolute -left-14 top-1/2 -translate-y-1/2 w-12 h-12 rounded-lg overflow-hidden border shrink-0">
+                      <Image
+                        src={previewUrl}
+                        alt="preview-img"
+                        fill
+                        className="object-cover"
+                      />
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setPreviewUrl(null);
+                          setFiles(undefined);
+                        }}
+                        className="absolute top-0 right-0 bg-black/50 text-white p-1 rounded-bl"
+                      >
+                        ×
+                      </button>
+                    </div>
+                  )}
+                  <input
+                    type="file"
+                    className="absolute top-1/2 transform -translate-y-1/2 text-gray-500 opacity-0 cursor-pointer pl-1 w-10"
+                    onChange={handleFileChange}
+                    multiple
+                    ref={fileInputRef}
+                    accept="image/*"
+                  />
+
+                  <div className="absolute top-1/2 left-3 transform -translate-y-1/2 items-center justify-center text-gray-500 group-hover:text-black pointer-events-none">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="20"
+                      height="20"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    >
+                      <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                      <polyline points="17 8 12 3 7 8" />
+                      <line x1="12" y1="3" x2="12" y2="15" />
+                    </svg>
+                  </div>
+
+                  <Textarea
+                    placeholder="Send a message..."
+                    className={cx(
+                      'border-gray-300 min-h-[24px] max-h-[calc(75dvh)] overflow-hidden resize-none rounded-xl text-base bg-muted pl-10 focus-visible:ring-2 focus-visible:ring-black focus-visible:ring-offset-0',
+                    )}
+                    value={input}
+                    onChange={(e) => setInput(e.target.value)}
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter' && !e.shiftKey) {
+                        e.preventDefault();
+                        const form = e.currentTarget.form;
+                        if (form) {
+                          form.requestSubmit();
+                        }
+                      }
+                    }}
+                    rows={3}
+                    autoFocus
+                  />
+                  <Button
+                    type="submit"
+                    className="rounded-full p-1.5 h-8 w-8 flex items-center justify-center border dark:border-zinc-600 cursor-pointer absolute top-1/2 transform -translate-y-1/2 right-1 mr-1"
+                    disabled={input.length === 0}
+                  >
+                    <ArrowUpIcon size={14} />
+                  </Button>
+                </div>
+              </form>
+              {/* Questionnaire modal button */}
+              <div className="flex items-center ml-2 mt-0">
                 <Button
-                  type="submit"
-                  className="rounded-full p-1.5 h-8 w-8 flex items-center justify-center border dark:border-zinc-600 cursor-pointer absolute top-1/2 transform -translate-y-1/2 right-1 mr-1"
-                  disabled={input.length === 0}
+                  type="button"
+                  variant="outline"
+                  onClick={() => setOpenQuestionnaire(true)}
+                  className="cursor-pointer focus-visible:ring-2 focus-visible:ring-black hover:ring-2"
                 >
-                  <ArrowUpIcon size={14} />
+                  Detect
                 </Button>
               </div>
-            </form>
+            </div>
+            {openQuestionnaire && (
+              <div style={{position: 'fixed', top: 0, left: 0, width: '100vw', height: '100vh', background: 'rgba(0,0,0,0.15)', zIndex: 1000, display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
+                <div style={{background: '#fff', padding: 24, borderRadius: 8, minWidth: 320, minHeight: 150, maxHeight: '90vh', position: 'relative', boxShadow: '0 2px 8px rgba(0,0,0,0.15)', overflowY: 'auto'}}>
+                  <button style={{position: 'absolute', top: 8, right: 8, border: 'none', background: 'transparent', fontSize: 20, cursor: 'pointer'}} onClick={() => setOpenQuestionnaire(false)}>×</button>
+                  <h3 style={{marginBottom: 16}}>Detect Your Mood</h3>
+                  <Questionnaire
+                    questions={[
+                      { type: 'radio', label: 'I don’t feel like doing anything.', name: 'q1', options: ['Strongly Agree', 'Agree', 'Can’t Say', 'Disagree', 'Strongly Disagree'] },
+                      { type: 'radio', label: 'I am feeling bored.', name: 'q2', options: ['Strongly Agree', 'Agree', 'Can’t Say', 'Disagree', 'Strongly Disagree'] },
+                      { type: 'radio', label: 'Nothing seems fun anymore. / I hardly enjoy anything.', name: 'q3', options: ['Strongly Agree', 'Agree', 'Can’t Say', 'Disagree', 'Strongly Disagree'] },
+                      { type: 'radio', label: 'I find beauty in things around me.', name: 'q4', options: ['Strongly Agree', 'Agree', 'Can’t Say', 'Disagree', 'Strongly Disagree'] },
+                      { type: 'radio', label: 'I feel loved.', name: 'q5', options: ['Strongly Agree', 'Agree', 'Can’t Say', 'Disagree', 'Strongly Disagree'] },
+                      { type: 'radio', label: 'I’ve been feeling confident.', name: 'q6', options: ['Strongly Agree', 'Agree', 'Can’t Say', 'Disagree', 'Strongly Disagree'] },
+                      { type: 'radio', label: 'I feel like my opinion/efforts are not appreciated.', name: 'q7', options: ['Strongly Agree', 'Agree', 'Can’t Say', 'Disagree', 'Strongly Disagree'] },
+                      { type: 'radio', label: 'I have completed today’s agenda.', name: 'q8', options: ['Strongly Agree', 'Agree', 'Can’t Say', 'Disagree', 'Strongly Disagree'] },
+                      { type: 'radio', label: 'I get irritated easily.', name: 'q9', options: ['Strongly Agree', 'Agree', 'Can’t Say', 'Disagree', 'Strongly Disagree'] }
+                    ]}
+                    onSubmit={result => {
+                      const scores = Object.entries(result).reduce((acc, [key, value]) => {
+                        const score = questionnaireScores[key]?.[value] || [0, 0];
+                        acc[0] += score[0];
+                        acc[1] += score[1];
+                        return acc;
+                      }, [0, 0]);
+                      console.log('Scores:', scores);
+                      setOpenQuestionnaire(false);
+                    }}
+                  />
+                </div>
+              </div>
+            )}
           </div>
         </div>
 
