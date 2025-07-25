@@ -13,14 +13,15 @@ export type PointWithType = Point & {
 
 type CartesianPlaneProps = {
   points?: PointWithType[];
-  onAddPoint?: (point: PointWithType) => void;
+  onAddPoint?: (point: PointWithType) => void | Promise<void>;
   onAddStartPoint?: () => void;
   onAddEndPoint?: () => void;
   setStartPoint?: (point: PointWithType) => void;
   setEndPoint?: (point: PointWithType) => void;
+  savePointMeta?: (startPoint: PointWithType | null, endPoint: PointWithType | null) => void | Promise<void>;
 };
 
-const CartesianPlane: React.FC<CartesianPlaneProps> = ({ points = [], onAddPoint, onAddStartPoint, onAddEndPoint, setStartPoint, setEndPoint }) => {
+const CartesianPlane: React.FC<CartesianPlaneProps> = ({ points = [], onAddPoint, onAddStartPoint, onAddEndPoint, setStartPoint, setEndPoint, savePointMeta }) => {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const containerRef = useRef<HTMLDivElement | null>(null);
   const [canvasSize, setCanvasSize] = useState(400);
@@ -141,10 +142,17 @@ const CartesianPlane: React.FC<CartesianPlaneProps> = ({ points = [], onAddPoint
       ctx.beginPath();
       ctx.arc(toCanvasX(x), toCanvasY(y), 4, 0, 2 * Math.PI);
       ctx.fill();
+      
+      ctx.fillStyle = type === 'start' ? 'blue' : 'red';
+      ctx.font = 'bold 16px sans-serif';
+      ctx.textAlign = 'left';
+      ctx.textBaseline = 'middle';
+      const label = type === 'start' ? 'S' : 'E';
+      ctx.fillText(label, toCanvasX(x) + 8, toCanvasY(y));
     });
   }, [points, canvasSize]);
 
-  const handleClick = (e: React.MouseEvent<HTMLCanvasElement>) => {
+  const handleClick = async (e: React.MouseEvent<HTMLCanvasElement>) => {
     if (!canvasRef.current || !onAddPoint) return;
 
     const rect = canvasRef.current.getBoundingClientRect();
@@ -159,7 +167,7 @@ const CartesianPlane: React.FC<CartesianPlaneProps> = ({ points = [], onAddPoint
 
     console.log(`🖱️ Clicked at: x=${clampedX.toFixed(3)}, y=${clampedY.toFixed(3)}`); // ✅ 打印坐标
     // 使用当前点类型
-    onAddPoint({ x: clampedX, y: clampedY, type: currentPointType });
+    await onAddPoint({ x: clampedX, y: clampedY, type: currentPointType });
   };
 
   return (
@@ -193,9 +201,10 @@ const CartesianPlane: React.FC<CartesianPlaneProps> = ({ points = [], onAddPoint
         <button
           // clean all points
           className={`flex-1 bg-gray-500 text-white py-1 px-2 rounded text-sm`}
-          onClick={() => {
+          onClick={async () => {
             if (setStartPoint) setStartPoint(null as any);
             if (setEndPoint) setEndPoint(null as any);
+            if (savePointMeta) await savePointMeta(null, null);
           }}
         >
           Clean

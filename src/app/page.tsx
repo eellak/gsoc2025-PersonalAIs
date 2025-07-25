@@ -20,6 +20,27 @@ import Greeting from '@/components/custom/greeting';
 import Questionnaire, { Question } from '@/components/custom/questionnaire';
 import CartesianPlane, { PointWithType } from '@/components/custom/cartesianplane';
 
+const savePointMeta = async (startPoint: PointWithType | null, endPoint: PointWithType | null) => {
+  try {
+    const response = await fetch('/api/point-meta', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ startPoint, endPoint }),
+    });
+    
+    if (!response.ok) {
+      throw new Error(`Failed to save point meta: ${response.statusText}`);
+    }
+    
+    const result = await response.json();
+    console.log('Point meta saved:', result);
+  } catch (error) {
+    console.error('Error saving point meta:', error);
+  }
+}
+
 const suggestedActions = [
   {
     title: 'Recommend some',
@@ -409,7 +430,7 @@ export default function Chat() {
                       { type: 'radio', label: 'I have completed today’s agenda.', name: 'q8', options: ['Strongly Agree', 'Agree', 'Can’t Say', 'Disagree', 'Strongly Disagree'] },
                       { type: 'radio', label: 'I get irritated easily.', name: 'q9', options: ['Strongly Agree', 'Agree', 'Can’t Say', 'Disagree', 'Strongly Disagree'] }
                     ]}
-                    onSubmit={result => {
+                    onSubmit={async result => {
                       const filteredEntries = Object.entries(result).filter(
                         ([_, value]) => value !== "Can’t Say"
                       );
@@ -426,6 +447,7 @@ export default function Chat() {
                       const y = scores[1] / filledCount;
                       console.log(`Normalized Scores: x=${x.toFixed(3)}, y=${y.toFixed(3)}`);
                       setStartPoint({ x: x, y: y, type: 'start' } as PointWithType);
+                      await savePointMeta({ x: x, y: y, type: 'start' } as PointWithType, null);
                       setOpenQuestionnaire(false);
                       
                       setMessages([...messages, 
@@ -458,15 +480,18 @@ export default function Chat() {
             <h3 className="text-sm font-medium mb-2">Emotion Map</h3>
             <CartesianPlane
               points={[(startPoint as PointWithType), (endPoint as PointWithType)].filter(Boolean)}
-              onAddPoint={(point) => {
+              onAddPoint={async (point) => {
                 if (point.type === 'start') {
                   setStartPoint(point);
+                  await savePointMeta(point, null);
                 } else {
                   setEndPoint(point);
+                  await savePointMeta(null, point);
                 }
               }}
               setStartPoint={setStartPoint}
               setEndPoint={setEndPoint}
+              savePointMeta={savePointMeta}
             />
           </div>
           <div className="flex-1 min-h-0">

@@ -1,0 +1,2959 @@
+{
+    "success": true,
+    "data": {
+        "tracks": [
+            {
+                "reccobeats_id": "48ec5a90-3858-4ee9-bd89-6e7b3b422ef2",
+                "name": "BUTTERFLY EFFECT",
+                "artists": [
+                    {
+                        "name": "Travis Scott",
+                        "id": "aa6e2a7e-28d9-4576-b2ef-176243a579a2"
+                    }
+                ],
+                "duration_ms": 190557,
+                "popularity": 80,
+                "external_urls": {
+                    "spotify": "https://open.spotify.com/track/2cYqizR4lgvp4Qu6IQ3qGN"
+                },
+                "id": "2cYqizR4lgvp4Qu6IQ3qGN",
+                "uri": "spotify:track:2cYqizR4lgvp4Qu6IQ3qGN",
+                "features": {
+                    "success": true,
+                    "data": {
+                        "id": "48ec5a90-3858-4ee9-bd89-6e7b3b422ef2",
+                        "acousticness": 0.0531,
+                        "danceability": 0.763,
+                        "energy": 0.628,
+                        "instrumentalness": 0.0,
+                        "liveness": 0.114,
+                        "loudness": -5.85,
+                        "speechiness": 0.05,
+                        "tempo": 140.958,
+                        "valence": 0.193
+                    },
+                    "message": "Successfully retrieved audio features for track 48ec5a90-3858-4ee9-bd89-6e7b3b422ef2"
+                }
+            },
+            {
+                "reccobeats_id": "847fd07f-f7d2-4c6f-8d4d-f6eb7cc5cc62",
+                "name": "Die With A Smile",
+                "artists": [
+                    {
+                        "name": "Lady Gaga",
+                        "id": "0c8b4720-f752-496d-89e1-bae450f13c7b"
+                    },
+                    {
+                        "name": "Bruno Mars",
+                        "id": "a46a685c-dfd6-48b8-811c-1dd953622918"
+                    }
+                ],
+                "duration_ms": 251667,
+                "popularity": 100,
+                "external_urls": {
+                    "spotify": "https://open.spotify.com/track/2plbrEY59IikOBgBGLjaoe"
+                },
+                "id": "2plbrEY59IikOBgBGLjaoe",
+                "uri": "spotify:track:2plbrEY59IikOBgBGLjaoe",
+                "features": {
+                    "success": true,
+                    "data": {
+                        "id": "847fd07f-f7d2-4c6f-8d4d-f6eb7cc5cc62",
+                        "acousticness": 0.308,
+                        "danceability": 0.521,
+                        "energy": 0.592,
+                        "instrumentalness": 0.0,
+                        "liveness": 0.122,
+                        "loudness": -7.777,
+                        "speechiness": 0.0304,
+                        "tempo": 157.969,
+                        "valence": 0.535
+                    },
+                    "message": "Successfully retrieved audio features for track 847fd07f-f7d2-4c6f-8d4d-f6eb7cc5cc62"
+                }
+            },
+            {
+                "reccobeats_id": "d9e0148b-842b-4fe9-b555-3ceeecbb0f1a",
+                "name": "NUNA",
+                "artists": [
+                    {
+                        "name": "\u968a\u9577",
+                        "id": "8c49748a-4bf8-4f74-a099-f097f5f18c4c"
+                    }
+                ],
+                "duration_ms": 222612,
+                "popularity": 53,
+                "external_urls": {
+                    "spotify": "https://open.spotify.com/track/6L5ImrjJJKVYJQzjpARPXj"
+                },
+                "id": "6L5ImrjJJKVYJQzjpARPXj",
+                "uri": "spotify:track:6L5ImrjJJKVYJQzjpARPXj",
+                "features": {
+                    "success": true,
+                    "data": {
+                        "id": "d9e0148b-842b-4fe9-b555-3ceeecbb0f1a",
+                        "acousticness": 0.0529,
+                        "danceability": 0.43,
+                        "energy": 0.677,
+                        "instrumentalness": 0.0,
+                        "liveness": 0.0992,
+                        "loudness": -5.293,
+                        "speechiness": 0.0417,
+                        "tempo": 138.065,
+                        "valence": 0.416
+                    },
+                    "message": "Successfully retrieved audio features for track d9e0148b-842b-4fe9-b555-3ceeecbb0f1a"
+                }
+            },
+            {
+                "reccobeats_id": "a8e512b0-b95e-4ae2-8cf8-21ad5f44297e",
+                "name": "luther (with sza)",
+                "artists": [
+                    {
+                        "name": "Kendrick Lamar",
+                        "id": "caa924b3-075d-462a-bc84-b8da4ebb9f38"
+                    },
+                    {
+                        "name": "SZA",
+                        "id": "620413b0-3705-4b31-b6f3-37aa0c449953"
+                    }
+                ],
+                "duration_ms": 177598,
+                "popularity": 89,
+                "external_urls": {
+                    "spotify": "https://open.spotify.com/track/45J4avUb9Ni0bnETYaYFVJ"
+                },
+                "id": "45J4avUb9Ni0bnETYaYFVJ",
+                "uri": "spotify:track:45J4avUb9Ni0bnETYaYFVJ",
+                "features": {
+                    "success": true,
+                    "data": {
+                        "id": "a8e512b0-b95e-4ae2-8cf8-21ad5f44297e",
+                        "acousticness": 0.251,
+                        "danceability": 0.707,
+                        "energy": 0.575,
+                        "instrumentalness": 0.0,
+                        "liveness": 0.248,
+                        "loudness": -7.546,
+                        "speechiness": 0.125,
+                        "tempo": 138.008,
+                        "valence": 0.576
+                    },
+                    "message": "Successfully retrieved audio features for track a8e512b0-b95e-4ae2-8cf8-21ad5f44297e"
+                }
+            },
+            {
+                "reccobeats_id": "907a5b2f-981b-47da-a43c-c5c81dbf5f0a",
+                "name": "\u79d2\u91dd\u3092\u565b\u3080",
+                "artists": [
+                    {
+                        "name": "ZUTOMAYO",
+                        "id": "b1d40074-91c4-4725-b9d6-153c9c95aa17"
+                    }
+                ],
+                "duration_ms": 259053,
+                "popularity": 46,
+                "external_urls": {
+                    "spotify": "https://open.spotify.com/track/2DwHI6gIvTHXNGmqDWGriw"
+                },
+                "id": "2DwHI6gIvTHXNGmqDWGriw",
+                "uri": "spotify:track:2DwHI6gIvTHXNGmqDWGriw",
+                "features": {
+                    "success": true,
+                    "data": {
+                        "id": "907a5b2f-981b-47da-a43c-c5c81dbf5f0a",
+                        "acousticness": 0.0245,
+                        "danceability": 0.645,
+                        "energy": 0.961,
+                        "instrumentalness": 0.0,
+                        "liveness": 0.256,
+                        "loudness": -3.227,
+                        "speechiness": 0.07,
+                        "tempo": 129.9,
+                        "valence": 0.606
+                    },
+                    "message": "Successfully retrieved audio features for track 907a5b2f-981b-47da-a43c-c5c81dbf5f0a"
+                }
+            },
+            {
+                "reccobeats_id": "eb9f2979-3d93-42bb-b8ef-5f3cdf8eaca3",
+                "name": "peekaboo (feat. azchike)",
+                "artists": [
+                    {
+                        "name": "Kendrick Lamar",
+                        "id": "caa924b3-075d-462a-bc84-b8da4ebb9f38"
+                    },
+                    {
+                        "name": "AzChike",
+                        "id": "4ba77284-8dd6-4320-a4ba-414794810772"
+                    }
+                ],
+                "duration_ms": 155917,
+                "popularity": 54,
+                "external_urls": {
+                    "spotify": "https://open.spotify.com/track/10tTkKxYPgeYkuMwGnqRND"
+                },
+                "id": "10tTkKxYPgeYkuMwGnqRND",
+                "uri": "spotify:track:10tTkKxYPgeYkuMwGnqRND",
+                "features": {
+                    "success": true,
+                    "data": {
+                        "id": "eb9f2979-3d93-42bb-b8ef-5f3cdf8eaca3",
+                        "acousticness": 0.00345,
+                        "danceability": 0.896,
+                        "energy": 0.29,
+                        "instrumentalness": 1.64e-05,
+                        "liveness": 0.172,
+                        "loudness": -9.071,
+                        "speechiness": 0.146,
+                        "tempo": 100.03,
+                        "valence": 0.276
+                    },
+                    "message": "Successfully retrieved audio features for track eb9f2979-3d93-42bb-b8ef-5f3cdf8eaca3"
+                }
+            },
+            {
+                "reccobeats_id": "5b92f5d2-dd11-468b-95c0-f5442c414bed",
+                "name": "Disease",
+                "artists": [
+                    {
+                        "name": "Lady Gaga",
+                        "id": "0c8b4720-f752-496d-89e1-bae450f13c7b"
+                    }
+                ],
+                "duration_ms": 229997,
+                "popularity": 81,
+                "external_urls": {
+                    "spotify": "https://open.spotify.com/track/0T3Hw3kPj9T2E4UoaSXmfn"
+                },
+                "id": "0T3Hw3kPj9T2E4UoaSXmfn",
+                "uri": "spotify:track:0T3Hw3kPj9T2E4UoaSXmfn",
+                "features": {
+                    "success": true,
+                    "data": {
+                        "id": "5b92f5d2-dd11-468b-95c0-f5442c414bed",
+                        "acousticness": 0.0401,
+                        "danceability": 0.554,
+                        "energy": 0.928,
+                        "instrumentalness": 0.0,
+                        "liveness": 0.496,
+                        "loudness": -2.726,
+                        "speechiness": 0.125,
+                        "tempo": 100.963,
+                        "valence": 0.411
+                    },
+                    "message": "Successfully retrieved audio features for track 5b92f5d2-dd11-468b-95c0-f5442c414bed"
+                }
+            },
+            {
+                "reccobeats_id": "248c38f8-77aa-4821-874b-7f55fa09964f",
+                "name": "BAND4BAND (feat. Lil Baby)",
+                "artists": [
+                    {
+                        "name": "Central Cee",
+                        "id": "b3b8a9f1-494e-472b-95b6-d99451bad07c"
+                    },
+                    {
+                        "name": "Lil Baby",
+                        "id": "d0abc79c-c517-41e3-8e54-551a49cd0967"
+                    }
+                ],
+                "duration_ms": 140733,
+                "popularity": 79,
+                "external_urls": {
+                    "spotify": "https://open.spotify.com/track/7iabz12vAuVQYyekFIWJxD"
+                },
+                "id": "7iabz12vAuVQYyekFIWJxD",
+                "uri": "spotify:track:7iabz12vAuVQYyekFIWJxD",
+                "features": {
+                    "success": true,
+                    "data": {
+                        "id": "248c38f8-77aa-4821-874b-7f55fa09964f",
+                        "acousticness": 0.359,
+                        "danceability": 0.882,
+                        "energy": 0.764,
+                        "instrumentalness": 0.0,
+                        "liveness": 0.119,
+                        "loudness": -5.241,
+                        "speechiness": 0.204,
+                        "tempo": 140.113,
+                        "valence": 0.886
+                    },
+                    "message": "Successfully retrieved audio features for track 248c38f8-77aa-4821-874b-7f55fa09964f"
+                }
+            },
+            {
+                "reccobeats_id": "447131b4-26df-447a-970a-50af5d1d0c42",
+                "name": "Crooked Smile (feat. TLC)",
+                "artists": [
+                    {
+                        "name": "J. Cole",
+                        "id": "649539a2-ec20-498f-a3ad-183ae297e194"
+                    },
+                    {
+                        "name": "TLC",
+                        "id": "96eae728-7d95-42dc-9aa7-7838d7fb61a0"
+                    }
+                ],
+                "duration_ms": 278573,
+                "popularity": 66,
+                "external_urls": {
+                    "spotify": "https://open.spotify.com/track/5gFoAVTN9YlM9uJCrFZtgl"
+                },
+                "id": "5gFoAVTN9YlM9uJCrFZtgl",
+                "uri": "spotify:track:5gFoAVTN9YlM9uJCrFZtgl",
+                "features": {
+                    "success": true,
+                    "data": {
+                        "id": "447131b4-26df-447a-970a-50af5d1d0c42",
+                        "acousticness": 0.435,
+                        "danceability": 0.606,
+                        "energy": 0.784,
+                        "instrumentalness": 0.0,
+                        "liveness": 0.689,
+                        "loudness": -6.293,
+                        "speechiness": 0.268,
+                        "tempo": 80.985,
+                        "valence": 0.48
+                    },
+                    "message": "Successfully retrieved audio features for track 447131b4-26df-447a-970a-50af5d1d0c42"
+                }
+            },
+            {
+                "reccobeats_id": "66ab1a4a-e672-4ea2-afa5-0326cbefe2cb",
+                "name": "I Want U",
+                "artists": [
+                    {
+                        "name": "Alison Wonderland",
+                        "id": "e2efdff8-6fd4-4730-a642-639ecebd8e2b"
+                    }
+                ],
+                "duration_ms": 210017,
+                "popularity": 50,
+                "external_urls": {
+                    "spotify": "https://open.spotify.com/track/6wb61u8ayuanWSHZzle5od"
+                },
+                "id": "6wb61u8ayuanWSHZzle5od",
+                "uri": "spotify:track:6wb61u8ayuanWSHZzle5od",
+                "features": {
+                    "success": true,
+                    "data": {
+                        "id": "66ab1a4a-e672-4ea2-afa5-0326cbefe2cb",
+                        "acousticness": 0.00172,
+                        "danceability": 0.606,
+                        "energy": 0.829,
+                        "instrumentalness": 5.43e-05,
+                        "liveness": 0.276,
+                        "loudness": -3.455,
+                        "speechiness": 0.036,
+                        "tempo": 140.033,
+                        "valence": 0.384
+                    },
+                    "message": "Successfully retrieved audio features for track 66ab1a4a-e672-4ea2-afa5-0326cbefe2cb"
+                }
+            },
+            {
+                "reccobeats_id": "06c6ef83-d7dc-4fda-b761-8c47aa6657aa",
+                "name": "Lean Back",
+                "artists": [
+                    {
+                        "name": "Terror Squad",
+                        "id": "36d25746-5911-442c-bbbb-cfb5e5d1beaa"
+                    },
+                    {
+                        "name": "Fat Joe",
+                        "id": "cc90c2c2-512b-4102-9235-fcf5b34e6d24"
+                    },
+                    {
+                        "name": "Remy Ma",
+                        "id": "0c8e6edb-e685-434c-8f71-a0c8f0877265"
+                    },
+                    {
+                        "name": "remy",
+                        "id": "e4155107-c123-41c0-8c16-3e5ee4d89970"
+                    }
+                ],
+                "duration_ms": 247426,
+                "popularity": 65,
+                "external_urls": {
+                    "spotify": "https://open.spotify.com/track/2Ozc0me9PV5vlt8cokwdvI"
+                },
+                "id": "2Ozc0me9PV5vlt8cokwdvI",
+                "uri": "spotify:track:2Ozc0me9PV5vlt8cokwdvI",
+                "features": {
+                    "success": true,
+                    "data": {
+                        "id": "06c6ef83-d7dc-4fda-b761-8c47aa6657aa",
+                        "acousticness": 0.11,
+                        "danceability": 0.783,
+                        "energy": 0.916,
+                        "instrumentalness": 0.0,
+                        "liveness": 0.0746,
+                        "loudness": -3.344,
+                        "speechiness": 0.415,
+                        "tempo": 95.321,
+                        "valence": 0.695
+                    },
+                    "message": "Successfully retrieved audio features for track 06c6ef83-d7dc-4fda-b761-8c47aa6657aa"
+                }
+            },
+            {
+                "reccobeats_id": "b6864e4f-c14b-4932-b302-3a498cb15773",
+                "name": "The Giver",
+                "artists": [
+                    {
+                        "name": "Chappell Roan",
+                        "id": "4aa277d4-0437-49f5-a226-df483d2eccd4"
+                    }
+                ],
+                "duration_ms": 202768,
+                "popularity": 87,
+                "external_urls": {
+                    "spotify": "https://open.spotify.com/track/5xHgo5JN0wfsV41HnRaos5"
+                },
+                "id": "5xHgo5JN0wfsV41HnRaos5",
+                "uri": "spotify:track:5xHgo5JN0wfsV41HnRaos5",
+                "features": {
+                    "success": true,
+                    "data": {
+                        "id": "b6864e4f-c14b-4932-b302-3a498cb15773",
+                        "acousticness": 0.0731,
+                        "danceability": 0.558,
+                        "energy": 0.901,
+                        "instrumentalness": 0.0,
+                        "liveness": 0.348,
+                        "loudness": -3.208,
+                        "speechiness": 0.0583,
+                        "tempo": 93.024,
+                        "valence": 0.678
+                    },
+                    "message": "Successfully retrieved audio features for track b6864e4f-c14b-4932-b302-3a498cb15773"
+                }
+            },
+            {
+                "reccobeats_id": "f091bc77-98e6-47ec-a35b-3afea34f1145",
+                "name": "Baby By Me",
+                "artists": [
+                    {
+                        "name": "50 Cent",
+                        "id": "4b18bee1-d98a-473a-8848-d10c45e5a675"
+                    },
+                    {
+                        "name": "Ne-Yo",
+                        "id": "bdca97a1-b4ef-4f16-b8a2-ccce1ac34ccb"
+                    }
+                ],
+                "duration_ms": 213360,
+                "popularity": 76,
+                "external_urls": {
+                    "spotify": "https://open.spotify.com/track/1x075F39Q0zOhjPzPKgG8E"
+                },
+                "id": "1x075F39Q0zOhjPzPKgG8E",
+                "uri": "spotify:track:1x075F39Q0zOhjPzPKgG8E",
+                "features": {
+                    "success": true,
+                    "data": {
+                        "id": "f091bc77-98e6-47ec-a35b-3afea34f1145",
+                        "acousticness": 0.0045,
+                        "danceability": 0.611,
+                        "energy": 0.827,
+                        "instrumentalness": 0.0132,
+                        "liveness": 0.0283,
+                        "loudness": -4.665,
+                        "speechiness": 0.0876,
+                        "tempo": 190.058,
+                        "valence": 0.355
+                    },
+                    "message": "Successfully retrieved audio features for track f091bc77-98e6-47ec-a35b-3afea34f1145"
+                }
+            },
+            {
+                "reccobeats_id": "9358112c-1ebb-4fb9-8f84-2ee100498949",
+                "name": "Happy Mistake",
+                "artists": [
+                    {
+                        "name": "Lady Gaga",
+                        "id": "0c8b4720-f752-496d-89e1-bae450f13c7b"
+                    }
+                ],
+                "duration_ms": 245435,
+                "popularity": 61,
+                "external_urls": {
+                    "spotify": "https://open.spotify.com/track/5DQIZ8XC0EP7cfRFrtzY5h"
+                },
+                "id": "5DQIZ8XC0EP7cfRFrtzY5h",
+                "uri": "spotify:track:5DQIZ8XC0EP7cfRFrtzY5h",
+                "features": {
+                    "success": true,
+                    "data": {
+                        "id": "9358112c-1ebb-4fb9-8f84-2ee100498949",
+                        "acousticness": 0.191,
+                        "danceability": 0.416,
+                        "energy": 0.292,
+                        "instrumentalness": 1.63e-06,
+                        "liveness": 0.108,
+                        "loudness": -8.357,
+                        "speechiness": 0.0259,
+                        "tempo": 82.811,
+                        "valence": 0.155
+                    },
+                    "message": "Successfully retrieved audio features for track 9358112c-1ebb-4fb9-8f84-2ee100498949"
+                }
+            },
+            {
+                "reccobeats_id": "58ce53e9-a18b-4b0f-87e7-09ad93a1e312",
+                "name": "Velho da Lancha",
+                "artists": [
+                    {
+                        "name": "Mc IG",
+                        "id": "634642a7-330a-4811-8813-4191a3078974"
+                    },
+                    {
+                        "name": "Mc Neguinho PRT",
+                        "id": "43968251-efbc-4382-8884-4c8e8d99a6ca"
+                    },
+                    {
+                        "name": "Fepache",
+                        "id": "251c7084-3691-4b72-8e73-f87cb517f411"
+                    },
+                    {
+                        "name": "Dj TC",
+                        "id": "e8cc3d39-d004-4f45-862c-e25e668f6a28"
+                    }
+                ],
+                "duration_ms": 200000,
+                "popularity": 61,
+                "external_urls": {
+                    "spotify": "https://open.spotify.com/track/3Uc1umNQVfi2HjywAbxwDX"
+                },
+                "id": "3Uc1umNQVfi2HjywAbxwDX",
+                "uri": "spotify:track:3Uc1umNQVfi2HjywAbxwDX",
+                "features": {
+                    "success": true,
+                    "data": {
+                        "id": "58ce53e9-a18b-4b0f-87e7-09ad93a1e312",
+                        "acousticness": 0.544,
+                        "danceability": 0.705,
+                        "energy": 0.71,
+                        "instrumentalness": 0.0,
+                        "liveness": 0.103,
+                        "loudness": -3.671,
+                        "speechiness": 0.0751,
+                        "tempo": 120.008,
+                        "valence": 0.464
+                    },
+                    "message": "Successfully retrieved audio features for track 58ce53e9-a18b-4b0f-87e7-09ad93a1e312"
+                }
+            },
+            {
+                "reccobeats_id": "c71cd866-b9bb-44e6-89e4-15ea4e65d373",
+                "name": "If My Friends Could See Me Now",
+                "artists": [
+                    {
+                        "name": "Lady Gaga",
+                        "id": "0c8b4720-f752-496d-89e1-bae450f13c7b"
+                    }
+                ],
+                "duration_ms": 161733,
+                "popularity": 45,
+                "external_urls": {
+                    "spotify": "https://open.spotify.com/track/0I27tCo8rexgdYnhkSaL7k"
+                },
+                "id": "0I27tCo8rexgdYnhkSaL7k",
+                "uri": "spotify:track:0I27tCo8rexgdYnhkSaL7k",
+                "features": {
+                    "success": true,
+                    "data": {
+                        "id": "c71cd866-b9bb-44e6-89e4-15ea4e65d373",
+                        "acousticness": 0.0465,
+                        "danceability": 0.607,
+                        "energy": 0.882,
+                        "instrumentalness": 0.0,
+                        "liveness": 0.123,
+                        "loudness": -4.279,
+                        "speechiness": 0.28,
+                        "tempo": 117.792,
+                        "valence": 0.163
+                    },
+                    "message": "Successfully retrieved audio features for track c71cd866-b9bb-44e6-89e4-15ea4e65d373"
+                }
+            },
+            {
+                "reccobeats_id": "00b39386-a04d-4b3c-852f-51f7b51ae87a",
+                "name": "Liliacs",
+                "artists": [
+                    {
+                        "name": "Robin Carolan",
+                        "id": "111432bc-5fbc-4bd2-bac4-c58881c123a6"
+                    }
+                ],
+                "duration_ms": 106870,
+                "popularity": 33,
+                "external_urls": {
+                    "spotify": "https://open.spotify.com/track/6O6Tw0W72bXOKWxB7bEIQp"
+                },
+                "id": "6O6Tw0W72bXOKWxB7bEIQp",
+                "uri": "spotify:track:6O6Tw0W72bXOKWxB7bEIQp",
+                "features": {
+                    "success": true,
+                    "data": {
+                        "id": "00b39386-a04d-4b3c-852f-51f7b51ae87a",
+                        "acousticness": 0.203,
+                        "danceability": 0.108,
+                        "energy": 0.238,
+                        "instrumentalness": 0.657,
+                        "liveness": 0.231,
+                        "loudness": -15.303,
+                        "speechiness": 0.0391,
+                        "tempo": 86.788,
+                        "valence": 0.0332
+                    },
+                    "message": "Successfully retrieved audio features for track 00b39386-a04d-4b3c-852f-51f7b51ae87a"
+                }
+            },
+            {
+                "reccobeats_id": "66c76302-9d48-4a0a-879a-f4e392c131c1",
+                "name": "Me Voy",
+                "artists": [
+                    {
+                        "name": "Julieta Venegas",
+                        "id": "bb331566-ee65-48a8-b437-b374bb89686f"
+                    }
+                ],
+                "duration_ms": 187520,
+                "popularity": 74,
+                "external_urls": {
+                    "spotify": "https://open.spotify.com/track/100Tm6z29RfHTdUQ6NIs0s"
+                },
+                "id": "100Tm6z29RfHTdUQ6NIs0s",
+                "uri": "spotify:track:100Tm6z29RfHTdUQ6NIs0s",
+                "features": {
+                    "success": true,
+                    "data": {
+                        "id": "66c76302-9d48-4a0a-879a-f4e392c131c1",
+                        "acousticness": 0.0664,
+                        "danceability": 0.575,
+                        "energy": 0.679,
+                        "instrumentalness": 0.0,
+                        "liveness": 0.0956,
+                        "loudness": -3.845,
+                        "speechiness": 0.0278,
+                        "tempo": 107.878,
+                        "valence": 0.601
+                    },
+                    "message": "Successfully retrieved audio features for track 66c76302-9d48-4a0a-879a-f4e392c131c1"
+                }
+            },
+            {
+                "reccobeats_id": "9d8ed515-db0a-4ca4-9205-9a6fe0a910f7",
+                "name": "Houdini",
+                "artists": [
+                    {
+                        "name": "Eminem",
+                        "id": "36e741c0-7572-4ec4-84da-d8ed2a001589"
+                    }
+                ],
+                "duration_ms": 227239,
+                "popularity": 80,
+                "external_urls": {
+                    "spotify": "https://open.spotify.com/track/2HYFX63wP3otVIvopRS99Z"
+                },
+                "id": "2HYFX63wP3otVIvopRS99Z",
+                "uri": "spotify:track:2HYFX63wP3otVIvopRS99Z",
+                "features": {
+                    "success": true,
+                    "data": {
+                        "id": "9d8ed515-db0a-4ca4-9205-9a6fe0a910f7",
+                        "acousticness": 0.0292,
+                        "danceability": 0.936,
+                        "energy": 0.887,
+                        "instrumentalness": 1.88e-06,
+                        "liveness": 0.0582,
+                        "loudness": -2.76,
+                        "speechiness": 0.0683,
+                        "tempo": 127.003,
+                        "valence": 0.889
+                    },
+                    "message": "Successfully retrieved audio features for track 9d8ed515-db0a-4ca4-9205-9a6fe0a910f7"
+                }
+            },
+            {
+                "reccobeats_id": "78184776-bb29-4d8e-8a69-b955895bfc1b",
+                "name": "Hardly",
+                "artists": [
+                    {
+                        "name": "Future",
+                        "id": "7e14b431-9946-408f-8906-4bd83ad2a331"
+                    },
+                    {
+                        "name": "DJ Kem",
+                        "id": "ab3e760f-0582-4049-a17c-86e7a317cf23"
+                    },
+                    {
+                        "name": "Esco Racks",
+                        "id": "9e70c9c5-3e6d-41fc-b619-afb9308b02f9"
+                    },
+                    {
+                        "name": "DJ Frezi",
+                        "id": "4a56e5e1-5261-49f4-aa1a-819f63c53eb2"
+                    }
+                ],
+                "duration_ms": 157720,
+                "popularity": 51,
+                "external_urls": {
+                    "spotify": "https://open.spotify.com/track/7EtAE242kivzlxxOAL29bS"
+                },
+                "id": "7EtAE242kivzlxxOAL29bS",
+                "uri": "spotify:track:7EtAE242kivzlxxOAL29bS",
+                "features": {
+                    "success": true,
+                    "data": {
+                        "id": "78184776-bb29-4d8e-8a69-b955895bfc1b",
+                        "acousticness": 0.0866,
+                        "danceability": 0.595,
+                        "energy": 0.645,
+                        "instrumentalness": 1.74e-05,
+                        "liveness": 0.165,
+                        "loudness": -4.872,
+                        "speechiness": 0.108,
+                        "tempo": 134.941,
+                        "valence": 0.205
+                    },
+                    "message": "Successfully retrieved audio features for track 78184776-bb29-4d8e-8a69-b955895bfc1b"
+                }
+            },
+            {
+                "reccobeats_id": "416b1d2f-7666-4575-8cad-8f1c5b8ab5d6",
+                "name": "Nila Paithale (From \"Olympian Anthony Aadam\") - Male Vocals",
+                "artists": [
+                    {
+                        "name": "K. J. Yesudas",
+                        "id": "395008a9-4e95-4c99-9fd8-3bfde870c1d8"
+                    }
+                ],
+                "duration_ms": 300150,
+                "popularity": 34,
+                "external_urls": {
+                    "spotify": "https://open.spotify.com/track/5ANoPe3qnHehI9TkHBSHok"
+                },
+                "id": "5ANoPe3qnHehI9TkHBSHok",
+                "uri": "spotify:track:5ANoPe3qnHehI9TkHBSHok",
+                "features": {
+                    "success": true,
+                    "data": {
+                        "id": "416b1d2f-7666-4575-8cad-8f1c5b8ab5d6",
+                        "acousticness": 0.0548,
+                        "danceability": 0.59,
+                        "energy": 0.386,
+                        "instrumentalness": 5.02e-05,
+                        "liveness": 0.0972,
+                        "loudness": -15.213,
+                        "speechiness": 0.0417,
+                        "tempo": 89.943,
+                        "valence": 0.349
+                    },
+                    "message": "Successfully retrieved audio features for track 416b1d2f-7666-4575-8cad-8f1c5b8ab5d6"
+                }
+            },
+            {
+                "reccobeats_id": "a3ac8578-5d11-4a06-ad7a-7aa4fb8c0723",
+                "name": "Hotel",
+                "artists": [
+                    {
+                        "name": "Gu\u00e8",
+                        "id": "9d11b8cb-6f66-44f8-ba72-7cee98284c57"
+                    }
+                ],
+                "duration_ms": 227320,
+                "popularity": 46,
+                "external_urls": {
+                    "spotify": "https://open.spotify.com/track/2TPrz7Tl36N7Up3x1NYpZq"
+                },
+                "id": "2TPrz7Tl36N7Up3x1NYpZq",
+                "uri": "spotify:track:2TPrz7Tl36N7Up3x1NYpZq",
+                "features": {
+                    "success": true,
+                    "data": {
+                        "id": "a3ac8578-5d11-4a06-ad7a-7aa4fb8c0723",
+                        "acousticness": 0.262,
+                        "danceability": 0.877,
+                        "energy": 0.631,
+                        "instrumentalness": 0.0,
+                        "liveness": 0.219,
+                        "loudness": -4.92,
+                        "speechiness": 0.0791,
+                        "tempo": 120.018,
+                        "valence": 0.365
+                    },
+                    "message": "Successfully retrieved audio features for track a3ac8578-5d11-4a06-ad7a-7aa4fb8c0723"
+                }
+            },
+            {
+                "reccobeats_id": "41469568-9ae2-4faf-9208-4ca11bcdabdb",
+                "name": "heart pt. 6",
+                "artists": [
+                    {
+                        "name": "Kendrick Lamar",
+                        "id": "caa924b3-075d-462a-bc84-b8da4ebb9f38"
+                    }
+                ],
+                "duration_ms": 292461,
+                "popularity": 80,
+                "external_urls": {
+                    "spotify": "https://open.spotify.com/track/1SGvjfc85yzqKXsfKcCxn2"
+                },
+                "id": "1SGvjfc85yzqKXsfKcCxn2",
+                "uri": "spotify:track:1SGvjfc85yzqKXsfKcCxn2",
+                "features": {
+                    "success": true,
+                    "data": {
+                        "id": "41469568-9ae2-4faf-9208-4ca11bcdabdb",
+                        "acousticness": 0.27,
+                        "danceability": 0.704,
+                        "energy": 0.647,
+                        "instrumentalness": 0.0,
+                        "liveness": 0.109,
+                        "loudness": -7.664,
+                        "speechiness": 0.325,
+                        "tempo": 80.998,
+                        "valence": 0.585
+                    },
+                    "message": "Successfully retrieved audio features for track 41469568-9ae2-4faf-9208-4ca11bcdabdb"
+                }
+            },
+            {
+                "reccobeats_id": "64a4e0f7-0848-4e3e-b636-284805832f12",
+                "name": "Von dutch",
+                "artists": [
+                    {
+                        "name": "Charli xcx",
+                        "id": "a5a66f0a-6007-4c9b-bef4-d1025bf9abe3"
+                    }
+                ],
+                "duration_ms": 164284,
+                "popularity": 74,
+                "external_urls": {
+                    "spotify": "https://open.spotify.com/track/3Y1EvIgEVw51XtgNEgpz5c"
+                },
+                "id": "3Y1EvIgEVw51XtgNEgpz5c",
+                "uri": "spotify:track:3Y1EvIgEVw51XtgNEgpz5c",
+                "features": {
+                    "success": true,
+                    "data": {
+                        "id": "64a4e0f7-0848-4e3e-b636-284805832f12",
+                        "acousticness": 0.00298,
+                        "danceability": 0.706,
+                        "energy": 0.698,
+                        "instrumentalness": 0.00375,
+                        "liveness": 0.116,
+                        "loudness": -5.679,
+                        "speechiness": 0.0537,
+                        "tempo": 130.013,
+                        "valence": 0.648
+                    },
+                    "message": "Successfully retrieved audio features for track 64a4e0f7-0848-4e3e-b636-284805832f12"
+                }
+            },
+            {
+                "reccobeats_id": "38ab1a70-1ce9-40c5-8286-c62f91c87ec7",
+                "name": "Oh, When The Saints",
+                "artists": [
+                    {
+                        "name": "Lady Gaga",
+                        "id": "0c8b4720-f752-496d-89e1-bae450f13c7b"
+                    }
+                ],
+                "duration_ms": 222603,
+                "popularity": 46,
+                "external_urls": {
+                    "spotify": "https://open.spotify.com/track/2Qt1GqEOR6gfBCNTZv9Q8P"
+                },
+                "id": "2Qt1GqEOR6gfBCNTZv9Q8P",
+                "uri": "spotify:track:2Qt1GqEOR6gfBCNTZv9Q8P",
+                "features": {
+                    "success": true,
+                    "data": {
+                        "id": "38ab1a70-1ce9-40c5-8286-c62f91c87ec7",
+                        "acousticness": 0.0245,
+                        "danceability": 0.503,
+                        "energy": 0.926,
+                        "instrumentalness": 0.000228,
+                        "liveness": 0.247,
+                        "loudness": -3.373,
+                        "speechiness": 0.191,
+                        "tempo": 170.121,
+                        "valence": 0.633
+                    },
+                    "message": "Successfully retrieved audio features for track 38ab1a70-1ce9-40c5-8286-c62f91c87ec7"
+                }
+            },
+            {
+                "reccobeats_id": "02e4cafb-5d36-4d48-ac64-69368699ff42",
+                "name": "\u0448\u043e \u0432\u0438 \u0431\u0440\u0430\u0442\u0442\u044f",
+                "artists": [
+                    {
+                        "name": "jockii druce",
+                        "id": "a52a69c1-b649-4f76-9e48-0383b987fb75"
+                    }
+                ],
+                "duration_ms": 124128,
+                "popularity": 38,
+                "external_urls": {
+                    "spotify": "https://open.spotify.com/track/0cCXLN9eUn6dmAgDPpZaJV"
+                },
+                "id": "0cCXLN9eUn6dmAgDPpZaJV",
+                "uri": "spotify:track:0cCXLN9eUn6dmAgDPpZaJV",
+                "features": {
+                    "success": true,
+                    "data": {
+                        "id": "02e4cafb-5d36-4d48-ac64-69368699ff42",
+                        "acousticness": 0.646,
+                        "danceability": 0.81,
+                        "energy": 0.349,
+                        "instrumentalness": 5.65e-05,
+                        "liveness": 0.127,
+                        "loudness": -18.196,
+                        "speechiness": 0.325,
+                        "tempo": 102.338,
+                        "valence": 0.866
+                    },
+                    "message": "Successfully retrieved audio features for track 02e4cafb-5d36-4d48-ac64-69368699ff42"
+                }
+            },
+            {
+                "reccobeats_id": "2f3edf26-a352-400e-9d25-da558186f341",
+                "name": "Road Rage",
+                "artists": [
+                    {
+                        "name": "Eminem",
+                        "id": "36e741c0-7572-4ec4-84da-d8ed2a001589"
+                    },
+                    {
+                        "name": "Dem Jointz",
+                        "id": "4e8a3a23-3475-4b0f-b144-46091dee8f2d"
+                    },
+                    {
+                        "name": "Sly Pyper",
+                        "id": "45cb3c45-cbb4-4c09-96ec-c7b3dd604cbb"
+                    }
+                ],
+                "duration_ms": 217736,
+                "popularity": 58,
+                "external_urls": {
+                    "spotify": "https://open.spotify.com/track/0bBnrokPXtfwXQarqCu1Gz"
+                },
+                "id": "0bBnrokPXtfwXQarqCu1Gz",
+                "uri": "spotify:track:0bBnrokPXtfwXQarqCu1Gz",
+                "features": {
+                    "success": true,
+                    "data": {
+                        "id": "2f3edf26-a352-400e-9d25-da558186f341",
+                        "acousticness": 0.138,
+                        "danceability": 0.835,
+                        "energy": 0.744,
+                        "instrumentalness": 0.0,
+                        "liveness": 0.325,
+                        "loudness": -4.485,
+                        "speechiness": 0.265,
+                        "tempo": 94.984,
+                        "valence": 0.328
+                    },
+                    "message": "Successfully retrieved audio features for track 2f3edf26-a352-400e-9d25-da558186f341"
+                }
+            },
+            {
+                "reccobeats_id": "27352e53-f129-433e-9c4a-82d64cbf01ac",
+                "name": "squabble up",
+                "artists": [
+                    {
+                        "name": "Kendrick Lamar",
+                        "id": "caa924b3-075d-462a-bc84-b8da4ebb9f38"
+                    }
+                ],
+                "duration_ms": 157992,
+                "popularity": 88,
+                "external_urls": {
+                    "spotify": "https://open.spotify.com/track/0nj9Bq5sHDiTxSHunhgkFb"
+                },
+                "id": "0nj9Bq5sHDiTxSHunhgkFb",
+                "uri": "spotify:track:0nj9Bq5sHDiTxSHunhgkFb",
+                "features": {
+                    "success": true,
+                    "data": {
+                        "id": "27352e53-f129-433e-9c4a-82d64cbf01ac",
+                        "acousticness": 0.0206,
+                        "danceability": 0.874,
+                        "energy": 0.672,
+                        "instrumentalness": 0.0,
+                        "liveness": 0.0783,
+                        "loudness": -5.568,
+                        "speechiness": 0.198,
+                        "tempo": 103.921,
+                        "valence": 0.711
+                    },
+                    "message": "Successfully retrieved audio features for track 27352e53-f129-433e-9c4a-82d64cbf01ac"
+                }
+            },
+            {
+                "reccobeats_id": "60c3c6a9-8ac0-4555-aae6-728829d334cf",
+                "name": "Taste",
+                "artists": [
+                    {
+                        "name": "Sabrina Carpenter",
+                        "id": "c07149cc-50c1-48b4-8487-ffa71f721e94"
+                    }
+                ],
+                "duration_ms": 157279,
+                "popularity": 90,
+                "external_urls": {
+                    "spotify": "https://open.spotify.com/track/5G2f63n7IPVPPjfNIGih7Q"
+                },
+                "id": "5G2f63n7IPVPPjfNIGih7Q",
+                "uri": "spotify:track:5G2f63n7IPVPPjfNIGih7Q",
+                "features": {
+                    "success": true,
+                    "data": {
+                        "id": "60c3c6a9-8ac0-4555-aae6-728829d334cf",
+                        "acousticness": 0.101,
+                        "danceability": 0.674,
+                        "energy": 0.907,
+                        "instrumentalness": 0.0,
+                        "liveness": 0.297,
+                        "loudness": -4.086,
+                        "speechiness": 0.064,
+                        "tempo": 112.964,
+                        "valence": 0.721
+                    },
+                    "message": "Successfully retrieved audio features for track 60c3c6a9-8ac0-4555-aae6-728829d334cf"
+                }
+            },
+            {
+                "reccobeats_id": "10921737-d361-450f-822d-cda3188053ad",
+                "name": "WHERE SHE GOES",
+                "artists": [
+                    {
+                        "name": "Bad Bunny",
+                        "id": "eb33e89c-4cfc-4d89-93eb-da50024b024c"
+                    }
+                ],
+                "duration_ms": 231704,
+                "popularity": 74,
+                "external_urls": {
+                    "spotify": "https://open.spotify.com/track/7ro0hRteUMfnOioTFI5TG1"
+                },
+                "id": "7ro0hRteUMfnOioTFI5TG1",
+                "uri": "spotify:track:7ro0hRteUMfnOioTFI5TG1",
+                "features": {
+                    "success": true,
+                    "data": {
+                        "id": "10921737-d361-450f-822d-cda3188053ad",
+                        "acousticness": 0.143,
+                        "danceability": 0.652,
+                        "energy": 0.8,
+                        "instrumentalness": 0.629,
+                        "liveness": 0.112,
+                        "loudness": -4.019,
+                        "speechiness": 0.0614,
+                        "tempo": 143.978,
+                        "valence": 0.234
+                    },
+                    "message": "Successfully retrieved audio features for track 10921737-d361-450f-822d-cda3188053ad"
+                }
+            },
+            {
+                "reccobeats_id": "ad87be7d-d1b4-4c68-9545-5a6259f6a807",
+                "name": "World On A String",
+                "artists": [
+                    {
+                        "name": "Lady Gaga",
+                        "id": "0c8b4720-f752-496d-89e1-bae450f13c7b"
+                    }
+                ],
+                "duration_ms": 157863,
+                "popularity": 47,
+                "external_urls": {
+                    "spotify": "https://open.spotify.com/track/1CmyFUdrzcI2TldyJzOHSb"
+                },
+                "id": "1CmyFUdrzcI2TldyJzOHSb",
+                "uri": "spotify:track:1CmyFUdrzcI2TldyJzOHSb",
+                "features": {
+                    "success": true,
+                    "data": {
+                        "id": "ad87be7d-d1b4-4c68-9545-5a6259f6a807",
+                        "acousticness": 0.281,
+                        "danceability": 0.451,
+                        "energy": 0.793,
+                        "instrumentalness": 2.67e-05,
+                        "liveness": 0.145,
+                        "loudness": -6.232,
+                        "speechiness": 0.0683,
+                        "tempo": 127.594,
+                        "valence": 0.287
+                    },
+                    "message": "Successfully retrieved audio features for track ad87be7d-d1b4-4c68-9545-5a6259f6a807"
+                }
+            },
+            {
+                "reccobeats_id": "fb7a9847-5766-475b-a00e-d307daf22dd1",
+                "name": "Lover",
+                "artists": [
+                    {
+                        "name": "Diljit Dosanjh",
+                        "id": "f1006af7-9f0a-44c5-8542-a52adced3e82"
+                    }
+                ],
+                "duration_ms": 190000,
+                "popularity": 68,
+                "external_urls": {
+                    "spotify": "https://open.spotify.com/track/0XwRlvv3KlOu4HWlOH34XG"
+                },
+                "id": "0XwRlvv3KlOu4HWlOH34XG",
+                "uri": "spotify:track:0XwRlvv3KlOu4HWlOH34XG",
+                "features": {
+                    "success": true,
+                    "data": {
+                        "id": "fb7a9847-5766-475b-a00e-d307daf22dd1",
+                        "acousticness": 0.203,
+                        "danceability": 0.827,
+                        "energy": 0.587,
+                        "instrumentalness": 0.0,
+                        "liveness": 0.0727,
+                        "loudness": -5.531,
+                        "speechiness": 0.113,
+                        "tempo": 119.936,
+                        "valence": 0.774
+                    },
+                    "message": "Successfully retrieved audio features for track fb7a9847-5766-475b-a00e-d307daf22dd1"
+                }
+            },
+            {
+                "reccobeats_id": "03cd8fdb-b4ef-4ad6-bf86-40c76ef7e0c0",
+                "name": "That's Life - 2008 Remastered",
+                "artists": [
+                    {
+                        "name": "Frank Sinatra",
+                        "id": "c88cd4cc-9e49-4658-b418-f90f5f53e73a"
+                    }
+                ],
+                "duration_ms": 187226,
+                "popularity": 62,
+                "external_urls": {
+                    "spotify": "https://open.spotify.com/track/4dt6XKr0xKdPzjFhwB8dBm"
+                },
+                "id": "4dt6XKr0xKdPzjFhwB8dBm",
+                "uri": "spotify:track:4dt6XKr0xKdPzjFhwB8dBm",
+                "features": {
+                    "success": true,
+                    "data": {
+                        "id": "03cd8fdb-b4ef-4ad6-bf86-40c76ef7e0c0",
+                        "acousticness": 0.55,
+                        "danceability": 0.392,
+                        "energy": 0.632,
+                        "instrumentalness": 0.0,
+                        "liveness": 0.457,
+                        "loudness": -6.633,
+                        "speechiness": 0.0529,
+                        "tempo": 114.908,
+                        "valence": 0.556
+                    },
+                    "message": "Successfully retrieved audio features for track 03cd8fdb-b4ef-4ad6-bf86-40c76ef7e0c0"
+                }
+            },
+            {
+                "reccobeats_id": "1fecab5e-d132-4770-b592-d93141421d70",
+                "name": "Disease",
+                "artists": [
+                    {
+                        "name": "Lady Gaga",
+                        "id": "0c8b4720-f752-496d-89e1-bae450f13c7b"
+                    }
+                ],
+                "duration_ms": 229997,
+                "popularity": 82,
+                "external_urls": {
+                    "spotify": "https://open.spotify.com/track/19KlZwqlT3fguP2BeHF1Q1"
+                },
+                "id": "19KlZwqlT3fguP2BeHF1Q1",
+                "uri": "spotify:track:19KlZwqlT3fguP2BeHF1Q1",
+                "features": {
+                    "success": true,
+                    "data": {
+                        "id": "1fecab5e-d132-4770-b592-d93141421d70",
+                        "acousticness": 0.0513,
+                        "danceability": 0.562,
+                        "energy": 0.917,
+                        "instrumentalness": 0.0,
+                        "liveness": 0.488,
+                        "loudness": -2.768,
+                        "speechiness": 0.117,
+                        "tempo": 100.987,
+                        "valence": 0.501
+                    },
+                    "message": "Successfully retrieved audio features for track 1fecab5e-d132-4770-b592-d93141421d70"
+                }
+            },
+            {
+                "reccobeats_id": "4e52b8ed-f190-470a-aa13-6db9d184e843",
+                "name": "Loneliness",
+                "artists": [
+                    {
+                        "name": "Decalius",
+                        "id": "87b0f378-df8f-44d4-a494-14d90d5b6dc6"
+                    }
+                ],
+                "duration_ms": 323239,
+                "popularity": 55,
+                "external_urls": {
+                    "spotify": "https://open.spotify.com/track/3thCp5S3lfRDikpfhXsuil"
+                },
+                "id": "3thCp5S3lfRDikpfhXsuil",
+                "uri": "spotify:track:3thCp5S3lfRDikpfhXsuil",
+                "features": {
+                    "success": true,
+                    "data": {
+                        "id": "4e52b8ed-f190-470a-aa13-6db9d184e843",
+                        "acousticness": 0.000105,
+                        "danceability": 0.207,
+                        "energy": 0.729,
+                        "instrumentalness": 0.819,
+                        "liveness": 0.113,
+                        "loudness": -8.131,
+                        "speechiness": 0.0455,
+                        "tempo": 150.004,
+                        "valence": 0.186
+                    },
+                    "message": "Successfully retrieved audio features for track 4e52b8ed-f190-470a-aa13-6db9d184e843"
+                }
+            },
+            {
+                "reccobeats_id": "32e97c80-ac54-4f75-8a4b-531f011a8aa9",
+                "name": "Heroes (we could be)",
+                "artists": [
+                    {
+                        "name": "Alesso",
+                        "id": "92cdf173-26c3-435f-bf41-4c5bd905c1cf"
+                    }
+                ],
+                "duration_ms": 209866,
+                "popularity": 48,
+                "external_urls": {
+                    "spotify": "https://open.spotify.com/track/0YzCQcsgj6KqwBHVx1mZrH"
+                },
+                "id": "0YzCQcsgj6KqwBHVx1mZrH",
+                "uri": "spotify:track:0YzCQcsgj6KqwBHVx1mZrH",
+                "features": {
+                    "success": true,
+                    "data": {
+                        "id": "32e97c80-ac54-4f75-8a4b-531f011a8aa9",
+                        "acousticness": 0.0373,
+                        "danceability": 0.521,
+                        "energy": 0.754,
+                        "instrumentalness": 0.0,
+                        "liveness": 0.239,
+                        "loudness": -4.144,
+                        "speechiness": 0.0634,
+                        "tempo": 125.876,
+                        "valence": 0.352
+                    },
+                    "message": "Successfully retrieved audio features for track 32e97c80-ac54-4f75-8a4b-531f011a8aa9"
+                }
+            },
+            {
+                "reccobeats_id": "2162f9d9-cf6e-4f79-a534-905d0efe29ff",
+                "name": "Am I Dreaming (Metro Boomin & A$AP Rocky, Roisee)",
+                "artists": [
+                    {
+                        "name": "Metro Boomin",
+                        "id": "b11d6096-a396-43dc-a6c8-974339b77fce"
+                    },
+                    {
+                        "name": "A$AP Rocky",
+                        "id": "73ef8c3e-6e4f-4c45-a3b9-6a7a06ef3c9d"
+                    },
+                    {
+                        "name": "Roisee",
+                        "id": "e22aba55-d2b1-4b26-b3c0-3eda2aa67844"
+                    }
+                ],
+                "duration_ms": 256026,
+                "popularity": 73,
+                "external_urls": {
+                    "spotify": "https://open.spotify.com/track/6Ec5LeRzkisa5KJtwLfOoW"
+                },
+                "id": "6Ec5LeRzkisa5KJtwLfOoW",
+                "uri": "spotify:track:6Ec5LeRzkisa5KJtwLfOoW",
+                "features": {
+                    "success": true,
+                    "data": {
+                        "id": "2162f9d9-cf6e-4f79-a534-905d0efe29ff",
+                        "acousticness": 0.0468,
+                        "danceability": 0.6,
+                        "energy": 0.537,
+                        "instrumentalness": 0.0038,
+                        "liveness": 0.206,
+                        "loudness": -7.777,
+                        "speechiness": 0.0362,
+                        "tempo": 90.061,
+                        "valence": 0.126
+                    },
+                    "message": "Successfully retrieved audio features for track 2162f9d9-cf6e-4f79-a534-905d0efe29ff"
+                }
+            },
+            {
+                "reccobeats_id": "c6344949-67fd-4704-a061-c8e2ff46445e",
+                "name": "Folie \u00e0 Deux",
+                "artists": [
+                    {
+                        "name": "Lady Gaga",
+                        "id": "0c8b4720-f752-496d-89e1-bae450f13c7b"
+                    }
+                ],
+                "duration_ms": 178714,
+                "popularity": 47,
+                "external_urls": {
+                    "spotify": "https://open.spotify.com/track/1ud0FiEQLVIDlWEqDIEvwW"
+                },
+                "id": "1ud0FiEQLVIDlWEqDIEvwW",
+                "uri": "spotify:track:1ud0FiEQLVIDlWEqDIEvwW",
+                "features": {
+                    "success": true,
+                    "data": {
+                        "id": "c6344949-67fd-4704-a061-c8e2ff46445e",
+                        "acousticness": 0.501,
+                        "danceability": 0.397,
+                        "energy": 0.47,
+                        "instrumentalness": 0.0,
+                        "liveness": 0.14,
+                        "loudness": -7.457,
+                        "speechiness": 0.0305,
+                        "tempo": 133.936,
+                        "valence": 0.0767
+                    },
+                    "message": "Successfully retrieved audio features for track c6344949-67fd-4704-a061-c8e2ff46445e"
+                }
+            },
+            {
+                "reccobeats_id": "8de09273-20bf-4ebe-856c-d69c4f04391b",
+                "name": "tv off (feat. lefty gunplay)",
+                "artists": [
+                    {
+                        "name": "Kendrick Lamar",
+                        "id": "caa924b3-075d-462a-bc84-b8da4ebb9f38"
+                    },
+                    {
+                        "name": "Lefty Gunplay",
+                        "id": "07fb236f-2c5f-4354-a941-795d8431153f"
+                    }
+                ],
+                "duration_ms": 220690,
+                "popularity": 91,
+                "external_urls": {
+                    "spotify": "https://open.spotify.com/track/0aB0v4027ukVziUGwVGYpG"
+                },
+                "id": "0aB0v4027ukVziUGwVGYpG",
+                "uri": "spotify:track:0aB0v4027ukVziUGwVGYpG",
+                "features": {
+                    "success": true,
+                    "data": {
+                        "id": "8de09273-20bf-4ebe-856c-d69c4f04391b",
+                        "acousticness": 0.0837,
+                        "danceability": 0.855,
+                        "energy": 0.529,
+                        "instrumentalness": 0.0,
+                        "liveness": 0.423,
+                        "loudness": -6.679,
+                        "speechiness": 0.263,
+                        "tempo": 100.036,
+                        "valence": 0.548
+                    },
+                    "message": "Successfully retrieved audio features for track 8de09273-20bf-4ebe-856c-d69c4f04391b"
+                }
+            },
+            {
+                "reccobeats_id": "0bc54a30-6597-4a54-90f3-ff55b6036349",
+                "name": "APT.",
+                "artists": [
+                    {
+                        "name": "ROS\u00c9",
+                        "id": "63a0d95b-a0d2-4432-95e7-2b0d0ff9a1f1"
+                    },
+                    {
+                        "name": "Bruno Mars",
+                        "id": "a46a685c-dfd6-48b8-811c-1dd953622918"
+                    }
+                ],
+                "duration_ms": 169917,
+                "popularity": 91,
+                "external_urls": {
+                    "spotify": "https://open.spotify.com/track/4wJ5Qq0jBN4ajy7ouZIV1c"
+                },
+                "id": "4wJ5Qq0jBN4ajy7ouZIV1c",
+                "uri": "spotify:track:4wJ5Qq0jBN4ajy7ouZIV1c",
+                "features": {
+                    "success": true,
+                    "data": {
+                        "id": "0bc54a30-6597-4a54-90f3-ff55b6036349",
+                        "acousticness": 0.0283,
+                        "danceability": 0.777,
+                        "energy": 0.783,
+                        "instrumentalness": 0.0,
+                        "liveness": 0.355,
+                        "loudness": -4.477,
+                        "speechiness": 0.26,
+                        "tempo": 149.027,
+                        "valence": 0.939
+                    },
+                    "message": "Successfully retrieved audio features for track 0bc54a30-6597-4a54-90f3-ff55b6036349"
+                }
+            },
+            {
+                "reccobeats_id": "5395abd6-6a98-4f23-8015-7b3eb55c9fa8",
+                "name": "\u00c1NGEL",
+                "artists": [
+                    {
+                        "name": "Grupo Frontera",
+                        "id": "4d6f3d43-baa3-414a-9b19-0d7010c64a69"
+                    },
+                    {
+                        "name": "Romeo Santos",
+                        "id": "e68aa296-174d-4acd-8d67-474710bda607"
+                    }
+                ],
+                "duration_ms": 184095,
+                "popularity": 73,
+                "external_urls": {
+                    "spotify": "https://open.spotify.com/track/4JtKlgBLKHtRTqixKHrrw8"
+                },
+                "id": "4JtKlgBLKHtRTqixKHrrw8",
+                "uri": "spotify:track:4JtKlgBLKHtRTqixKHrrw8",
+                "features": {
+                    "success": true,
+                    "data": {
+                        "id": "5395abd6-6a98-4f23-8015-7b3eb55c9fa8",
+                        "acousticness": 0.292,
+                        "danceability": 0.826,
+                        "energy": 0.596,
+                        "instrumentalness": 0.0,
+                        "liveness": 0.166,
+                        "loudness": -5.262,
+                        "speechiness": 0.0357,
+                        "tempo": 127.922,
+                        "valence": 0.869
+                    },
+                    "message": "Successfully retrieved audio features for track 5395abd6-6a98-4f23-8015-7b3eb55c9fa8"
+                }
+            },
+            {
+                "reccobeats_id": "ee6acb8e-e6d6-4482-822e-11c74c5f9ba7",
+                "name": "Fat Juicy & Wet",
+                "artists": [
+                    {
+                        "name": "Sexyy Red",
+                        "id": "c043cb73-a43b-48a3-a3e1-f88ede7d4759"
+                    },
+                    {
+                        "name": "Bruno Mars",
+                        "id": "a46a685c-dfd6-48b8-811c-1dd953622918"
+                    }
+                ],
+                "duration_ms": 141057,
+                "popularity": 83,
+                "external_urls": {
+                    "spotify": "https://open.spotify.com/track/5M2lX0ZAYSAzCs1xPPi9BX"
+                },
+                "id": "5M2lX0ZAYSAzCs1xPPi9BX",
+                "uri": "spotify:track:5M2lX0ZAYSAzCs1xPPi9BX",
+                "features": {
+                    "success": true,
+                    "data": {
+                        "id": "ee6acb8e-e6d6-4482-822e-11c74c5f9ba7",
+                        "acousticness": 0.0823,
+                        "danceability": 0.909,
+                        "energy": 0.619,
+                        "instrumentalness": 0.0,
+                        "liveness": 0.3,
+                        "loudness": -5.894,
+                        "speechiness": 0.0615,
+                        "tempo": 104.013,
+                        "valence": 0.64
+                    },
+                    "message": "Successfully retrieved audio features for track ee6acb8e-e6d6-4482-822e-11c74c5f9ba7"
+                }
+            },
+            {
+                "reccobeats_id": "82b3b3d2-170b-442c-9bb0-433b4baf8079",
+                "name": "Mystical Magical",
+                "artists": [
+                    {
+                        "name": "Benson Boone",
+                        "id": "f6b4d797-0c17-4ab7-a454-4c82bffb084e"
+                    }
+                ],
+                "duration_ms": 165746,
+                "popularity": 86,
+                "external_urls": {
+                    "spotify": "https://open.spotify.com/track/221eHga9f9Ne4f8D7WVgPT"
+                },
+                "id": "221eHga9f9Ne4f8D7WVgPT",
+                "uri": "spotify:track:221eHga9f9Ne4f8D7WVgPT",
+                "features": {
+                    "success": true,
+                    "data": {
+                        "id": "82b3b3d2-170b-442c-9bb0-433b4baf8079",
+                        "acousticness": 0.19,
+                        "danceability": 0.671,
+                        "energy": 0.697,
+                        "instrumentalness": 0.0,
+                        "liveness": 0.393,
+                        "loudness": -3.851,
+                        "speechiness": 0.116,
+                        "tempo": 119.867,
+                        "valence": 0.848
+                    },
+                    "message": "Successfully retrieved audio features for track 82b3b3d2-170b-442c-9bb0-433b4baf8079"
+                }
+            },
+            {
+                "reccobeats_id": "efd4100d-2ea7-4fc5-84a5-44a4c5be1811",
+                "name": "Don't Call Tonight",
+                "artists": [
+                    {
+                        "name": "Lady Gaga",
+                        "id": "0c8b4720-f752-496d-89e1-bae450f13c7b"
+                    }
+                ],
+                "duration_ms": 225804,
+                "popularity": 80,
+                "external_urls": {
+                    "spotify": "https://open.spotify.com/track/0uoWOZeZZiC90RMNDQBqj4"
+                },
+                "id": "0uoWOZeZZiC90RMNDQBqj4",
+                "uri": "spotify:track:0uoWOZeZZiC90RMNDQBqj4",
+                "features": {
+                    "success": true,
+                    "data": {
+                        "id": "efd4100d-2ea7-4fc5-84a5-44a4c5be1811",
+                        "acousticness": 0.00546,
+                        "danceability": 0.652,
+                        "energy": 0.865,
+                        "instrumentalness": 0.0,
+                        "liveness": 0.336,
+                        "loudness": -3.487,
+                        "speechiness": 0.0457,
+                        "tempo": 100.016,
+                        "valence": 0.738
+                    },
+                    "message": "Successfully retrieved audio features for track efd4100d-2ea7-4fc5-84a5-44a4c5be1811"
+                }
+            },
+            {
+                "reccobeats_id": "91a2da1b-bd7c-457a-be27-d0f2c561e8eb",
+                "name": "Lucifer",
+                "artists": [
+                    {
+                        "name": "SHINee",
+                        "id": "c6de141e-ecd2-4d5b-a848-8531b1c9eea6"
+                    },
+                    {
+                        "name": "SMTOWN",
+                        "id": "4163c839-7a7b-4ffc-afc3-327d6fc7a4eb"
+                    }
+                ],
+                "duration_ms": 233986,
+                "popularity": 57,
+                "external_urls": {
+                    "spotify": "https://open.spotify.com/track/7xAACq6jlGqXw4bNCTYcm6"
+                },
+                "id": "7xAACq6jlGqXw4bNCTYcm6",
+                "uri": "spotify:track:7xAACq6jlGqXw4bNCTYcm6",
+                "features": {
+                    "success": true,
+                    "data": {
+                        "id": "91a2da1b-bd7c-457a-be27-d0f2c561e8eb",
+                        "acousticness": 0.0323,
+                        "danceability": 0.75,
+                        "energy": 0.914,
+                        "instrumentalness": 0.0,
+                        "liveness": 0.107,
+                        "loudness": -1.819,
+                        "speechiness": 0.0518,
+                        "tempo": 125.034,
+                        "valence": 0.866
+                    },
+                    "message": "Successfully retrieved audio features for track 91a2da1b-bd7c-457a-be27-d0f2c561e8eb"
+                }
+            },
+            {
+                "reccobeats_id": "0305d3a4-e978-47a5-bb71-51430d2afff5",
+                "name": "Head Honcho",
+                "artists": [
+                    {
+                        "name": "Eminem",
+                        "id": "36e741c0-7572-4ec4-84da-d8ed2a001589"
+                    },
+                    {
+                        "name": "Ez Mil",
+                        "id": "d842b3fb-b262-4030-b606-a0a40568bd4b"
+                    }
+                ],
+                "duration_ms": 234836,
+                "popularity": 58,
+                "external_urls": {
+                    "spotify": "https://open.spotify.com/track/7GXOXYdU950eRvk5rUAE8F"
+                },
+                "id": "7GXOXYdU950eRvk5rUAE8F",
+                "uri": "spotify:track:7GXOXYdU950eRvk5rUAE8F",
+                "features": {
+                    "success": true,
+                    "data": {
+                        "id": "0305d3a4-e978-47a5-bb71-51430d2afff5",
+                        "acousticness": 0.0386,
+                        "danceability": 0.66,
+                        "energy": 0.716,
+                        "instrumentalness": 0.0,
+                        "liveness": 0.236,
+                        "loudness": -7.353,
+                        "speechiness": 0.353,
+                        "tempo": 172.683,
+                        "valence": 0.419
+                    },
+                    "message": "Successfully retrieved audio features for track 0305d3a4-e978-47a5-bb71-51430d2afff5"
+                }
+            },
+            {
+                "reccobeats_id": "257e3386-b7b8-44a0-ba1c-3204a94c87ad",
+                "name": "Heroe",
+                "artists": [
+                    {
+                        "name": "Enrique Iglesias",
+                        "id": "afca6ad0-bcb9-40d2-bdd2-4e7f21bbf2bb"
+                    }
+                ],
+                "duration_ms": 263600,
+                "popularity": 61,
+                "external_urls": {
+                    "spotify": "https://open.spotify.com/track/4AkrkORGjiz7c90mwxAvdW"
+                },
+                "id": "4AkrkORGjiz7c90mwxAvdW",
+                "uri": "spotify:track:4AkrkORGjiz7c90mwxAvdW",
+                "features": {
+                    "success": true,
+                    "data": {
+                        "id": "257e3386-b7b8-44a0-ba1c-3204a94c87ad",
+                        "acousticness": 0.159,
+                        "danceability": 0.558,
+                        "energy": 0.573,
+                        "instrumentalness": 2.49e-06,
+                        "liveness": 0.116,
+                        "loudness": -6.244,
+                        "speechiness": 0.0334,
+                        "tempo": 75.973,
+                        "valence": 0.193
+                    },
+                    "message": "Successfully retrieved audio features for track 257e3386-b7b8-44a0-ba1c-3204a94c87ad"
+                }
+            },
+            {
+                "reccobeats_id": "45a8c8b2-3fce-472b-8565-33997ddb0a20",
+                "name": "SAY MY GRACE (feat. Travis Scott)",
+                "artists": [
+                    {
+                        "name": "Offset",
+                        "id": "ab8dbc27-7d71-40ba-82dd-12e95954eba2"
+                    },
+                    {
+                        "name": "Travis Scott",
+                        "id": "aa6e2a7e-28d9-4576-b2ef-176243a579a2"
+                    }
+                ],
+                "duration_ms": 173253,
+                "popularity": 70,
+                "external_urls": {
+                    "spotify": "https://open.spotify.com/track/2Gk6fi0dqt91NKvlzGsmm7"
+                },
+                "id": "2Gk6fi0dqt91NKvlzGsmm7",
+                "uri": "spotify:track:2Gk6fi0dqt91NKvlzGsmm7",
+                "features": {
+                    "success": true,
+                    "data": {
+                        "id": "45a8c8b2-3fce-472b-8565-33997ddb0a20",
+                        "acousticness": 0.0648,
+                        "danceability": 0.772,
+                        "energy": 0.631,
+                        "instrumentalness": 0.0,
+                        "liveness": 0.129,
+                        "loudness": -5.082,
+                        "speechiness": 0.0431,
+                        "tempo": 121.854,
+                        "valence": 0.433
+                    },
+                    "message": "Successfully retrieved audio features for track 45a8c8b2-3fce-472b-8565-33997ddb0a20"
+                }
+            },
+            {
+                "reccobeats_id": "40efca79-998c-40b6-8dce-a89ead8b8174",
+                "name": "Good Luck, Babe!",
+                "artists": [
+                    {
+                        "name": "Chappell Roan",
+                        "id": "4aa277d4-0437-49f5-a226-df483d2eccd4"
+                    }
+                ],
+                "duration_ms": 218423,
+                "popularity": 25,
+                "external_urls": {
+                    "spotify": "https://open.spotify.com/track/6aoXFBBRvKbMTqdVHCjiKa"
+                },
+                "id": "6aoXFBBRvKbMTqdVHCjiKa",
+                "uri": "spotify:track:6aoXFBBRvKbMTqdVHCjiKa",
+                "features": {
+                    "success": true,
+                    "data": {
+                        "id": "40efca79-998c-40b6-8dce-a89ead8b8174",
+                        "acousticness": 0.0502,
+                        "danceability": 0.7,
+                        "energy": 0.582,
+                        "instrumentalness": 0.0,
+                        "liveness": 0.0881,
+                        "loudness": -5.96,
+                        "speechiness": 0.0356,
+                        "tempo": 116.712,
+                        "valence": 0.785
+                    },
+                    "message": "Successfully retrieved audio features for track 40efca79-998c-40b6-8dce-a89ead8b8174"
+                }
+            },
+            {
+                "reccobeats_id": "18c3b9d2-784a-4386-8326-fff57a9f8ba4",
+                "name": "\u6697\u304f\u9ed2\u304f",
+                "artists": [
+                    {
+                        "name": "ZUTOMAYO",
+                        "id": "b1d40074-91c4-4725-b9d6-153c9c95aa17"
+                    }
+                ],
+                "duration_ms": 250867,
+                "popularity": 41,
+                "external_urls": {
+                    "spotify": "https://open.spotify.com/track/3IzKR3VsEZ7aWXhGAapMyO"
+                },
+                "id": "3IzKR3VsEZ7aWXhGAapMyO",
+                "uri": "spotify:track:3IzKR3VsEZ7aWXhGAapMyO",
+                "features": {
+                    "success": true,
+                    "data": {
+                        "id": "18c3b9d2-784a-4386-8326-fff57a9f8ba4",
+                        "acousticness": 0.293,
+                        "danceability": 0.514,
+                        "energy": 0.806,
+                        "instrumentalness": 0.0,
+                        "liveness": 0.0771,
+                        "loudness": -3.843,
+                        "speechiness": 0.126,
+                        "tempo": 96.823,
+                        "valence": 0.874
+                    },
+                    "message": "Successfully retrieved audio features for track 18c3b9d2-784a-4386-8326-fff57a9f8ba4"
+                }
+            },
+            {
+                "reccobeats_id": "8b380c7c-c332-4ee8-95c4-8d702f79b4ec",
+                "name": "BEM NOVIN",
+                "artists": [
+                    {
+                        "name": "Teto",
+                        "id": "2d6069a8-0f61-4ac0-814e-44c5e45c0fb4"
+                    }
+                ],
+                "duration_ms": 167500,
+                "popularity": 66,
+                "external_urls": {
+                    "spotify": "https://open.spotify.com/track/1VFaBYhj5c42t5Kokr6YNi"
+                },
+                "id": "1VFaBYhj5c42t5Kokr6YNi",
+                "uri": "spotify:track:1VFaBYhj5c42t5Kokr6YNi",
+                "features": {
+                    "success": true,
+                    "data": {
+                        "id": "8b380c7c-c332-4ee8-95c4-8d702f79b4ec",
+                        "acousticness": 0.138,
+                        "danceability": 0.853,
+                        "energy": 0.797,
+                        "instrumentalness": 0.0,
+                        "liveness": 0.104,
+                        "loudness": -2.931,
+                        "speechiness": 0.201,
+                        "tempo": 96.026,
+                        "valence": 0.338
+                    },
+                    "message": "Successfully retrieved audio features for track 8b380c7c-c332-4ee8-95c4-8d702f79b4ec"
+                }
+            },
+            {
+                "reccobeats_id": "8251bcb3-84f2-42cb-8097-187cbbb615df",
+                "name": "hey now (feat. dody6)",
+                "artists": [
+                    {
+                        "name": "Kendrick Lamar",
+                        "id": "caa924b3-075d-462a-bc84-b8da4ebb9f38"
+                    },
+                    {
+                        "name": "Dody6",
+                        "id": "be348289-9678-41b0-a1fb-a72fe57035e6"
+                    }
+                ],
+                "duration_ms": 217478,
+                "popularity": 82,
+                "external_urls": {
+                    "spotify": "https://open.spotify.com/track/5S8VwnB4sLi6W0lYTWYylu"
+                },
+                "id": "5S8VwnB4sLi6W0lYTWYylu",
+                "uri": "spotify:track:5S8VwnB4sLi6W0lYTWYylu",
+                "features": {
+                    "success": true,
+                    "data": {
+                        "id": "8251bcb3-84f2-42cb-8097-187cbbb615df",
+                        "acousticness": 0.00443,
+                        "danceability": 0.806,
+                        "energy": 0.358,
+                        "instrumentalness": 0.00162,
+                        "liveness": 0.412,
+                        "loudness": -8.769,
+                        "speechiness": 0.117,
+                        "tempo": 102.011,
+                        "valence": 0.188
+                    },
+                    "message": "Successfully retrieved audio features for track 8251bcb3-84f2-42cb-8097-187cbbb615df"
+                }
+            },
+            {
+                "reccobeats_id": "52b34439-a941-4318-b8d7-6c5aecf10360",
+                "name": "No Brainer (feat. Justin Bieber, Chance the Rapper & Quavo)",
+                "artists": [
+                    {
+                        "name": "DJ Khaled",
+                        "id": "f6cc4094-805d-4f66-902c-49f946ea3ba2"
+                    },
+                    {
+                        "name": "Justin Bieber",
+                        "id": "fce6b855-887c-47c4-a81a-b708cd01f59e"
+                    },
+                    {
+                        "name": "Chance the Rapper",
+                        "id": "4e71913f-01de-4fe7-86d2-0de7eefdb170"
+                    },
+                    {
+                        "name": "Quavo",
+                        "id": "2ecd9169-5ccf-4d96-a339-2541929e8456"
+                    }
+                ],
+                "duration_ms": 260000,
+                "popularity": 56,
+                "external_urls": {
+                    "spotify": "https://open.spotify.com/track/03nPEoQOYMuDe7KmGljpmd"
+                },
+                "id": "03nPEoQOYMuDe7KmGljpmd",
+                "uri": "spotify:track:03nPEoQOYMuDe7KmGljpmd",
+                "features": {
+                    "success": true,
+                    "data": {
+                        "id": "52b34439-a941-4318-b8d7-6c5aecf10360",
+                        "acousticness": 0.073,
+                        "danceability": 0.527,
+                        "energy": 0.761,
+                        "instrumentalness": 0.0,
+                        "liveness": 0.0865,
+                        "loudness": -4.708,
+                        "speechiness": 0.341,
+                        "tempo": 135.543,
+                        "valence": 0.653
+                    },
+                    "message": "Successfully retrieved audio features for track 52b34439-a941-4318-b8d7-6c5aecf10360"
+                }
+            },
+            {
+                "reccobeats_id": "4d1a441f-00c4-40b1-97cc-983403d3fa61",
+                "name": "\u4f4e\u8840\u30dc\u30eb\u30c8",
+                "artists": [
+                    {
+                        "name": "ZUTOMAYO",
+                        "id": "b1d40074-91c4-4725-b9d6-153c9c95aa17"
+                    }
+                ],
+                "duration_ms": 214813,
+                "popularity": 34,
+                "external_urls": {
+                    "spotify": "https://open.spotify.com/track/0SSSCk5UpgyiuO7bGr1et0"
+                },
+                "id": "0SSSCk5UpgyiuO7bGr1et0",
+                "uri": "spotify:track:0SSSCk5UpgyiuO7bGr1et0",
+                "features": {
+                    "success": true,
+                    "data": {
+                        "id": "4d1a441f-00c4-40b1-97cc-983403d3fa61",
+                        "acousticness": 0.241,
+                        "danceability": 0.628,
+                        "energy": 0.955,
+                        "instrumentalness": 1.31e-05,
+                        "liveness": 0.28,
+                        "loudness": -3.027,
+                        "speechiness": 0.127,
+                        "tempo": 175.796,
+                        "valence": 0.845
+                    },
+                    "message": "Successfully retrieved audio features for track 4d1a441f-00c4-40b1-97cc-983403d3fa61"
+                }
+            },
+            {
+                "reccobeats_id": "6fac419d-2b0f-4cef-a1fb-6c1526e07d82",
+                "name": "\u30df\u30e9\u30fc\u30c1\u30e5\u30fc\u30f3",
+                "artists": [
+                    {
+                        "name": "ZUTOMAYO",
+                        "id": "b1d40074-91c4-4725-b9d6-153c9c95aa17"
+                    }
+                ],
+                "duration_ms": 249273,
+                "popularity": 45,
+                "external_urls": {
+                    "spotify": "https://open.spotify.com/track/0R8JLNP107Hr7V7lL9oh13"
+                },
+                "id": "0R8JLNP107Hr7V7lL9oh13",
+                "uri": "spotify:track:0R8JLNP107Hr7V7lL9oh13",
+                "features": {
+                    "success": true,
+                    "data": {
+                        "id": "6fac419d-2b0f-4cef-a1fb-6c1526e07d82",
+                        "acousticness": 0.357,
+                        "danceability": 0.704,
+                        "energy": 0.933,
+                        "instrumentalness": 0.0,
+                        "liveness": 0.353,
+                        "loudness": -2.383,
+                        "speechiness": 0.0863,
+                        "tempo": 127.965,
+                        "valence": 0.895
+                    },
+                    "message": "Successfully retrieved audio features for track 6fac419d-2b0f-4cef-a1fb-6c1526e07d82"
+                }
+            },
+            {
+                "reccobeats_id": "90591bd1-bff1-40d2-88f2-4096319dfbc3",
+                "name": "WHATS POPPIN - Remix",
+                "artists": [
+                    {
+                        "name": "Jack Harlow",
+                        "id": "a5d8c9a2-393a-4ff2-916a-2a4cf1fac505"
+                    },
+                    {
+                        "name": "DaBaby",
+                        "id": "b4b77ef8-c092-4550-9848-07ace514d7f9"
+                    },
+                    {
+                        "name": "Tory Lanez",
+                        "id": "f0665b58-3952-43de-bfe3-186a6cf6de6b"
+                    },
+                    {
+                        "name": "Lil Wayne",
+                        "id": "6b604a96-988f-4c7b-98c6-3ed7d808d14b"
+                    }
+                ],
+                "duration_ms": 227478,
+                "popularity": 4,
+                "external_urls": {
+                    "spotify": "https://open.spotify.com/track/6P4O23ut8CZ185stAMZcBS"
+                },
+                "id": "6P4O23ut8CZ185stAMZcBS",
+                "uri": "spotify:track:6P4O23ut8CZ185stAMZcBS",
+                "features": {
+                    "success": true,
+                    "data": {
+                        "id": "90591bd1-bff1-40d2-88f2-4096319dfbc3",
+                        "acousticness": 0.0631,
+                        "danceability": 0.904,
+                        "energy": 0.723,
+                        "instrumentalness": 0.0,
+                        "liveness": 0.185,
+                        "loudness": -5.224,
+                        "speechiness": 0.26,
+                        "tempo": 145.013,
+                        "valence": 0.835
+                    },
+                    "message": "Successfully retrieved audio features for track 90591bd1-bff1-40d2-88f2-4096319dfbc3"
+                }
+            },
+            {
+                "reccobeats_id": "3e08d3b5-9702-4885-8e56-7ba3944834da",
+                "name": "Goodbye",
+                "artists": [
+                    {
+                        "name": "Kristinia DeBarge",
+                        "id": "63ba3095-73a0-44b2-89cc-f037c758172d"
+                    }
+                ],
+                "duration_ms": 208133,
+                "popularity": 42,
+                "external_urls": {
+                    "spotify": "https://open.spotify.com/track/5myYDbAurm1CW038qd4gL2"
+                },
+                "id": "5myYDbAurm1CW038qd4gL2",
+                "uri": "spotify:track:5myYDbAurm1CW038qd4gL2",
+                "features": {
+                    "success": true,
+                    "data": {
+                        "id": "3e08d3b5-9702-4885-8e56-7ba3944834da",
+                        "acousticness": 0.00505,
+                        "danceability": 0.777,
+                        "energy": 0.82,
+                        "instrumentalness": 2.6e-05,
+                        "liveness": 0.142,
+                        "loudness": -3.211,
+                        "speechiness": 0.0471,
+                        "tempo": 119.987,
+                        "valence": 0.651
+                    },
+                    "message": "Successfully retrieved audio features for track 3e08d3b5-9702-4885-8e56-7ba3944834da"
+                }
+            },
+            {
+                "reccobeats_id": "2cb23c93-0725-4d41-b8f4-9a8c0bfa71c6",
+                "name": "Houdini",
+                "artists": [
+                    {
+                        "name": "Eminem",
+                        "id": "36e741c0-7572-4ec4-84da-d8ed2a001589"
+                    }
+                ],
+                "duration_ms": 227239,
+                "popularity": 57,
+                "external_urls": {
+                    "spotify": "https://open.spotify.com/track/6vw2M02LT3otGUoK4ZqHwx"
+                },
+                "id": "6vw2M02LT3otGUoK4ZqHwx",
+                "uri": "spotify:track:6vw2M02LT3otGUoK4ZqHwx",
+                "features": {
+                    "success": true,
+                    "data": {
+                        "id": "2cb23c93-0725-4d41-b8f4-9a8c0bfa71c6",
+                        "acousticness": 0.0283,
+                        "danceability": 0.921,
+                        "energy": 0.881,
+                        "instrumentalness": 5.71e-06,
+                        "liveness": 0.0595,
+                        "loudness": -2.753,
+                        "speechiness": 0.067,
+                        "tempo": 127.018,
+                        "valence": 0.914
+                    },
+                    "message": "Successfully retrieved audio features for track 2cb23c93-0725-4d41-b8f4-9a8c0bfa71c6"
+                }
+            },
+            {
+                "reccobeats_id": "e4c89ff3-3bcc-406a-a084-9a7762db475d",
+                "name": "How Bad Do U Want Me",
+                "artists": [
+                    {
+                        "name": "Lady Gaga",
+                        "id": "0c8b4720-f752-496d-89e1-bae450f13c7b"
+                    }
+                ],
+                "duration_ms": 238886,
+                "popularity": 84,
+                "external_urls": {
+                    "spotify": "https://open.spotify.com/track/2rvd6akG8qEtBNUvQpN7iY"
+                },
+                "id": "2rvd6akG8qEtBNUvQpN7iY",
+                "uri": "spotify:track:2rvd6akG8qEtBNUvQpN7iY",
+                "features": {
+                    "success": true,
+                    "data": {
+                        "id": "e4c89ff3-3bcc-406a-a084-9a7762db475d",
+                        "acousticness": 0.00261,
+                        "danceability": 0.512,
+                        "energy": 0.731,
+                        "instrumentalness": 0.0,
+                        "liveness": 0.0896,
+                        "loudness": -4.339,
+                        "speechiness": 0.0659,
+                        "tempo": 188.074,
+                        "valence": 0.436
+                    },
+                    "message": "Successfully retrieved audio features for track e4c89ff3-3bcc-406a-a084-9a7762db475d"
+                }
+            },
+            {
+                "reccobeats_id": "892f86dd-7a50-45d3-a180-ad8f95a1eefe",
+                "name": "Guilty as Sin?",
+                "artists": [
+                    {
+                        "name": "Taylor Swift",
+                        "id": "c7b330b5-a62e-420c-bf02-943ca6bb8746"
+                    }
+                ],
+                "duration_ms": 254365,
+                "popularity": 74,
+                "external_urls": {
+                    "spotify": "https://open.spotify.com/track/0W0iAC1VGlB82PI6elxFYf"
+                },
+                "id": "0W0iAC1VGlB82PI6elxFYf",
+                "uri": "spotify:track:0W0iAC1VGlB82PI6elxFYf",
+                "features": {
+                    "success": true,
+                    "data": {
+                        "id": "892f86dd-7a50-45d3-a180-ad8f95a1eefe",
+                        "acousticness": 0.607,
+                        "danceability": 0.626,
+                        "energy": 0.428,
+                        "instrumentalness": 0.0,
+                        "liveness": 0.0921,
+                        "loudness": -8.374,
+                        "speechiness": 0.0261,
+                        "tempo": 94.95,
+                        "valence": 0.487
+                    },
+                    "message": "Successfully retrieved audio features for track 892f86dd-7a50-45d3-a180-ad8f95a1eefe"
+                }
+            },
+            {
+                "reccobeats_id": "2b92f695-d3ca-4d29-bf6d-5246a3fc32ff",
+                "name": "The Girl From Ipanema",
+                "artists": [
+                    {
+                        "name": "Astrud Gilberto",
+                        "id": "29585e09-00fc-488a-a40f-6dc371341973"
+                    },
+                    {
+                        "name": "Stan Getz",
+                        "id": "ec89ac79-388f-4a42-9b2f-1077bd1df561"
+                    },
+                    {
+                        "name": "Jo\u00e3o Gilberto",
+                        "id": "0c511237-4f9c-430d-9ad5-4fc08a0e2d79"
+                    },
+                    {
+                        "name": "Ant\u00f4nio Carlos Jobim",
+                        "id": "d6a381f6-0e73-4ec9-93c5-84606d2bc177"
+                    }
+                ],
+                "duration_ms": 395666,
+                "popularity": 45,
+                "external_urls": {
+                    "spotify": "https://open.spotify.com/track/4uC7IrfS1oQuRCVzqj1EJV"
+                },
+                "id": "4uC7IrfS1oQuRCVzqj1EJV",
+                "uri": "spotify:track:4uC7IrfS1oQuRCVzqj1EJV",
+                "features": {
+                    "success": true,
+                    "data": {
+                        "id": "2b92f695-d3ca-4d29-bf6d-5246a3fc32ff",
+                        "acousticness": 0.899,
+                        "danceability": 0.58,
+                        "energy": 0.0859,
+                        "instrumentalness": 6.68e-05,
+                        "liveness": 0.689,
+                        "loudness": -21.308,
+                        "speechiness": 0.0405,
+                        "tempo": 119.43,
+                        "valence": 0.341
+                    },
+                    "message": "Successfully retrieved audio features for track 2b92f695-d3ca-4d29-bf6d-5246a3fc32ff"
+                }
+            },
+            {
+                "reccobeats_id": "cf346271-effd-460a-8381-03a1f3142fc3",
+                "name": "Enemy with JID (Opening Title Version) (from the series Arcane League of Legends)",
+                "artists": [
+                    {
+                        "name": "Imagine Dragons",
+                        "id": "4a71e1b8-6dc8-4ade-8210-fa8ad9ce1138"
+                    },
+                    {
+                        "name": "JID",
+                        "id": "7655f532-fa32-4a6b-8fe1-3f4f5275c6ce"
+                    },
+                    {
+                        "name": "Arcane",
+                        "id": "54622c2f-af26-4eab-a2a5-59f919bd9cc2"
+                    }
+                ],
+                "duration_ms": 186133,
+                "popularity": 62,
+                "external_urls": {
+                    "spotify": "https://open.spotify.com/track/3s7IKFITafjRpv06BZyEoD"
+                },
+                "id": "3s7IKFITafjRpv06BZyEoD",
+                "uri": "spotify:track:3s7IKFITafjRpv06BZyEoD",
+                "features": {
+                    "success": true,
+                    "data": {
+                        "id": "cf346271-effd-460a-8381-03a1f3142fc3",
+                        "acousticness": 0.0113,
+                        "danceability": 0.58,
+                        "energy": 0.729,
+                        "instrumentalness": 0.0,
+                        "liveness": 0.118,
+                        "loudness": -6.686,
+                        "speechiness": 0.052,
+                        "tempo": 77.028,
+                        "valence": 0.303
+                    },
+                    "message": "Successfully retrieved audio features for track cf346271-effd-460a-8381-03a1f3142fc3"
+                }
+            },
+            {
+                "reccobeats_id": "ac999496-7995-4be2-b7eb-b9c6336725a7",
+                "name": "Temporary",
+                "artists": [
+                    {
+                        "name": "Eminem",
+                        "id": "36e741c0-7572-4ec4-84da-d8ed2a001589"
+                    },
+                    {
+                        "name": "Skylar Grey",
+                        "id": "a2a50840-0b88-46f8-aee5-7869ecdfcc08"
+                    }
+                ],
+                "duration_ms": 297667,
+                "popularity": 63,
+                "external_urls": {
+                    "spotify": "https://open.spotify.com/track/6uMGHQvhZq8YyT4kdnG1L3"
+                },
+                "id": "6uMGHQvhZq8YyT4kdnG1L3",
+                "uri": "spotify:track:6uMGHQvhZq8YyT4kdnG1L3",
+                "features": {
+                    "success": true,
+                    "data": {
+                        "id": "ac999496-7995-4be2-b7eb-b9c6336725a7",
+                        "acousticness": 0.511,
+                        "danceability": 0.574,
+                        "energy": 0.439,
+                        "instrumentalness": 0.0,
+                        "liveness": 0.71,
+                        "loudness": -10.311,
+                        "speechiness": 0.2,
+                        "tempo": 78.302,
+                        "valence": 0.395
+                    },
+                    "message": "Successfully retrieved audio features for track ac999496-7995-4be2-b7eb-b9c6336725a7"
+                }
+            },
+            {
+                "reccobeats_id": "2173498b-174c-4b2a-9159-c3c3775cec5a",
+                "name": "peekaboo (feat. azchike)",
+                "artists": [
+                    {
+                        "name": "Kendrick Lamar",
+                        "id": "caa924b3-075d-462a-bc84-b8da4ebb9f38"
+                    },
+                    {
+                        "name": "AzChike",
+                        "id": "4ba77284-8dd6-4320-a4ba-414794810772"
+                    }
+                ],
+                "duration_ms": 155917,
+                "popularity": 82,
+                "external_urls": {
+                    "spotify": "https://open.spotify.com/track/2Uts1QFB4u2YNIMiqcb4de"
+                },
+                "id": "2Uts1QFB4u2YNIMiqcb4de",
+                "uri": "spotify:track:2Uts1QFB4u2YNIMiqcb4de",
+                "features": {
+                    "success": true,
+                    "data": {
+                        "id": "2173498b-174c-4b2a-9159-c3c3775cec5a",
+                        "acousticness": 0.00306,
+                        "danceability": 0.889,
+                        "energy": 0.298,
+                        "instrumentalness": 1.26e-05,
+                        "liveness": 0.173,
+                        "loudness": -9.086,
+                        "speechiness": 0.182,
+                        "tempo": 100.042,
+                        "valence": 0.314
+                    },
+                    "message": "Successfully retrieved audio features for track 2173498b-174c-4b2a-9159-c3c3775cec5a"
+                }
+            },
+            {
+                "reccobeats_id": "e457dda4-4624-41f8-8092-028c5590ae83",
+                "name": "your name forever",
+                "artists": [
+                    {
+                        "name": "mgk",
+                        "id": "c456537a-a945-4d68-81f4-122d438e1435"
+                    }
+                ],
+                "duration_ms": 229016,
+                "popularity": 69,
+                "external_urls": {
+                    "spotify": "https://open.spotify.com/track/25HmjsZYDISFMQmeZoQvkz"
+                },
+                "id": "25HmjsZYDISFMQmeZoQvkz",
+                "uri": "spotify:track:25HmjsZYDISFMQmeZoQvkz",
+                "features": {
+                    "success": true,
+                    "data": {
+                        "id": "e457dda4-4624-41f8-8092-028c5590ae83",
+                        "acousticness": 0.00221,
+                        "danceability": 0.591,
+                        "energy": 0.934,
+                        "instrumentalness": 0.0,
+                        "liveness": 0.42,
+                        "loudness": -4.309,
+                        "speechiness": 0.127,
+                        "tempo": 136.018,
+                        "valence": 0.388
+                    },
+                    "message": "Successfully retrieved audio features for track e457dda4-4624-41f8-8092-028c5590ae83"
+                }
+            },
+            {
+                "reccobeats_id": "912dd86c-66c3-4fde-806d-168b679e5cbb",
+                "name": "Gonna Build a Mountain - Music From The Motion Picture",
+                "artists": [
+                    {
+                        "name": "Lady Gaga",
+                        "id": "0c8b4720-f752-496d-89e1-bae450f13c7b"
+                    },
+                    {
+                        "name": "Joaquin Phoenix",
+                        "id": "7eeaee3d-d4a7-4cba-bf0a-8f3938ccd284"
+                    }
+                ],
+                "duration_ms": 198093,
+                "popularity": 40,
+                "external_urls": {
+                    "spotify": "https://open.spotify.com/track/6o2TEwdOdXgM6U7lWj5MrY"
+                },
+                "id": "6o2TEwdOdXgM6U7lWj5MrY",
+                "uri": "spotify:track:6o2TEwdOdXgM6U7lWj5MrY",
+                "features": {
+                    "success": true,
+                    "data": {
+                        "id": "912dd86c-66c3-4fde-806d-168b679e5cbb",
+                        "acousticness": 0.0662,
+                        "danceability": 0.389,
+                        "energy": 0.84,
+                        "instrumentalness": 0.00055,
+                        "liveness": 0.0648,
+                        "loudness": -3.171,
+                        "speechiness": 0.116,
+                        "tempo": 103.371,
+                        "valence": 0.241
+                    },
+                    "message": "Successfully retrieved audio features for track 912dd86c-66c3-4fde-806d-168b679e5cbb"
+                }
+            },
+            {
+                "reccobeats_id": "d485cea1-dd3c-464f-86c5-226f5355d655",
+                "name": "Garden Of Eden",
+                "artists": [
+                    {
+                        "name": "Lady Gaga",
+                        "id": "0c8b4720-f752-496d-89e1-bae450f13c7b"
+                    }
+                ],
+                "duration_ms": 239720,
+                "popularity": 86,
+                "external_urls": {
+                    "spotify": "https://open.spotify.com/track/4mUR5Tv0CvJtpmnUtzeIgd"
+                },
+                "id": "4mUR5Tv0CvJtpmnUtzeIgd",
+                "uri": "spotify:track:4mUR5Tv0CvJtpmnUtzeIgd",
+                "features": {
+                    "success": true,
+                    "data": {
+                        "id": "d485cea1-dd3c-464f-86c5-226f5355d655",
+                        "acousticness": 0.00181,
+                        "danceability": 0.673,
+                        "energy": 0.906,
+                        "instrumentalness": 3.2e-06,
+                        "liveness": 0.133,
+                        "loudness": -3.972,
+                        "speechiness": 0.0338,
+                        "tempo": 124.966,
+                        "valence": 0.614
+                    },
+                    "message": "Successfully retrieved audio features for track d485cea1-dd3c-464f-86c5-226f5355d655"
+                }
+            },
+            {
+                "reccobeats_id": "cde0e086-1a55-43a2-a49b-1cd79fe40f9e",
+                "name": "Gee Willikers!",
+                "artists": [
+                    {
+                        "name": "Alex Schor",
+                        "id": "106c7819-9ae6-4fe1-82c1-5fe4c34a90f9"
+                    },
+                    {
+                        "name": "DigBar",
+                        "id": "d981618a-b535-43af-a268-1e1e83fe7c48"
+                    }
+                ],
+                "duration_ms": 156734,
+                "popularity": 44,
+                "external_urls": {
+                    "spotify": "https://open.spotify.com/track/14jw9DyCn4TZMA1pgclWx8"
+                },
+                "id": "14jw9DyCn4TZMA1pgclWx8",
+                "uri": "spotify:track:14jw9DyCn4TZMA1pgclWx8",
+                "features": {
+                    "success": true,
+                    "data": {
+                        "id": "cde0e086-1a55-43a2-a49b-1cd79fe40f9e",
+                        "acousticness": 0.746,
+                        "danceability": 0.844,
+                        "energy": 0.692,
+                        "instrumentalness": 0.0,
+                        "liveness": 0.202,
+                        "loudness": -5.646,
+                        "speechiness": 0.293,
+                        "tempo": 98.052,
+                        "valence": 0.642
+                    },
+                    "message": "Successfully retrieved audio features for track cde0e086-1a55-43a2-a49b-1cd79fe40f9e"
+                }
+            },
+            {
+                "reccobeats_id": "4c7f16f2-1772-43b8-ac35-80be6287e4ab",
+                "name": "Like That",
+                "artists": [
+                    {
+                        "name": "Future",
+                        "id": "7e14b431-9946-408f-8906-4bd83ad2a331"
+                    },
+                    {
+                        "name": "Metro Boomin",
+                        "id": "b11d6096-a396-43dc-a6c8-974339b77fce"
+                    },
+                    {
+                        "name": "Kendrick Lamar",
+                        "id": "caa924b3-075d-462a-bc84-b8da4ebb9f38"
+                    }
+                ],
+                "duration_ms": 267706,
+                "popularity": 83,
+                "external_urls": {
+                    "spotify": "https://open.spotify.com/track/2tudvzsrR56uom6smgOcSf"
+                },
+                "id": "2tudvzsrR56uom6smgOcSf",
+                "uri": "spotify:track:2tudvzsrR56uom6smgOcSf",
+                "features": {
+                    "success": true,
+                    "data": {
+                        "id": "4c7f16f2-1772-43b8-ac35-80be6287e4ab",
+                        "acousticness": 0.00709,
+                        "danceability": 0.814,
+                        "energy": 0.676,
+                        "instrumentalness": 1.28e-05,
+                        "liveness": 0.119,
+                        "loudness": -4.67,
+                        "speechiness": 0.231,
+                        "tempo": 162.012,
+                        "valence": 0.312
+                    },
+                    "message": "Successfully retrieved audio features for track 4c7f16f2-1772-43b8-ac35-80be6287e4ab"
+                }
+            },
+            {
+                "reccobeats_id": "ef166426-62a3-443e-996c-51eede9e3443",
+                "name": "Troublemaker (feat. Flo Rida)",
+                "artists": [
+                    {
+                        "name": "Olly Murs",
+                        "id": "49524da1-2980-4c18-91b8-cbd60d07be5c"
+                    },
+                    {
+                        "name": "Flo Rida",
+                        "id": "3d3d2772-d08f-4b1a-a44a-2bf6b08599eb"
+                    },
+                    {
+                        "name": "Wideboys",
+                        "id": "78f06041-4e17-4275-ba9a-b7a0521b8bb2"
+                    }
+                ],
+                "duration_ms": 185586,
+                "popularity": 75,
+                "external_urls": {
+                    "spotify": "https://open.spotify.com/track/6s8nHXTJVqFjXE4yVZPDHR"
+                },
+                "id": "6s8nHXTJVqFjXE4yVZPDHR",
+                "uri": "spotify:track:6s8nHXTJVqFjXE4yVZPDHR",
+                "features": {
+                    "success": true,
+                    "data": {
+                        "id": "ef166426-62a3-443e-996c-51eede9e3443",
+                        "acousticness": 0.015,
+                        "danceability": 0.762,
+                        "energy": 0.863,
+                        "instrumentalness": 0.0,
+                        "liveness": 0.125,
+                        "loudness": -3.689,
+                        "speechiness": 0.0561,
+                        "tempo": 106.012,
+                        "valence": 0.965
+                    },
+                    "message": "Successfully retrieved audio features for track ef166426-62a3-443e-996c-51eede9e3443"
+                }
+            },
+            {
+                "reccobeats_id": "654a7685-4c53-48c6-beb1-ab6d6dc0598a",
+                "name": "Put Your Records On",
+                "artists": [
+                    {
+                        "name": "Corinne Bailey Rae",
+                        "id": "f8d48aaa-6ba8-4a45-9262-d9a7ec1f056a"
+                    }
+                ],
+                "duration_ms": 215360,
+                "popularity": 77,
+                "external_urls": {
+                    "spotify": "https://open.spotify.com/track/2nGFzvICaeEWjIrBrL2RAx"
+                },
+                "id": "2nGFzvICaeEWjIrBrL2RAx",
+                "uri": "spotify:track:2nGFzvICaeEWjIrBrL2RAx",
+                "features": {
+                    "success": true,
+                    "data": {
+                        "id": "654a7685-4c53-48c6-beb1-ab6d6dc0598a",
+                        "acousticness": 0.167,
+                        "danceability": 0.739,
+                        "energy": 0.511,
+                        "instrumentalness": 1.34e-06,
+                        "liveness": 0.133,
+                        "loudness": -7.844,
+                        "speechiness": 0.0362,
+                        "tempo": 96.038,
+                        "valence": 0.542
+                    },
+                    "message": "Successfully retrieved audio features for track 654a7685-4c53-48c6-beb1-ab6d6dc0598a"
+                }
+            },
+            {
+                "reccobeats_id": "3f36fe55-f268-48b5-b7bf-3ae212332e59",
+                "name": "Fading Like A Flower",
+                "artists": [
+                    {
+                        "name": "Roxette",
+                        "id": "95735f8c-c3e1-467d-97ad-d12343626b31"
+                    },
+                    {
+                        "name": "Galantis",
+                        "id": "c4c45e87-597d-4b9b-bc0e-295b3c96de8f"
+                    }
+                ],
+                "duration_ms": 145807,
+                "popularity": 46,
+                "external_urls": {
+                    "spotify": "https://open.spotify.com/track/5THQw2QDTWwOP1Hj543Rb2"
+                },
+                "id": "5THQw2QDTWwOP1Hj543Rb2",
+                "uri": "spotify:track:5THQw2QDTWwOP1Hj543Rb2",
+                "features": {
+                    "success": true,
+                    "data": {
+                        "id": "3f36fe55-f268-48b5-b7bf-3ae212332e59",
+                        "acousticness": 0.018,
+                        "danceability": 0.701,
+                        "energy": 0.901,
+                        "instrumentalness": 1.08e-06,
+                        "liveness": 0.0665,
+                        "loudness": -4.34,
+                        "speechiness": 0.046,
+                        "tempo": 121.022,
+                        "valence": 0.908
+                    },
+                    "message": "Successfully retrieved audio features for track 3f36fe55-f268-48b5-b7bf-3ae212332e59"
+                }
+            },
+            {
+                "reccobeats_id": "26723bde-5f55-4c62-ba94-87f9ac84c323",
+                "name": "Somebody Save Me",
+                "artists": [
+                    {
+                        "name": "Eminem",
+                        "id": "36e741c0-7572-4ec4-84da-d8ed2a001589"
+                    },
+                    {
+                        "name": "Jelly Roll",
+                        "id": "3e7d85af-f4ff-4919-8473-f52c32b2669b"
+                    }
+                ],
+                "duration_ms": 230199,
+                "popularity": 73,
+                "external_urls": {
+                    "spotify": "https://open.spotify.com/track/4HMUrFl8y6rQCzEbaGEkcj"
+                },
+                "id": "4HMUrFl8y6rQCzEbaGEkcj",
+                "uri": "spotify:track:4HMUrFl8y6rQCzEbaGEkcj",
+                "features": {
+                    "success": true,
+                    "data": {
+                        "id": "26723bde-5f55-4c62-ba94-87f9ac84c323",
+                        "acousticness": 0.697,
+                        "danceability": 0.577,
+                        "energy": 0.657,
+                        "instrumentalness": 3.2e-06,
+                        "liveness": 0.116,
+                        "loudness": -6.486,
+                        "speechiness": 0.129,
+                        "tempo": 180.727,
+                        "valence": 0.437
+                    },
+                    "message": "Successfully retrieved audio features for track 26723bde-5f55-4c62-ba94-87f9ac84c323"
+                }
+            },
+            {
+                "reccobeats_id": "24c0e191-cd4c-4928-b783-31cd845783b2",
+                "name": "tv off (feat. lefty gunplay)",
+                "artists": [
+                    {
+                        "name": "Kendrick Lamar",
+                        "id": "caa924b3-075d-462a-bc84-b8da4ebb9f38"
+                    },
+                    {
+                        "name": "Lefty Gunplay",
+                        "id": "07fb236f-2c5f-4354-a941-795d8431153f"
+                    }
+                ],
+                "duration_ms": 220690,
+                "popularity": 62,
+                "external_urls": {
+                    "spotify": "https://open.spotify.com/track/75bsrBtmM57lhi55yOfzBL"
+                },
+                "id": "75bsrBtmM57lhi55yOfzBL",
+                "uri": "spotify:track:75bsrBtmM57lhi55yOfzBL",
+                "features": {
+                    "success": true,
+                    "data": {
+                        "id": "24c0e191-cd4c-4928-b783-31cd845783b2",
+                        "acousticness": 0.0696,
+                        "danceability": 0.63,
+                        "energy": 0.468,
+                        "instrumentalness": 0.0,
+                        "liveness": 0.424,
+                        "loudness": -6.823,
+                        "speechiness": 0.542,
+                        "tempo": 200.24,
+                        "valence": 0.532
+                    },
+                    "message": "Successfully retrieved audio features for track 24c0e191-cd4c-4928-b783-31cd845783b2"
+                }
+            },
+            {
+                "reccobeats_id": "a8be46de-f77d-428f-a8a6-c45f6f282ba4",
+                "name": "Vanish Into You",
+                "artists": [
+                    {
+                        "name": "Lady Gaga",
+                        "id": "0c8b4720-f752-496d-89e1-bae450f13c7b"
+                    }
+                ],
+                "duration_ms": 244915,
+                "popularity": 84,
+                "external_urls": {
+                    "spotify": "https://open.spotify.com/track/5IoPnNiYAOvHHJpz13wzRL"
+                },
+                "id": "5IoPnNiYAOvHHJpz13wzRL",
+                "uri": "spotify:track:5IoPnNiYAOvHHJpz13wzRL",
+                "features": {
+                    "success": true,
+                    "data": {
+                        "id": "a8be46de-f77d-428f-a8a6-c45f6f282ba4",
+                        "acousticness": 0.00117,
+                        "danceability": 0.559,
+                        "energy": 0.838,
+                        "instrumentalness": 0.0,
+                        "liveness": 0.0773,
+                        "loudness": -4.572,
+                        "speechiness": 0.0307,
+                        "tempo": 112.03,
+                        "valence": 0.6
+                    },
+                    "message": "Successfully retrieved audio features for track a8be46de-f77d-428f-a8a6-c45f6f282ba4"
+                }
+            },
+            {
+                "reccobeats_id": "2befa9ea-ff95-4666-8959-d69e1ee5a4cf",
+                "name": "Just Pretend",
+                "artists": [
+                    {
+                        "name": "Bad Omens",
+                        "id": "bf0957da-de58-4203-8b32-885646fd2326"
+                    }
+                ],
+                "duration_ms": 204676,
+                "popularity": 74,
+                "external_urls": {
+                    "spotify": "https://open.spotify.com/track/1H4Y9uW4N0LsxJUz0VnaPJ"
+                },
+                "id": "1H4Y9uW4N0LsxJUz0VnaPJ",
+                "uri": "spotify:track:1H4Y9uW4N0LsxJUz0VnaPJ",
+                "features": {
+                    "success": true,
+                    "data": {
+                        "id": "2befa9ea-ff95-4666-8959-d69e1ee5a4cf",
+                        "acousticness": 0.00252,
+                        "danceability": 0.457,
+                        "energy": 0.834,
+                        "instrumentalness": 0.00125,
+                        "liveness": 0.1,
+                        "loudness": -4.674,
+                        "speechiness": 0.0817,
+                        "tempo": 140.032,
+                        "valence": 0.201
+                    },
+                    "message": "Successfully retrieved audio features for track 2befa9ea-ff95-4666-8959-d69e1ee5a4cf"
+                }
+            },
+            {
+                "reccobeats_id": "b6a0f031-7988-4794-929e-67d5727c379e",
+                "name": "Tobey (feat. Big Sean and BabyTron)",
+                "artists": [
+                    {
+                        "name": "Eminem",
+                        "id": "36e741c0-7572-4ec4-84da-d8ed2a001589"
+                    },
+                    {
+                        "name": "Big Sean",
+                        "id": "b7d865ac-8b89-49e8-8c52-dfa52a87cad8"
+                    },
+                    {
+                        "name": "BabyTron",
+                        "id": "02d0c226-5fde-409f-8dec-31b58085945b"
+                    }
+                ],
+                "duration_ms": 284892,
+                "popularity": 64,
+                "external_urls": {
+                    "spotify": "https://open.spotify.com/track/4KWeGKChLKcnZsj3sIOSkW"
+                },
+                "id": "4KWeGKChLKcnZsj3sIOSkW",
+                "uri": "spotify:track:4KWeGKChLKcnZsj3sIOSkW",
+                "features": {
+                    "success": true,
+                    "data": {
+                        "id": "b6a0f031-7988-4794-929e-67d5727c379e",
+                        "acousticness": 0.263,
+                        "danceability": 0.649,
+                        "energy": 0.663,
+                        "instrumentalness": 0.0,
+                        "liveness": 0.144,
+                        "loudness": -9.059,
+                        "speechiness": 0.229,
+                        "tempo": 139.023,
+                        "valence": 0.208
+                    },
+                    "message": "Successfully retrieved audio features for track b6a0f031-7988-4794-929e-67d5727c379e"
+                }
+            },
+            {
+                "reccobeats_id": "32447e1b-b2ff-4bfd-b8e2-e009f109694d",
+                "name": "Everlong",
+                "artists": [
+                    {
+                        "name": "Foo Fighters",
+                        "id": "603fc612-655c-4954-921e-917b0940d071"
+                    }
+                ],
+                "duration_ms": 250546,
+                "popularity": 81,
+                "external_urls": {
+                    "spotify": "https://open.spotify.com/track/5UWwZ5lm5PKu6eKsHAGxOk"
+                },
+                "id": "5UWwZ5lm5PKu6eKsHAGxOk",
+                "uri": "spotify:track:5UWwZ5lm5PKu6eKsHAGxOk",
+                "features": {
+                    "success": true,
+                    "data": {
+                        "id": "32447e1b-b2ff-4bfd-b8e2-e009f109694d",
+                        "acousticness": 5.99e-05,
+                        "danceability": 0.413,
+                        "energy": 0.881,
+                        "instrumentalness": 0.000308,
+                        "liveness": 0.0805,
+                        "loudness": -5.541,
+                        "speechiness": 0.0367,
+                        "tempo": 158.066,
+                        "valence": 0.364
+                    },
+                    "message": "Successfully retrieved audio features for track 32447e1b-b2ff-4bfd-b8e2-e009f109694d"
+                }
+            },
+            {
+                "reccobeats_id": "6fa569e9-cab8-40d9-99ee-4a12f4fe97ed",
+                "name": "Sequence",
+                "artists": [
+                    {
+                        "name": "IZ*ONE",
+                        "id": "93bf401f-6572-4918-ac61-da3e2b881804"
+                    }
+                ],
+                "duration_ms": 190866,
+                "popularity": 44,
+                "external_urls": {
+                    "spotify": "https://open.spotify.com/track/4Wa3kUtGTeuPuC9qF9wF0g"
+                },
+                "id": "4Wa3kUtGTeuPuC9qF9wF0g",
+                "uri": "spotify:track:4Wa3kUtGTeuPuC9qF9wF0g",
+                "features": {
+                    "success": true,
+                    "data": {
+                        "id": "6fa569e9-cab8-40d9-99ee-4a12f4fe97ed",
+                        "acousticness": 0.00311,
+                        "danceability": 0.793,
+                        "energy": 0.849,
+                        "instrumentalness": 0.0,
+                        "liveness": 0.0506,
+                        "loudness": -3.137,
+                        "speechiness": 0.114,
+                        "tempo": 125.957,
+                        "valence": 0.771
+                    },
+                    "message": "Successfully retrieved audio features for track 6fa569e9-cab8-40d9-99ee-4a12f4fe97ed"
+                }
+            },
+            {
+                "reccobeats_id": "e1f8791e-0dfc-4c1d-b40a-ed59f2cbb239",
+                "name": "Super Bowl LIX Halftime Show - Live",
+                "artists": [
+                    {
+                        "name": "Kendrick Lamar",
+                        "id": "caa924b3-075d-462a-bc84-b8da4ebb9f38"
+                    },
+                    {
+                        "name": "NFL",
+                        "id": "50b22e9a-676f-4697-b81f-e97c35e0bf38"
+                    }
+                ],
+                "duration_ms": 800699,
+                "popularity": 38,
+                "external_urls": {
+                    "spotify": "https://open.spotify.com/track/5Cw7e2R1PbRB7IHgSnEPGo"
+                },
+                "id": "5Cw7e2R1PbRB7IHgSnEPGo",
+                "uri": "spotify:track:5Cw7e2R1PbRB7IHgSnEPGo",
+                "features": {
+                    "success": true,
+                    "data": {
+                        "id": "e1f8791e-0dfc-4c1d-b40a-ed59f2cbb239",
+                        "acousticness": 0.116,
+                        "danceability": 0.562,
+                        "energy": 0.365,
+                        "instrumentalness": 1.64e-06,
+                        "liveness": 0.934,
+                        "loudness": -17.883,
+                        "speechiness": 0.441,
+                        "tempo": 100.028,
+                        "valence": 0.248
+                    },
+                    "message": "Successfully retrieved audio features for track e1f8791e-0dfc-4c1d-b40a-ed59f2cbb239"
+                }
+            },
+            {
+                "reccobeats_id": "bc1962dc-7e0f-4364-9081-91a762fb55c7",
+                "name": "Get Happy (2024)",
+                "artists": [
+                    {
+                        "name": "Lady Gaga",
+                        "id": "0c8b4720-f752-496d-89e1-bae450f13c7b"
+                    }
+                ],
+                "duration_ms": 191700,
+                "popularity": 46,
+                "external_urls": {
+                    "spotify": "https://open.spotify.com/track/2YQ0DrIFS90FEK8T4JOa8W"
+                },
+                "id": "2YQ0DrIFS90FEK8T4JOa8W",
+                "uri": "spotify:track:2YQ0DrIFS90FEK8T4JOa8W",
+                "features": {
+                    "success": true,
+                    "data": {
+                        "id": "bc1962dc-7e0f-4364-9081-91a762fb55c7",
+                        "acousticness": 0.296,
+                        "danceability": 0.534,
+                        "energy": 0.552,
+                        "instrumentalness": 0.0,
+                        "liveness": 0.0767,
+                        "loudness": -4.985,
+                        "speechiness": 0.064,
+                        "tempo": 87.889,
+                        "valence": 0.458
+                    },
+                    "message": "Successfully retrieved audio features for track bc1962dc-7e0f-4364-9081-91a762fb55c7"
+                }
+            },
+            {
+                "reccobeats_id": "28383540-85ee-4ebe-be61-86bb802d0fa1",
+                "name": "UN PREVIEW",
+                "artists": [
+                    {
+                        "name": "Bad Bunny",
+                        "id": "eb33e89c-4cfc-4d89-93eb-da50024b024c"
+                    }
+                ],
+                "duration_ms": 165582,
+                "popularity": 66,
+                "external_urls": {
+                    "spotify": "https://open.spotify.com/track/5ixdmTpCmH5diBA1j154wN"
+                },
+                "id": "5ixdmTpCmH5diBA1j154wN",
+                "uri": "spotify:track:5ixdmTpCmH5diBA1j154wN",
+                "features": {
+                    "success": true,
+                    "data": {
+                        "id": "28383540-85ee-4ebe-be61-86bb802d0fa1",
+                        "acousticness": 0.0368,
+                        "danceability": 0.795,
+                        "energy": 0.815,
+                        "instrumentalness": 3.82e-05,
+                        "liveness": 0.227,
+                        "loudness": -3.322,
+                        "speechiness": 0.0821,
+                        "tempo": 94.991,
+                        "valence": 0.334
+                    },
+                    "message": "Successfully retrieved audio features for track 28383540-85ee-4ebe-be61-86bb802d0fa1"
+                }
+            },
+            {
+                "reccobeats_id": "48e6bcc9-c045-46dc-adae-dfc1f53c011a",
+                "name": "gloria (with sza)",
+                "artists": [
+                    {
+                        "name": "Kendrick Lamar",
+                        "id": "caa924b3-075d-462a-bc84-b8da4ebb9f38"
+                    },
+                    {
+                        "name": "SZA",
+                        "id": "620413b0-3705-4b31-b6f3-37aa0c449953"
+                    }
+                ],
+                "duration_ms": 287522,
+                "popularity": 80,
+                "external_urls": {
+                    "spotify": "https://open.spotify.com/track/0wgOhYnqZKjOHr6bmdz0aN"
+                },
+                "id": "0wgOhYnqZKjOHr6bmdz0aN",
+                "uri": "spotify:track:0wgOhYnqZKjOHr6bmdz0aN",
+                "features": {
+                    "success": true,
+                    "data": {
+                        "id": "48e6bcc9-c045-46dc-adae-dfc1f53c011a",
+                        "acousticness": 0.22,
+                        "danceability": 0.719,
+                        "energy": 0.555,
+                        "instrumentalness": 0.0,
+                        "liveness": 0.127,
+                        "loudness": -9.785,
+                        "speechiness": 0.27,
+                        "tempo": 140.07,
+                        "valence": 0.413
+                    },
+                    "message": "Successfully retrieved audio features for track 48e6bcc9-c045-46dc-adae-dfc1f53c011a"
+                }
+            }
+        ]
+    },
+    "message": "Successfully recall tracks"
+}

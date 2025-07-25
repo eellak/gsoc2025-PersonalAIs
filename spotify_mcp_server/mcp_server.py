@@ -502,29 +502,49 @@ class SpotifyMCPSuperServer(SpotifyMCPServer):
             search_track_ids = data.get('track_ids', [])
             search_artist_names = data.get('artist_names', [])
             
+
             # markdown
-            content = "# Recalled Tracks\n\n"
-            content += f"**Total Tracks:** {len(search_tracks)}\n\n"
-            content += "## Tracks:\n\n"
+            # content = "# Recalled Tracks\n\n"
+            # content += f"**Total Tracks:** {len(search_tracks)}\n\n"
+            # content += "## Tracks:\n\n"
             recall_tracks = []
             flag_id = []
             for i, track in enumerate(search_tracks, 1):
-                content += f"{i}. **{track['name']}** - {', '.join([artist['name'] for artist in track['artists']])}\n"
-                content += f"- **Album:** {track['album']['name']}\n"
-                content += f"- **Duration:** {self.spotify_client.format_duration(track['duration_ms'])}\n"
-                content += f"- **Spotify URI:** {track['uri']}\n"
+                # content += f"{i}. **{track['name']}** - {', '.join([artist['name'] for artist in track['artists']])}\n"
+                # content += f"- **Album:** {track['album']['name']}\n"
+                # content += f"- **Duration:** {self.spotify_client.format_duration(track['duration_ms'])}\n"
+                # content += f"- **Spotify URI:** {track['uri']}\n"
                 if track['id'] in flag_id:
                     continue
                 flag_id.append(track['id'])
+                # acousticness, danceability, energy, \
+                # instrumentalness, liveness, loudness, \
+                # speechiness, tempo, valence = track['features']['data']['acousticness'], \
+                # track['features']['data']['danceability'], track['features']['data']['energy'], \
+                # track['features']['data']['instrumentalness'], track['features']['data']['liveness'], \
+                # track['features']['data']['loudness'], track['features']['data']['speechiness'], \
+                # track['features']['data']['tempo'], track['features']['data']['valence']
+                acousticness = track['features']['data']['acousticness']
+                danceability = track['features']['data']['danceability']
+                energy = track['features']['data']['energy']
+                instrumentalness = track['features']['data']['instrumentalness']
+                liveness = track['features']['data']['liveness']
+                loudness = track['features']['data']['loudness']
+                speechiness = track['features']['data']['speechiness']
+                tempo = track['features']['data']['tempo']
+                valence = track['features']['data']['valence']
+                # import pdb; pdb.set_trace()
                 recall_tracks.append({
                     "id": track['id'],
                     "name": track['name'],
                     "artists": [artist['name'] for artist in track['artists']],
-                    "album": track['album']['name'],
+                    # "album": track['album']['name'],
                     "duration_ms": track['duration_ms'],
                     "uri": track['uri'],
+                    "valence": valence,
+                    "energy": energy,
                 })
-            content += "\n\n"
+            # content += "\n\n"
             return {
                 "success": True,
                 # "content": content,

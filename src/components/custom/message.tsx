@@ -77,7 +77,14 @@ export const PreviewMessage = ({ message }: { message: UIMessage; }) => {
         const idx = prev.findIndex(t => t.id === track.id);
         let next = prev.filter(t => t.id !== track.id);
         if (recallQueue.length > 0) {
-          next = [...next, recallQueue[0]];
+          // Check if the new track from recallQueue is already in the visible list
+          const newTrack = recallQueue[0];
+          const isDuplicate = next.some(t => t.id === newTrack.id);
+          
+          // Only add the new track if it's not a duplicate
+          if (!isDuplicate) {
+            next = [...next, newTrack];
+          }
           setRecallQueue(q => q.slice(1));
         }
         return next;
@@ -168,6 +175,7 @@ export const PreviewMessage = ({ message }: { message: UIMessage; }) => {
                     <div className="flex-1 min-w-0 max-w-xs truncate">
                       <div className="font-medium truncate">{track.name}</div>
                       <div className="text-xs text-gray-500 truncate">{track.artists?.map((a: any) => a).join(', ')}{track.album ? ` - ${track.album}` : ''}</div>
+                      <div className="text-xs text-gray-500 truncate">valence: {track.valence}, energy: {track.energy}</div>
                     </div>
                     <div className="flex flex-row items-center flex-shrink-0 ml-4 w-28 justify-end">
                       <Button size="sm" variant="outline" onClick={() => handleAddTrack(track)}
@@ -180,7 +188,12 @@ export const PreviewMessage = ({ message }: { message: UIMessage; }) => {
                           const idx = prev.findIndex(t => t.id === track.id);
                           let next = prev.filter(t => t.id !== track.id);
                           if (recallQueue.length > 0) {
-                            next = [...next, recallQueue[0]];
+                            // Check for duplicates before adding a new track from recallQueue
+                            const newTrack = recallQueue[0];
+                            const isDuplicate = next.some(t => t.id === newTrack.id);
+                            if (!isDuplicate) {
+                              next = [...next, newTrack];
+                            }
                             setRecallQueue(q => q.slice(1));
                           }
                           return next;

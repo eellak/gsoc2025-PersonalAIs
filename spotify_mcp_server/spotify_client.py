@@ -872,8 +872,13 @@ class SpotifySuperClient(SpotifyClient):
         recall_all_tracks = []
         recall_all_track_ids = []
         recall_all_artist_names = []
+        seen_track_ids = set()
         if reccobeats_tracks['success']:
-            for track in tqdm(reccobeats_tracks['data']['tracks'], desc="Adding Reccobeats tracks"):
+            for track in tqdm(reccobeats_tracks['data']['tracks'], desc="Adding Reccobeats tracks features"):
+                # Skip duplicate tracks
+                if track['id'] in seen_track_ids:
+                    continue
+                seen_track_ids.add(track['id'])
                 track['features'] = await self.get_reccobeats_track_audio_features(track['reccobeats_id'])
                 recall_all_tracks.append(track)
                 recall_all_track_ids.append(track['id'])
@@ -1037,7 +1042,7 @@ class SpotifySuperClient(SpotifyClient):
                                 'spotify': track.get('href', '')
                             },
                             'id': spotify_id,
-                            'uri': f"spotify:track:{track.get('id', '')}",
+                            'uri': f"spotify:track:{spotify_id}",
                         }
                         tracks_details.append(track_detail)
                         all_found_ids.append(track.get('id', ''))
