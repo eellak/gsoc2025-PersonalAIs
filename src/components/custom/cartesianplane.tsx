@@ -30,8 +30,6 @@ const CartesianPlane: React.FC<CartesianPlaneProps> = ({ points = [], onAddPoint
       }
     };
     updateSize();
-    window.addEventListener('resize', updateSize);
-    return () => window.removeEventListener('resize', updateSize);
   }, []);
 
   useEffect(() => {
@@ -54,13 +52,11 @@ const CartesianPlane: React.FC<CartesianPlaneProps> = ({ points = [], onAddPoint
     ctx.strokeStyle = '#000';
     ctx.lineWidth = 2;
 
-    // X轴 (底部)
     ctx.beginPath();
     ctx.moveTo(padding, h - padding);
     ctx.lineTo(w - padding, h - padding);
     ctx.stroke();
 
-    // Y轴 (左边)
     ctx.beginPath();
     ctx.moveTo(padding, h - padding);
     ctx.lineTo(padding, padding);

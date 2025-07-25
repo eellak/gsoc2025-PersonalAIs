@@ -424,7 +424,7 @@ export default function Queue() {
   const allTracks = Array.from(uniqueTracks.values());
 
   return (
-    <div className="h-full flex flex-col">
+    <div className="h-full flex flex-col overflow-hidden">
       <div className="p-4 border-b">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
@@ -592,4 +592,4 @@ export default function Queue() {
       </div>
     </div>
   );
-} 
+}
