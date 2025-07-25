@@ -33,6 +33,22 @@ const suggestedActions = [
   },
 ];
 
+// coordinate to emotion
+const coordinateToEmotion = (x: number, y: number) => {
+  if (x < 0.5 && y < 0.5) {
+    return 'sad';
+  }
+  if (x >= 0.5 && y < 0.5) {
+    return 'relaxed';
+  }
+  if (x < 0.5 && y >= 0.5) {
+    return 'angry';
+  }
+  if (x >= 0.5 && y >= 0.5) {
+    return 'happy';
+  }
+};
+
 // Questionnaire score mapping, double dictionary structure
 const questionnaireScores: Record<string, Record<string, [number, number]>> = {
   q1: {
@@ -411,8 +427,23 @@ export default function Chat() {
                       const x = scores[0] / filledCount;
                       const y = scores[1] / filledCount;
                       console.log(`Normalized Scores: x=${x.toFixed(3)}, y=${y.toFixed(3)}`);
-                      setPoints([...points, { x: x, y: y }]);
+                      // setPoints([...points, { x: x, y: y }]);
+                      setPoints([{ x: x, y: y }]);
                       setOpenQuestionnaire(false);
+                      
+                      setMessages([...messages, 
+                      {
+                        role: 'user',
+                        // random id
+                        id: Math.random().toString(36).substring(2),
+                        content: `Detect my mood with the questionnaire.`,
+                      },
+                      {
+                        role: 'assistant',
+                        // random id
+                        id: Math.random().toString(36).substring(2),
+                        content: `Are you feeling ${coordinateToEmotion(x, y)} about your mood?`,
+                      }]);
                     }}
                   />
                 </div>
@@ -431,7 +462,8 @@ export default function Chat() {
             <CartesianPlane
               points={points}
               onAddPoint={(point) => {
-                setPoints([...points, point]);
+                // setPoints([...points, point]);
+                setPoints([point]);
               }}
             />
             <div className="mt-2 flex gap-2">
@@ -439,7 +471,7 @@ export default function Chat() {
                 className="flex-1"
                 onClick={() =>
                   setPoints([
-                    ...points,
+                    // ...points,
                     {
                       x: parseFloat((Math.random()).toFixed(3)),
                       y: parseFloat((Math.random()).toFixed(3)),
