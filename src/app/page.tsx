@@ -18,7 +18,7 @@ import { MusicIcon } from 'lucide-react';
 import Queue from '@/components/spotify/queue';
 import Greeting from '@/components/custom/greeting';
 import Questionnaire, { Question } from '@/components/custom/questionnaire';
-import CartesianPlane from '@/components/custom/cartesianplane';
+import CartesianPlane, { PointWithType } from '@/components/custom/cartesianplane';
 
 const suggestedActions = [
   {
@@ -131,10 +131,8 @@ export default function Chat() {
   const [messagesContainerRef, messagesEndRef] = useScrollToBottom<HTMLDivElement>();
   const [suggestionText, setSuggestionText] = useState<string | null>(null);
   const [openQuestionnaire, setOpenQuestionnaire] = useState(false);
-  const [points, setPoints] = useState<{ x: number; y: number }[]>([
-    { x: 1, y: 2 },
-    { x: -2, y: -1 },
-  ]);
+  const [startPoint, setStartPoint] = useState<PointWithType | null>(null);
+  const [endPoint, setEndPoint] = useState<PointWithType | null>(null);
 
   const isAtBottomRef = useRef(true);
   const scrollToBottom = () => {
@@ -427,8 +425,7 @@ export default function Chat() {
                       const x = scores[0] / filledCount;
                       const y = scores[1] / filledCount;
                       console.log(`Normalized Scores: x=${x.toFixed(3)}, y=${y.toFixed(3)}`);
-                      // setPoints([...points, { x: x, y: y }]);
-                      setPoints([{ x: x, y: y }]);
+                      setStartPoint({ x: x, y: y, type: 'start' } as PointWithType);
                       setOpenQuestionnaire(false);
                       
                       setMessages([...messages, 
@@ -460,34 +457,17 @@ export default function Chat() {
           <div className="p-4 border-b">
             <h3 className="text-sm font-medium mb-2">Emotion Map</h3>
             <CartesianPlane
-              points={points}
+              points={[(startPoint as PointWithType), (endPoint as PointWithType)].filter(Boolean)}
               onAddPoint={(point) => {
-                // setPoints([...points, point]);
-                setPoints([point]);
-              }}
-            />
-            <div className="mt-2 flex gap-2">
-              <Button
-                className="flex-1"
-                onClick={() =>
-                  setPoints([
-                    // ...points,
-                    {
-                      x: parseFloat((Math.random()).toFixed(3)),
-                      y: parseFloat((Math.random()).toFixed(3)),
-                    },
-                  ])
+                if (point.type === 'start') {
+                  setStartPoint(point);
+                } else {
+                  setEndPoint(point);
                 }
-              >
-                Add Random Point
-              </Button>
-              <Button
-                className="flex-1"
-                onClick={() => setPoints([])}
-              >
-                Clean
-              </Button>
-            </div>
+              }}
+              setStartPoint={setStartPoint}
+              setEndPoint={setEndPoint}
+            />
           </div>
           <div className="flex-1 min-h-0">
             <Queue />
