@@ -8,7 +8,8 @@ from fastmcp import FastMCP
 
 # from spotify_client import SpotifyClient
 from spotify_client import SpotifySuperClient as SpotifyClient
-
+import os
+import numpy as np
 
 class SpotifyMCPServer:
     """Spotify MCP Server Class"""
@@ -544,6 +545,35 @@ class SpotifyMCPSuperServer(SpotifyMCPServer):
                     "valence": valence,
                     "energy": energy,
                 })
+
+            # load point_meta
+            point_meta_path = 'point_meta.json'
+            point_start, point_end = None, None
+            if os.path.exists(point_meta_path):
+                with open(point_meta_path, 'r') as f:
+                    point_meta = json.load(f)
+                    point_start = point_meta.get('start', None)
+                    point_end = point_meta.get('end', None)
+            else:
+                point_meta = {}
+            if point_start and point_end:
+                point_start = np.array([point_start['x'], point_start['y']])
+                point_end = np.array([point_end['x'], point_end['y']])
+                recall_tracks_valence = [t['valence'] for t in recall_tracks]
+                recall_tracks_energy = [t['energy'] for t in recall_tracks]
+                recall_tracks_valence = np.array(recall_tracks_valence)
+                recall_tracks_energy = np.array(recall_tracks_energy)
+                recall_tracks_points = np.column_stack((recall_tracks_valence, recall_tracks_energy))
+                direction = point_end - point_start
+                direction = direction / np.linalg.norm(direction)
+                relative_vecs = recall_tracks_points - point_start
+                proj_dis = np.dot(relative_vecs, direction)
+                valid_mask = (proj_dis >= 0) & (proj_dis <= 1)
+                valid_recall_tracks = [recall_tracks[i] for i in range(len(recall_tracks)) if valid_mask[i]]
+                valid_proj_dis = proj_dis[valid_mask]
+                sorted_indices = np.argsort(valid_proj_dis)
+                sorted_recall_tracks = [valid_recall_tracks[i] for i in sorted_indices]
+                recall_tracks = sorted_recall_tracks
             # content += "\n\n"
             return {
                 "success": True,
