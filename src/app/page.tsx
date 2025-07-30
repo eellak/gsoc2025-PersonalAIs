@@ -18,6 +18,28 @@ import { MusicIcon } from 'lucide-react';
 import Queue from '@/components/spotify/queue';
 import Greeting from '@/components/custom/greeting';
 import Questionnaire, { Question } from '@/components/custom/questionnaire';
+import CartesianPlane, { PointWithType } from '@/components/custom/cartesianplane';
+
+const savePointMeta = async (startPoint: PointWithType | null, endPoint: PointWithType | null) => {
+  try {
+    const response = await fetch('/api/point-meta', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ startPoint, endPoint }),
+    });
+    
+    if (!response.ok) {
+      throw new Error(`Failed to save point meta: ${response.statusText}`);
+    }
+    
+    const result = await response.json();
+    console.log('Point meta saved:', result);
+  } catch (error) {
+    console.error('Error saving point meta:', error);
+  }
+}
 
 const suggestedActions = [
   {
@@ -31,6 +53,22 @@ const suggestedActions = [
     action: 'Can you recommend some music that\'s good for working out?',
   },
 ];
+
+// coordinate to emotion
+const coordinateToEmotion = (x: number, y: number) => {
+  if (x < 0.5 && y < 0.5) {
+    return 'sad';
+  }
+  if (x >= 0.5 && y < 0.5) {
+    return 'relaxed';
+  }
+  if (x < 0.5 && y >= 0.5) {
+    return 'angry';
+  }
+  if (x >= 0.5 && y >= 0.5) {
+    return 'happy';
+  }
+};
 
 // Questionnaire score mapping, double dictionary structure
 const questionnaireScores: Record<string, Record<string, [number, number]>> = {
@@ -114,8 +152,26 @@ export default function Chat() {
   const [messagesContainerRef, messagesEndRef] = useScrollToBottom<HTMLDivElement>();
   const [suggestionText, setSuggestionText] = useState<string | null>(null);
   const [openQuestionnaire, setOpenQuestionnaire] = useState(false);
+  const [startPoint, setStartPoint] = useState<PointWithType | null>(null);
+  const [endPoint, setEndPoint] = useState<PointWithType | null>(null);
 
   const isAtBottomRef = useRef(true);
+  const scrollToBottom = () => {
+    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+  };
+
+  const checkIsNearBottom = () => {
+    if (!messagesContainerRef.current) return true;
+    const { scrollTop, scrollHeight, clientHeight } = messagesContainerRef.current;
+    const threshold = 100; // 阈值，单位像素
+    return scrollHeight - scrollTop - clientHeight < threshold;
+  };
+
+  useEffect(() => {
+    if (checkIsNearBottom()) {
+      scrollToBottom();
+    }
+  }, [messages]);
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files && event.target.files.length > 0) {
@@ -175,26 +231,10 @@ export default function Chat() {
     };
   }, [isDragging, queueWidth]);
 
-  useEffect(() => {
-    const container = messagesContainerRef.current;
-    if (!container) return;
-    const handleScroll = () => {
-      const threshold = 20;
-      const atBottom = container.scrollHeight - container.scrollTop - container.clientHeight < threshold;
-      isAtBottomRef.current = atBottom;
-    };
-    container.addEventListener('scroll', handleScroll);
-    return () => container.removeEventListener('scroll', handleScroll);
-  }, [messagesContainerRef]);
 
-  useEffect(() => {
-    if (isAtBottomRef.current && messagesEndRef.current) {
-      messagesEndRef.current.scrollIntoView({ behavior: 'smooth' });
-    }
-  }, [messages, messagesEndRef]);
 
   return (
-    <div className="flex flex-col h-screen overflow-hidden bg-background">
+    <div className="flex flex-col h-screen min-h-screen overflow-hidden bg-background">
       {messages.length > 0 && (
         <div className="fixed bottom-4 left-4 z-50">
           <Button
@@ -390,7 +430,11 @@ export default function Chat() {
                       { type: 'radio', label: 'I have completed today’s agenda.', name: 'q8', options: ['Strongly Agree', 'Agree', 'Can’t Say', 'Disagree', 'Strongly Disagree'] },
                       { type: 'radio', label: 'I get irritated easily.', name: 'q9', options: ['Strongly Agree', 'Agree', 'Can’t Say', 'Disagree', 'Strongly Disagree'] }
                     ]}
-                    onSubmit={result => {
+                    onSubmit={async result => {
+                      const filteredEntries = Object.entries(result).filter(
+                        ([_, value]) => value !== "Can’t Say"
+                      );
+                      const filledCount = filteredEntries.length;
                       const scores = Object.entries(result).reduce((acc, [key, value]) => {
                         const score = questionnaireScores[key]?.[value] || [0, 0];
                         acc[0] += score[0];
@@ -398,7 +442,27 @@ export default function Chat() {
                         return acc;
                       }, [0, 0]);
                       console.log('Scores:', scores);
+                      console.log('filledCount:', filledCount);
+                      const x = scores[0] / filledCount;
+                      const y = scores[1] / filledCount;
+                      console.log(`Normalized Scores: x=${x.toFixed(3)}, y=${y.toFixed(3)}`);
+                      setStartPoint({ x: x, y: y, type: 'start' } as PointWithType);
+                      await savePointMeta({ x: x, y: y, type: 'start' } as PointWithType, null);
                       setOpenQuestionnaire(false);
+                      
+                      setMessages([...messages, 
+                      {
+                        role: 'user',
+                        // random id
+                        id: Math.random().toString(36).substring(2),
+                        content: `Detect my mood with the questionnaire.`,
+                      },
+                      {
+                        role: 'assistant',
+                        // random id
+                        id: Math.random().toString(36).substring(2),
+                        content: `Are you feeling ${coordinateToEmotion(x, y)} about your mood?`,
+                      }]);
                     }}
                   />
                 </div>
@@ -411,8 +475,28 @@ export default function Chat() {
           className="w-1 cursor-col-resize hover:bg-muted-foreground/20 active:bg-muted-foreground/30 transition-colors"
           onMouseDown={handleMouseDown}
         />
-        <div className="hidden lg:block border-l bg-muted/50" style={{ width: `${queueWidth}px` }}>
-          <Queue />
+        <div className="hidden lg:flex flex-col border-l h-full" style={{ width: `${queueWidth}px` }}>
+          <div className="p-4 border-b">
+            <h3 className="text-sm font-medium mb-2">Emotion Map</h3>
+            <CartesianPlane
+              points={[(startPoint as PointWithType), (endPoint as PointWithType)].filter(Boolean)}
+              onAddPoint={async (point) => {
+                if (point.type === 'start') {
+                  setStartPoint(point);
+                  await savePointMeta(point, null);
+                } else {
+                  setEndPoint(point);
+                  await savePointMeta(null, point);
+                }
+              }}
+              setStartPoint={setStartPoint}
+              setEndPoint={setEndPoint}
+              savePointMeta={savePointMeta}
+            />
+          </div>
+          <div className="flex-1 min-h-0">
+            <Queue />
+          </div>
         </div>
       </div>
     </div>
