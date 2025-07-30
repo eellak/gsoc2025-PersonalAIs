@@ -497,7 +497,145 @@ class SpotifyMCPSuperServer(SpotifyMCPServer):
 
         @self.mcp.tool()
         async def recall_all_tracks() -> str:
+            """
+            Recall and filter all available Spotify tracks.
+
+            Fetches all cached tracks and their audio features from Spotify, removes duplicates,
+            and optionally filters tracks along a valence-energy vector defined in 'point_meta.json'.
+
+            Returns:
+                dict: {
+                    "success": bool,
+                    "message": str,
+                    "recall_tracks": List[dict], each containing:
+                        - id (str): Spotify track ID
+                        - name (str): Track title
+                        - artists (List[str]): Artist names
+                        - duration_ms (int): Track duration
+                        - uri (str): Spotify URI
+                        - valence (float): Positivity measure of the track
+                        - energy (float): Intensity/energy measure of the track
+                }
+
+            Note:
+                If 'point_meta.json' with 'start' and 'end' points exists, tracks are projected and filtered
+                along the valence-energy direction for relevance in MPC applications.
+            """
             tracks = await self.spotify_client.recall_all_tracks()
+            data = tracks['data']
+            search_tracks = data.get('tracks', [])
+            search_track_ids = data.get('track_ids', [])
+            search_artist_names = data.get('artist_names', [])
+            
+
+            # markdown
+            # content = "# Recalled Tracks\n\n"
+            # content += f"**Total Tracks:** {len(search_tracks)}\n\n"
+            # content += "## Tracks:\n\n"
+            recall_tracks = []
+            flag_id = []
+            for i, track in enumerate(search_tracks, 1):
+                # content += f"{i}. **{track['name']}** - {', '.join([artist['name'] for artist in track['artists']])}\n"
+                # content += f"- **Album:** {track['album']['name']}\n"
+                # content += f"- **Duration:** {self.spotify_client.format_duration(track['duration_ms'])}\n"
+                # content += f"- **Spotify URI:** {track['uri']}\n"
+                if track['id'] in flag_id:
+                    continue
+                flag_id.append(track['id'])
+                # acousticness, danceability, energy, \
+                # instrumentalness, liveness, loudness, \
+                # speechiness, tempo, valence = track['features']['data']['acousticness'], \
+                # track['features']['data']['danceability'], track['features']['data']['energy'], \
+                # track['features']['data']['instrumentalness'], track['features']['data']['liveness'], \
+                # track['features']['data']['loudness'], track['features']['data']['speechiness'], \
+                # track['features']['data']['tempo'], track['features']['data']['valence']
+                acousticness = track['features']['data']['acousticness']
+                danceability = track['features']['data']['danceability']
+                energy = track['features']['data']['energy']
+                instrumentalness = track['features']['data']['instrumentalness']
+                liveness = track['features']['data']['liveness']
+                loudness = track['features']['data']['loudness']
+                speechiness = track['features']['data']['speechiness']
+                tempo = track['features']['data']['tempo']
+                valence = track['features']['data']['valence']
+                # import pdb; pdb.set_trace()
+                recall_tracks.append({
+                    "id": track['id'],
+                    "name": track['name'],
+                    "artists": [artist['name'] for artist in track['artists']],
+                    # "album": track['album']['name'],
+                    "duration_ms": track['duration_ms'],
+                    "uri": track['uri'],
+                    "valence": valence,
+                    "energy": energy,
+                })
+
+            # load point_meta
+            point_meta_path = 'point_meta.json'
+            point_start, point_end = None, None
+            if os.path.exists(point_meta_path):
+                with open(point_meta_path, 'r') as f:
+                    point_meta = json.load(f)
+                    point_start = point_meta.get('start', None)
+                    point_end = point_meta.get('end', None)
+            else:
+                point_meta = {}
+            if point_start and point_end:
+                point_start = np.array([point_start['x'], point_start['y']])
+                point_end = np.array([point_end['x'], point_end['y']])
+                recall_tracks_valence = [t['valence'] for t in recall_tracks]
+                recall_tracks_energy = [t['energy'] for t in recall_tracks]
+                recall_tracks_valence = np.array(recall_tracks_valence)
+                recall_tracks_energy = np.array(recall_tracks_energy)
+                recall_tracks_points = np.column_stack((recall_tracks_valence, recall_tracks_energy))
+                direction = point_end - point_start
+                direction = direction / np.linalg.norm(direction)
+                relative_vecs = recall_tracks_points - point_start
+                proj_dis = np.dot(relative_vecs, direction)
+                valid_mask = (proj_dis >= 0) & (proj_dis <= 1)
+                valid_recall_tracks = [recall_tracks[i] for i in range(len(recall_tracks)) if valid_mask[i]]
+                valid_proj_dis = proj_dis[valid_mask]
+                sorted_indices = np.argsort(valid_proj_dis)
+                sorted_recall_tracks = [valid_recall_tracks[i] for i in sorted_indices]
+                recall_tracks = sorted_recall_tracks
+            # content += "\n\n"
+            return {
+                "success": True,
+                # "content": content,
+                "message": f"Successfully recalled {len(search_tracks)} tracks",
+                # "recall_tracks": search_tracks,  # NOTE: Do not add here, would cause much context in history
+                "recall_tracks": recall_tracks,
+            }
+
+        async def recall_tracks_based_on_artist_name(artist_name: str) -> str:
+            """
+            Recall and filter Spotify tracks by artist name.
+
+            Fetches tracks and their audio features from Spotify, removes duplicates,
+            and optionally filters them along a valence-energy vector defined in 'point_meta.json'.
+
+            Args:
+                artist_name (str): The name of the artist to search for relevant tracks.
+
+            Returns:
+                dict: A result dictionary with the following fields:
+                    - success (bool): Whether the recall operation succeeded.
+                    - message (str): A short status message.
+                    - recall_tracks (List[dict]): A list of recalled track dictionaries, each containing:
+                        - id (str): Spotify track ID.
+                        - name (str): Track name.
+                        - artists (List[str]): Names of contributing artists.
+                        - duration_ms (int): Track duration in milliseconds.
+                        - uri (str): Spotify URI.
+                        - valence (float): Valence score (positivity of the track).
+                        - energy (float): Energy level of the track.
+
+            Note:
+                If a local 'point_meta.json' file exists and contains start/end points,
+                tracks are projected onto the valence-energy plane and filtered along that direction.
+                The output is suitable for use in downstream MPC planning or decision modules.
+            """
+            tracks = await self.spotify_client.recall_tracks_based_on_artist_name(artist_name)
             data = tracks['data']
             search_tracks = data.get('tracks', [])
             search_track_ids = data.get('track_ids', [])

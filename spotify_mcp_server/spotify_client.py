@@ -897,6 +897,98 @@ class SpotifySuperClient(SpotifyClient):
 
         return recall_result
 
+
+    async def recall_tracks_based_on_artist_name(self, artist_name) -> List[Dict[str, Any]]:
+        """
+        Comprehensive recall of tracks based on an artist name, returning detailed track information.
+        """
+        artist_ids = await self.get_tivo_artist_ids([artist_name])  # third-party API to get tivo artist ids
+        artist_album_dict = await self.get_tivo_artist_album_ids(artist_ids)
+        tivo_tracks = await self.get_tivo_tracks_in_artist_album_dict(artist_album_dict)
+        # tivo_tracks: dict_keys(['id', 'title', 'performers', 'composers', 'duration', 'disc', 'phyTrackNum', 'isPick'])
+        random.shuffle(tivo_tracks)  # Shuffle tracks to ensure randomness
+        recall_track_titles = [track['title'] for track in tivo_tracks]
+
+        # # 3. third-party crawl to get more tracks by artist names
+        # # e.g. crawl_boil_the_frog_artists_and_tracks
+        # print('Crawling third-party artists and tracks...')
+        # selected_artists = random.sample(artist_names, min(3, len(artist_names)))
+        # for artist_name in tqdm(selected_artists, desc="Crawling third-party artists and tracks"):
+        #     boil_the_frog_pairs = crawl_boil_the_frog_artists_and_tracks(artist_name)
+        #     boil_the_frog_tracks = [pair['track'] for pair in boil_the_frog_pairs]
+        #     recall_track_titles.extend(boil_the_frog_tracks)
+        # # De-duplicate track titles
+        # recall_track_titles = list(set(recall_track_titles))
+
+
+        search_tracks = []  
+        search_track_ids = []
+        search_artist_names = []
+        # 4. track titles to spotify track by search
+        # search_tracks: dict_keys(['album', 'artists', 'available_markets', 'disc_number', 'duration_ms', 'explicit', 'external_ids', 'external_urls', 'href', 'id', 'is_local', 'is_playable', 'name', 'popularity', 'preview_url', 'track_number', 'type', 'uri'])
+        for track_title in tqdm(recall_track_titles, desc="Searching tracks"):
+            search_track = self.search_tracks(track_title)
+            if search_track['success'] and len(search_track['data']['tracks']['items']) > 0:
+                search_item = search_track['data']['tracks']['items'][0]
+                if search_item['id'] in search_track_ids:
+                    continue
+                search_tracks.append(search_item)
+                search_track_ids.append(search_item['id'])
+                search_artist_names.append(', '.join([artist['name'] for artist in search_item['artists']]))
+
+        # recall more from reccobeats with spotify track ids
+        random_selected_tracks = random.sample(search_tracks, min(10, len(search_tracks)))
+        for seed_spotify_track in tqdm(random_selected_tracks, desc="Getting Reccobeats recommendations"):
+            reccobeat_recommendation = await self.recall_reccobeats_tracks(seed_spotify_track['id'], num_tracks=5)
+            if reccobeat_recommendation['success']:
+                for track in tqdm(reccobeat_recommendation['data']['tracks'], desc="Converting to Reccobeats tracks"):
+                    if track['id'] not in search_track_ids:
+                        search_tracks.append(track)
+                        search_track_ids.append(track['id'])
+                        search_artist_names.append(', '.join([artist['name'] for artist in track['artists']]))
+        random.shuffle(search_tracks)
+        recall_result = {
+            'success': True,
+            'data': {
+                'tracks': search_tracks,
+                # 'track_ids': search_track_ids,
+                # 'artist_names': search_artist_names,
+            },
+            'message': "Successfully recall tracks",
+        }
+
+
+        # import pdb; pdb.set_trace()
+        reccobeats_tracks = await self.get_reccobeats_tracks_details(search_track_ids)
+        recall_all_tracks = []
+        recall_all_track_ids = []
+        recall_all_artist_names = []
+        seen_track_ids = set()
+        if reccobeats_tracks['success']:
+            for track in tqdm(reccobeats_tracks['data']['tracks'], desc="Adding Reccobeats tracks features"):
+                # Skip duplicate tracks
+                if track['id'] in seen_track_ids:
+                    continue
+                seen_track_ids.add(track['id'])
+                track['features'] = await self.get_reccobeats_track_audio_features(track['reccobeats_id'])
+                recall_all_tracks.append(track)
+                recall_all_track_ids.append(track['id'])
+                recall_all_artist_names.append(', '.join([artist['name'] for artist in track['artists']]))
+
+        random.shuffle(recall_all_tracks)
+        recall_result = {
+            'success': True,
+            'data': {
+                'tracks': recall_all_tracks,
+                # 'track_ids': recall_all_track_ids,
+                # 'artist_names': recall_all_artist_names,
+            },
+            'message': "Successfully recall tracks",
+        }
+
+        return recall_result
+
+
     async def random_fill(self, num_tracks=10) -> List[Dict[str, Any]]:
         """
         Randomly fill k tracks for new playlist

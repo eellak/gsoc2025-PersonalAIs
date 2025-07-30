@@ -45,3 +45,4 @@ __pycache__
 .python-version
 .cache
 .env
+point_meta.json
