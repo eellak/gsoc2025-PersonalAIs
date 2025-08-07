@@ -25,7 +25,7 @@ export const PreviewMessage = ({ message }: { message: UIMessage; }) => {
     if (
       part.type === 'tool-invocation' &&
       typeof part.toolInvocation === 'object' &&
-      part.toolInvocation?.toolName === 'recall_all_tracks'
+      (part.toolInvocation?.toolName === 'recall_all_tracks' || part.toolInvocation?.toolName === 'recall_tracks_based_on_artist_name')
     ) {
       const toolInvocation = part.toolInvocation;
       if (toolInvocation.state === 'result' && toolInvocation.result && toolInvocation.result.content) {

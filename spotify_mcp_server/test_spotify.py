@@ -8,6 +8,7 @@ from dotenv import load_dotenv
 from spotify_client import SpotifySuperClient as SpotifyClient
 from tqdm import tqdm
 import asyncio
+from lastfm_client import LastfmClient
 
 async def test_spotify_client():
     """Test Spotify client functionality (async)"""
@@ -18,8 +19,12 @@ async def test_spotify_client():
     client_id = os.getenv("SPOTIFY_CLIENT_ID")
     client_secret = os.getenv("SPOTIFY_CLIENT_SECRET")
     redirect_uri = os.getenv("SPOTIFY_REDIRECT_URI")
+    lastfm_api_key = os.getenv("LASTFM_API_KEY")
+    lastfm_api_secret = os.getenv("LASTFM_API_SECRET")
     
-    if not all([client_id, client_secret, redirect_uri]):
+    lastfm_client = LastfmClient(lastfm_api_key, lastfm_api_secret)
+
+    if not all([client_id, client_secret, redirect_uri, lastfm_api_key, lastfm_api_secret]):
         print("❌ Please set environment variables first")
         return
     
@@ -115,12 +120,25 @@ async def test_spotify_client():
 
 
     # tivo_tracks = await client.recall_all_tivo_tracks_obj()
-    result = await client.recall_all_tracks()
-    with open('result.json', 'w') as f:
-        import json
-        json.dump(result, f, indent=4)
-    print("\n🎉 All tests completed!")
+    # result = await client.recall_all_tracks()
+    # result = await client.recall_tracks_based_on_artist_name('Ed Sheeran')
+
+    # Test getting similar artists
+    print("\n🎵 Testing similar artists retrieval...")
+    similar_artists = await lastfm_client.get_similar_artists(["Ed Sheeran"], limit=10)
+    print(f"✅ Retrieved {len(similar_artists)} similar artists:")
+    for i, artist in enumerate(similar_artists, 1):
+        print(f"   {i}. {artist}")
+
+    # results = client.recall_artists()
+    results = client.recall_artists(lastfm_similar_artists=similar_artists)
+    print(results)
     import pdb; pdb.set_trace()
+    
+    # with open('result.json', 'w') as f:
+    #     import json
+    #     json.dump(result, f, indent=4)
+    # print("\n🎉 All tests completed!")
     
     # except Exception as e:
     #     print(f"❌ Test failed: {e}")

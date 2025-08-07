@@ -660,7 +660,7 @@ class SpotifyClient:
 
 
 class SpotifySuperClient(SpotifyClient):
-    def recall_artists(self, top_limit: int = 5, recent_limit: int = 5, playlist_limit: int = 5, album_limit: int = 5, saved_tracks_limit: int = 5) -> List[str]:
+    def recall_artists(self, top_limit: int = 5, recent_limit: int = 5, playlist_limit: int = 5, album_limit: int = 5, saved_tracks_limit: int = 5, lastfm_similar_artists = []) -> List[str]:
         """
         Maximize recall of user-related artist ids, including followed artists, all playlists, all saved albums, all saved tracks, top, recently played, etc.
         """
@@ -753,6 +753,9 @@ class SpotifySuperClient(SpotifyClient):
         # De-duplicate third-party crawled artists
         # third_party_crawled_artists = list(set(music_map_artists_list + boil_the_frog_artists_list))
         third_party_crawled_artists = list(set(music_map_artists_list))
+        if lastfm_similar_artists:
+            third_party_crawled_artists.extend(lastfm_similar_artists)
+        print('Lastfm similar artists:', lastfm_similar_artists)
         print('Crawled third-party artists:', third_party_crawled_artists)
         for artist_name in tqdm(third_party_crawled_artists, desc="Crawling third-party artists"):
             # # search spotify artist by name
