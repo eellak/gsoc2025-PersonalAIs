@@ -2,6 +2,11 @@ import pylast
 import os
 from typing import List
 import httpx
+import logging
+
+# Configure logging
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
 
 class LastfmClient:
     def __init__(self, api_key, api_secret):
@@ -18,7 +23,7 @@ class LastfmClient:
             skg = pylast.SessionKeyGenerator(network)
             url = skg.get_web_auth_url()
 
-            print(f"Please authorize this script to access your account: {url}\n")
+            logger.info(f"Please authorize this script to access your account: {url}\n")
             import time
             import webbrowser
 

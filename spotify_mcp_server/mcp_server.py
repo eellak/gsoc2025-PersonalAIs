@@ -12,6 +12,13 @@ import os
 import sys
 import numpy as np
 from lastfm_client import LastfmClient
+import logging
+
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(asctime)s [%(levelname)s] %(name)s: %(message)s"
+)
+logger = logging.getLogger(__name__)
 
 class SpotifyMCPServer:
     """Spotify MCP Server Class"""
@@ -621,11 +628,11 @@ class SpotifyMCPSuperServer(SpotifyMCPServer):
             Returns:
                 str: JSON string containing the recalled tracks.
             """
-            print(f'artists: {artists}', file=sys.stderr)
+            logger.info(f'artists: {artists}')
 
             similar_artists = await self.lastfm_client.get_similar_artists(artists, limit=10, include_original=True)
             # similar_artists = [similar_artists[0]]
-            print(f'similar_artists: {similar_artists}', file=sys.stderr)
+            logger.info(f'similar_artists: {similar_artists}')
             tracks = await self.spotify_client.recall_tracks_based_on_artist_names(lastfm_similar_artists=similar_artists)
             data = tracks['data']
             search_tracks = data.get('tracks', [])
@@ -699,17 +706,17 @@ class SpotifyMCPSuperServer(SpotifyMCPServer):
                 direction = direction / np.linalg.norm(direction)
                 relative_vecs = recall_tracks_points - point_start
                 proj_dis = np.dot(relative_vecs, direction)
-                print('proj_dis: ', proj_dis, file=sys.stderr)
+                logger.info('proj_dis: ', proj_dis)
                 valid_mask = (proj_dis >= 0) & (proj_dis <= 1)
                 valid_recall_tracks = [recall_tracks[i] for i in range(len(recall_tracks)) if valid_mask[i]]
-                print('valid_recall_tracks: ', valid_recall_tracks, file=sys.stderr)
+                logger.info('valid_recall_tracks: ', valid_recall_tracks)
                 valid_proj_dis = proj_dis[valid_mask]
-                print('valid_proj_dis: ', valid_proj_dis, file=sys.stderr)
+                logger.info('valid_proj_dis: ', valid_proj_dis)
                 sorted_indices = np.argsort(valid_proj_dis)
                 sorted_recall_tracks = [valid_recall_tracks[i] for i in sorted_indices]
                 recall_tracks = sorted_recall_tracks
             # content += "\n\n"
-            print('start: ', point_start, 'end: ', point_end, file=sys.stderr)
+            logger.info('start: ', point_start, 'end: ', point_end)
             return {
                 "success": True,
                 # "content": content,

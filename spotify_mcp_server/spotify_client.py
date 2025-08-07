@@ -14,6 +14,11 @@ from tqdm import tqdm
 import httpx
 from util.third_party_crawler import crawl_music_map_artists, crawl_boil_the_frog_artists_and_tracks
 import json
+import logging
+
+# Configure logging
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
 
 class SpotifyClient:
     """Spotify Client Class"""
@@ -739,7 +744,7 @@ class SpotifySuperClient(SpotifyClient):
 
         # 8. third-party crawler to get artists
         # e.g. crawl_music_map_artists, crawl_boil_the_frog_artists_and_tracks
-        print('Crawling third-party artists...')
+        logger.info('Crawling third-party artists...')
         selected_artists = random.sample(artist_names, min(5, len(artist_names)))  # Randomly select 5 artists for crawling
         # music_map_artists_list, boil_the_frog_artists_list = [], []
         music_map_artists_list = []
@@ -756,8 +761,8 @@ class SpotifySuperClient(SpotifyClient):
         third_party_crawled_artists = list(set(music_map_artists_list))
         if lastfm_similar_artists:
             third_party_crawled_artists.extend(lastfm_similar_artists)
-        print('Lastfm similar artists:', lastfm_similar_artists)
-        print('Crawled third-party artists:', third_party_crawled_artists)
+        logger.info('Lastfm similar artists: %s', lastfm_similar_artists)
+        logger.info('Crawled third-party artists: %s', third_party_crawled_artists)
         for artist_name in tqdm(third_party_crawled_artists, desc="Crawling third-party artists"):
             # # search spotify artist by name
             # search_artist = self.search_artist(artist_name, limit=1)
