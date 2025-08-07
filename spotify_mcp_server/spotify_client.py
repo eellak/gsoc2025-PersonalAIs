@@ -52,6 +52,7 @@ class SpotifyClient:
         
         # Initialize spotipy client
         self._init_spotipy_client()
+        
     
     def _init_spotipy_client(self):
         """Initialize spotipy client"""
@@ -660,7 +661,7 @@ class SpotifyClient:
 
 
 class SpotifySuperClient(SpotifyClient):
-    def recall_artists(self, top_limit: int = 5, recent_limit: int = 5, playlist_limit: int = 5, album_limit: int = 5, saved_tracks_limit: int = 5, lastfm_similar_artists = []) -> List[str]:
+    def recall_artists(self, top_limit: int = 5, recent_limit: int = 5, playlist_limit: int = 5, album_limit: int = 5, saved_tracks_limit: int = 5, lastfm_similar_artists: List[str] = []) -> List[str]:
         """
         Maximize recall of user-related artist ids, including followed artists, all playlists, all saved albums, all saved tracks, top, recently played, etc.
         """
@@ -901,11 +902,12 @@ class SpotifySuperClient(SpotifyClient):
         return recall_result
 
 
-    async def recall_tracks_based_on_artist_name(self, artist_name) -> List[Dict[str, Any]]:
+    async def recall_tracks_based_on_artist_names(self, lastfm_similar_artists) -> List[Dict[str, Any]]:
         """
-        Comprehensive recall of tracks based on an artist name, returning detailed track information.
+        Comprehensive recall of tracks based on a list of artist names, returning detailed track information.
         """
-        artist_ids = await self.get_tivo_artist_ids([artist_name])  # third-party API to get tivo artist ids
+        artist_names = lastfm_similar_artists
+        artist_ids = await self.get_tivo_artist_ids(artist_names)  # third-party API to get tivo artist ids
         artist_album_dict = await self.get_tivo_artist_album_ids(artist_ids)
         tivo_tracks = await self.get_tivo_tracks_in_artist_album_dict(artist_album_dict)
         # tivo_tracks: dict_keys(['id', 'title', 'performers', 'composers', 'duration', 'disc', 'phyTrackNum', 'isPick'])
@@ -939,16 +941,16 @@ class SpotifySuperClient(SpotifyClient):
                 search_track_ids.append(search_item['id'])
                 search_artist_names.append(', '.join([artist['name'] for artist in search_item['artists']]))
 
-        # recall more from reccobeats with spotify track ids
-        random_selected_tracks = random.sample(search_tracks, min(10, len(search_tracks)))
-        for seed_spotify_track in tqdm(random_selected_tracks, desc="Getting Reccobeats recommendations"):
-            reccobeat_recommendation = await self.recall_reccobeats_tracks(seed_spotify_track['id'], num_tracks=5)
-            if reccobeat_recommendation['success']:
-                for track in tqdm(reccobeat_recommendation['data']['tracks'], desc="Converting to Reccobeats tracks"):
-                    if track['id'] not in search_track_ids:
-                        search_tracks.append(track)
-                        search_track_ids.append(track['id'])
-                        search_artist_names.append(', '.join([artist['name'] for artist in track['artists']]))
+        # # recall more from reccobeats with spotify track ids
+        # random_selected_tracks = random.sample(search_tracks, min(10, len(search_tracks)))
+        # for seed_spotify_track in tqdm(random_selected_tracks, desc="Getting Reccobeats recommendations"):
+        #     reccobeat_recommendation = await self.recall_reccobeats_tracks(seed_spotify_track['id'], num_tracks=5)
+        #     if reccobeat_recommendation['success']:
+        #         for track in tqdm(reccobeat_recommendation['data']['tracks'], desc="Converting to Reccobeats tracks"):
+        #             if track['id'] not in search_track_ids:
+        #                 search_tracks.append(track)
+        #                 search_track_ids.append(track['id'])
+        #                 search_artist_names.append(', '.join([artist['name'] for artist in track['artists']]))
         random.shuffle(search_tracks)
         recall_result = {
             'success': True,
@@ -968,7 +970,9 @@ class SpotifySuperClient(SpotifyClient):
         recall_all_artist_names = []
         seen_track_ids = set()
         if reccobeats_tracks['success']:
-            for track in tqdm(reccobeats_tracks['data']['tracks'], desc="Adding Reccobeats tracks features"):
+            # time-consuming
+            # for track in tqdm(reccobeats_tracks['data']['tracks'][], desc="Adding Reccobeats tracks features"):
+            for track in tqdm(reccobeats_tracks['data']['tracks'][:50], desc="Adding Reccobeats tracks features"):
                 # Skip duplicate tracks
                 if track['id'] in seen_track_ids:
                     continue

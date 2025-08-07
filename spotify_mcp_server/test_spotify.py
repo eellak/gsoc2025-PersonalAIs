@@ -125,13 +125,15 @@ async def test_spotify_client():
 
     # Test getting similar artists
     print("\n🎵 Testing similar artists retrieval...")
-    similar_artists = await lastfm_client.get_similar_artists(["Ed Sheeran"], limit=10)
+    # similar_artists = await lastfm_client.get_similar_artists(["Ed Sheeran"], limit=10)
+    similar_artists = await lastfm_client.get_similar_artists(["Justin Bieber"], limit=10, include_original=True)
     print(f"✅ Retrieved {len(similar_artists)} similar artists:")
     for i, artist in enumerate(similar_artists, 1):
         print(f"   {i}. {artist}")
 
     # results = client.recall_artists()
-    results = client.recall_artists(lastfm_similar_artists=similar_artists)
+    # results = client.recall_artists(lastfm_similar_artists=similar_artists)
+    results = await client.recall_tracks_based_on_artist_names(lastfm_similar_artists=similar_artists)
     print(results)
     import pdb; pdb.set_trace()
     

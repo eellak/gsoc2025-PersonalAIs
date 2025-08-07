@@ -9,7 +9,7 @@ import asyncio
 from dotenv import load_dotenv
 from spotify_client import SpotifySuperClient as SpotifyClient
 from mcp_server import SpotifyMCPSuperServer as SpotifyMCPServer
-
+from lastfm_client import LastfmClient
 
 def main():
     """main"""
@@ -20,12 +20,16 @@ def main():
     client_id = os.getenv("SPOTIFY_CLIENT_ID")
     client_secret = os.getenv("SPOTIFY_CLIENT_SECRET")
     redirect_uri = os.getenv("SPOTIFY_REDIRECT_URI")
-    
-    if not all([client_id, client_secret, redirect_uri]):
+    lastfm_api_key = os.getenv("LASTFM_API_KEY")
+    lastfm_api_secret = os.getenv("LASTFM_API_SECRET")
+    # print(lastfm_api_key, lastfm_api_secret)
+    if not all([client_id, client_secret, redirect_uri, lastfm_api_key, lastfm_api_secret]):
         print("Error: Please set the following environment variables:")
         print("- SPOTIFY_CLIENT_ID")
         print("- SPOTIFY_CLIENT_SECRET")
         print("- SPOTIFY_REDIRECT_URI")
+        print("- LASTFM_API_KEY")
+        print("- LASTFM_API_SECRET")
         print("\nPlease copy env.example to .env and fill in the corresponding values")
         return
     
@@ -35,9 +39,15 @@ def main():
         spotify_client = SpotifyClient(client_id, client_secret, redirect_uri)
         print("Spotify client initialized successfully!")
         
+        # Create Lastfm client
+        print("Initializing Lastfm client...")
+        lastfm_client = LastfmClient(lastfm_api_key, lastfm_api_secret)
+        print("Lastfm client initialized successfully!")
+        
         # Create MCP server
         print("Starting MCP server...")
-        mcp_server = SpotifyMCPServer(spotify_client)
+        mcp_server = SpotifyMCPServer(spotify_client, lastfm_client)
+        print("MCP server initialized successfully!")
         
         # Run server
         print("MCP server started, waiting for connections...")

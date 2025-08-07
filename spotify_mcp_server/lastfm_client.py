@@ -38,7 +38,7 @@ class LastfmClient:
         self.lastfm.session_key = session_key
 
 
-    async def get_similar_artists(self, artist_names: List[str], limit: int = 10):
+    async def get_similar_artists(self, artist_names: List[str], limit: int = 10, include_original: bool = False):
         """Get similar artists for a given list of artist names.
 
         Args:
@@ -54,6 +54,8 @@ class LastfmClient:
                 for artist_name in artist_names:
                     artist = self.lastfm.get_artist(artist_name)
                     similar_artists.extend([similar.item.name for similar in artist.get_similar(limit=limit)])
+            if include_original:
+                similar_artists.extend(artist_names)
             return list(set(similar_artists))
-        except pylast.WSError:
+        except (pylast.WSError, httpx.HTTPError):
             return []

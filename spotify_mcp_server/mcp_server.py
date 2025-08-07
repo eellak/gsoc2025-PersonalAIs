@@ -9,7 +9,9 @@ from fastmcp import FastMCP
 # from spotify_client import SpotifyClient
 from spotify_client import SpotifySuperClient as SpotifyClient
 import os
+import sys
 import numpy as np
+from lastfm_client import LastfmClient
 
 class SpotifyMCPServer:
     """Spotify MCP Server Class"""
@@ -459,7 +461,7 @@ class SpotifyMCPServer:
 
 class SpotifyMCPSuperServer(SpotifyMCPServer):
     """Super MCP Server with recall tools"""
-    def __init__(self, spotify_client: SpotifyClient):
+    def __init__(self, spotify_client: SpotifyClient, lastfm_client: LastfmClient = None):
         """
         Initialize MCP server
         
@@ -467,6 +469,7 @@ class SpotifyMCPSuperServer(SpotifyMCPServer):
             spotify_client: Spotify client instance
         """
         self.spotify_client = spotify_client
+        self.lastfm_client = lastfm_client
         self.mcp = FastMCP("spotify-mcp-server")
         self.setup_tools()
 
@@ -607,35 +610,23 @@ class SpotifyMCPSuperServer(SpotifyMCPServer):
                 "recall_tracks": recall_tracks,
             }
 
-        async def recall_tracks_based_on_artist_name(artist_name: str) -> str:
+        @self.mcp.tool()
+        async def recall_tracks_based_on_artist_names(artists: List[str]) -> str:
             """
-            Recall and filter Spotify tracks by artist name.
-
-            Fetches tracks and their audio features from Spotify, removes duplicates,
-            and optionally filters them along a valence-energy vector defined in 'point_meta.json'.
+            Recalls tracks based on artist names.
 
             Args:
-                artist_name (str): The name of the artist to search for relevant tracks.
+                artists (List[str]): List of artist names.
 
             Returns:
-                dict: A result dictionary with the following fields:
-                    - success (bool): Whether the recall operation succeeded.
-                    - message (str): A short status message.
-                    - recall_tracks (List[dict]): A list of recalled track dictionaries, each containing:
-                        - id (str): Spotify track ID.
-                        - name (str): Track name.
-                        - artists (List[str]): Names of contributing artists.
-                        - duration_ms (int): Track duration in milliseconds.
-                        - uri (str): Spotify URI.
-                        - valence (float): Valence score (positivity of the track).
-                        - energy (float): Energy level of the track.
-
-            Note:
-                If a local 'point_meta.json' file exists and contains start/end points,
-                tracks are projected onto the valence-energy plane and filtered along that direction.
-                The output is suitable for use in downstream MPC planning or decision modules.
+                str: JSON string containing the recalled tracks.
             """
-            tracks = await self.spotify_client.recall_tracks_based_on_artist_name(artist_name)
+            print(f'artists: {artists}', file=sys.stderr)
+
+            similar_artists = await self.lastfm_client.get_similar_artists(artists, limit=10, include_original=True)
+            # similar_artists = [similar_artists[0]]
+            print(f'similar_artists: {similar_artists}', file=sys.stderr)
+            tracks = await self.spotify_client.recall_tracks_based_on_artist_names(lastfm_similar_artists=similar_artists)
             data = tracks['data']
             search_tracks = data.get('tracks', [])
             search_track_ids = data.get('track_ids', [])
@@ -654,6 +645,8 @@ class SpotifyMCPSuperServer(SpotifyMCPServer):
                 # content += f"- **Duration:** {self.spotify_client.format_duration(track['duration_ms'])}\n"
                 # content += f"- **Spotify URI:** {track['uri']}\n"
                 if track['id'] in flag_id:
+                    continue
+                if track['features']['success'] is False:
                     continue
                 flag_id.append(track['id'])
                 # acousticness, danceability, energy, \
@@ -706,17 +699,23 @@ class SpotifyMCPSuperServer(SpotifyMCPServer):
                 direction = direction / np.linalg.norm(direction)
                 relative_vecs = recall_tracks_points - point_start
                 proj_dis = np.dot(relative_vecs, direction)
+                print('proj_dis: ', proj_dis, file=sys.stderr)
                 valid_mask = (proj_dis >= 0) & (proj_dis <= 1)
                 valid_recall_tracks = [recall_tracks[i] for i in range(len(recall_tracks)) if valid_mask[i]]
+                print('valid_recall_tracks: ', valid_recall_tracks, file=sys.stderr)
                 valid_proj_dis = proj_dis[valid_mask]
+                print('valid_proj_dis: ', valid_proj_dis, file=sys.stderr)
                 sorted_indices = np.argsort(valid_proj_dis)
                 sorted_recall_tracks = [valid_recall_tracks[i] for i in sorted_indices]
                 recall_tracks = sorted_recall_tracks
             # content += "\n\n"
+            print('start: ', point_start, 'end: ', point_end, file=sys.stderr)
             return {
                 "success": True,
                 # "content": content,
                 "message": f"Successfully recalled {len(search_tracks)} tracks",
                 # "recall_tracks": search_tracks,  # NOTE: Do not add here, would cause much context in history
                 "recall_tracks": recall_tracks,
+                "present_artists": artists,
+                "similar_artists": similar_artists,
             }
