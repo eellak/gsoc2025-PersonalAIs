@@ -39,8 +39,38 @@ NEXTAUTH_SECRET=xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 SPOTIFY_ACCESS_TOKEN=xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 ```
 
-2. install and run the project
+To get `SPOTIFY_CLIENT_ID` and `SPOTIFY_CLIENT_SECRET`, you need to register a Spotify Developer account and create an application.
 
+1. Register a Spotify Developer account:
+   - Go to the [Spotify Developer Dashboard](https://developer.spotify.com/dashboard/applications)
+   - Log in with your Spotify account or create a new one if you don't have an account
+2. Create a new application:
+   - Click on the "Create App" button
+   - Fill in the required information for your application (e.g., name, description)
+   - Agree to the Spotify Developer Terms of Service and click "Create"
+3. Find your Client ID and Client Secret, set the redirect URI to `http://127.0.0.1:3000/api/auth/callback/spotify` for local testing
+
+To get `NEXTAUTH_URL` and `NEXTAUTH_SECRET`, set `NEXTAUTH_URL` to `http://127.0.0.1:3000` for local testing, you can generate `NEXTAUTH_SECRET` using the following command:
+```bash
+openssl rand -base64 32
+```
+
+
+In `spotify_mcp_server/.env`, you also need to set `SPOTIFY_CLIENT_ID` and `SPOTIFY_CLIENT_SECRET`, and `SPOTIFY_REDIRECT_URI`, this is for MCP capability.
+
+To get third-party capability, please register on LastFM and create your own API, set your own `LASTFM_API_KEY` and `LASTFM_API_SECRET`.
+
+
+Some python package also need to be installed.
+`uv` is recommended to manage python package(powerful than `pip`), you can install it using the following command:
+```bash
+uv venv  # create a virtual environment
+source .venv/bin/activate  # activate the virtual environment
+```
+run `uv sync` to install python package with `pyproject.toml`.
+
+
+After setting all of these, install and run the project:
 ```bash
 pnpm install
 pnpm run dev
