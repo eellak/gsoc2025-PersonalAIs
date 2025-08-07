@@ -8,6 +8,12 @@ from dotenv import load_dotenv
 from spotify_client import SpotifySuperClient as SpotifyClient
 from tqdm import tqdm
 import asyncio
+from lastfm_client import LastfmClient
+import logging
+
+# Configure logging
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
 
 async def test_spotify_client():
     """Test Spotify client functionality (async)"""
@@ -18,67 +24,71 @@ async def test_spotify_client():
     client_id = os.getenv("SPOTIFY_CLIENT_ID")
     client_secret = os.getenv("SPOTIFY_CLIENT_SECRET")
     redirect_uri = os.getenv("SPOTIFY_REDIRECT_URI")
+    lastfm_api_key = os.getenv("LASTFM_API_KEY")
+    lastfm_api_secret = os.getenv("LASTFM_API_SECRET")
     
-    if not all([client_id, client_secret, redirect_uri]):
-        print("❌ Please set environment variables first")
+    lastfm_client = LastfmClient(lastfm_api_key, lastfm_api_secret)
+
+    if not all([client_id, client_secret, redirect_uri, lastfm_api_key, lastfm_api_secret]):
+        logger.info("❌ Please set environment variables first")
         return
     
     # try:
-    print("🔧 Initializing Spotify client...")
+    logger.info("🔧 Initializing Spotify client...")
     client = SpotifyClient(client_id, client_secret, redirect_uri)
-    print("✅ Spotify client initialized successfully!")
+    logger.info("✅ Spotify client initialized successfully!")
     
     # Test getting user profile
-    print("\n👤 Testing user profile retrieval...")
+    logger.info("\n👤 Testing user profile retrieval...")
     result = client.get_user_profile()
     if result["success"]:
         user = result["data"]
-        print(f"✅ User: {user['display_name']}")
-        print(f"   Email: {user.get('email', 'Not provided')}")
-        print(f"   Account Type: {user.get('product', 'Unknown')}")
+        logger.info(f"✅ User: {user['display_name']}")
+        logger.info(f"   Email: {user.get('email', 'Not provided')}")
+        logger.info(f"   Account Type: {user.get('product', 'Unknown')}")
     else:
-        print(f"❌ Failed to get user profile: {result['message']}")
+        logger.info(f"❌ Failed to get user profile: {result['message']}")
     
     # Test getting playback status
-    print("\n🎵 Testing playback status retrieval...")
+    logger.info("\n🎵 Testing playback status retrieval...")
     result = client.get_current_playback()
     if result["success"]:
         if result["data"]:
             track = result["data"]["item"]
-            print(f"✅ Currently playing: {track['name']} - {', '.join([artist['name'] for artist in track['artists']])}")
+            logger.info(f"✅ Currently playing: {track['name']} - {', '.join([artist['name'] for artist in track['artists']])}")
         else:
-            print("ℹ️  No content is currently playing")
+            logger.info("ℹ️  No content is currently playing")
     else:
-        print(f"❌ Failed to get playback status: {result['message']}")
+        logger.info(f"❌ Failed to get playback status: {result['message']}")
     
     # Test getting playlists
-    print("\n📋 Testing playlist retrieval...")
+    logger.info("\n📋 Testing playlist retrieval...")
     result = client.get_user_playlists(5)
     if result["success"]:
         playlists = result["data"]["items"]
-        print(f"✅ Retrieved {len(playlists)} playlists:")
+        logger.info(f"✅ Retrieved {len(playlists)} playlists:")
         for i, playlist in enumerate(playlists, 1):
-            print(f"   {i}. {playlist['name']} ({playlist['tracks']['total']} tracks)")
+            logger.info(f"   {i}. {playlist['name']} ({playlist['tracks']['total']} tracks)")
     else:
-        print(f"❌ Failed to get playlists: {result['message']}")
+        logger.info(f"❌ Failed to get playlists: {result['message']}")
     
     # Test getting device list
-    print("\n📱 Testing device list retrieval...")
+    logger.info("\n📱 Testing device list retrieval...")
     result = client.get_available_devices()
     if result["success"]:
         devices = result["data"]["devices"]
-        print(f"✅ Retrieved {len(devices)} devices:")
+        logger.info(f"✅ Retrieved {len(devices)} devices:")
         for i, device in enumerate(devices, 1):
             status = "Active" if device['is_active'] else "Inactive"
-            print(f"   {i}. {device['name']} ({device['type']}) - {status}")
+            logger.info(f"   {i}. {device['name']} ({device['type']}) - {status}")
     else:
-        print(f"❌ Failed to get device list: {result['message']}")
+        logger.info(f"❌ Failed to get device list: {result['message']}")
     
-    print('get_user_playlists')
+    logger.info('get_user_playlists')
     # Test getting user's saved tracks
-    print("\n❤️ Testing user's saved tracks retrieval...")
+    logger.info("\n❤️ Testing user's saved tracks retrieval...")
     result = client.get_user_playlists()
-    print(f"Retrieved {len(result['data']['items'])} playlists")
+    logger.info(f"Retrieved {len(result['data']['items'])} playlists")
 
     # # recall tracks testing
     # _, artist_names = client.recall_artists()
@@ -115,16 +125,31 @@ async def test_spotify_client():
 
 
     # tivo_tracks = await client.recall_all_tivo_tracks_obj()
-    result = await client.recall_all_tracks()
-    with open('result.json', 'w') as f:
-        import json
-        json.dump(result, f, indent=4)
-    print("\n🎉 All tests completed!")
+    # result = await client.recall_all_tracks()
+    # result = await client.recall_tracks_based_on_artist_name('Ed Sheeran')
+
+    # Test getting similar artists
+    logger.info("\n🎵 Testing similar artists retrieval...")
+    # similar_artists = await lastfm_client.get_similar_artists(["Ed Sheeran"], limit=10)
+    similar_artists = await lastfm_client.get_similar_artists(["Justin Bieber"], limit=10, include_original=True)
+    logger.info(f"✅ Retrieved {len(similar_artists)} similar artists:")
+    for i, artist in enumerate(similar_artists, 1):
+        logger.info(f"   {i}. {artist}")
+
+    # results = client.recall_artists()
+    # results = client.recall_artists(lastfm_similar_artists=similar_artists)
+    results = await client.recall_tracks_based_on_artist_names(lastfm_similar_artists=similar_artists)
+    logger.info(results)
     import pdb; pdb.set_trace()
+    
+    # with open('result.json', 'w') as f:
+    #     import json
+    #     json.dump(result, f, indent=4)
+    # print("\n🎉 All tests completed!")
     
     # except Exception as e:
     #     print(f"❌ Test failed: {e}")
 
 
 if __name__ == "__main__":
-    asyncio.run(test_spotify_client()) 
+    asyncio.run(test_spotify_client())

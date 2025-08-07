@@ -13,4 +13,5 @@ dependencies = [
     "bs4>=0.0.2",
     "selenium>=4.34.0",
     "numpy>=2.3.2",
+    "pylast>=5.5.0",
 ]

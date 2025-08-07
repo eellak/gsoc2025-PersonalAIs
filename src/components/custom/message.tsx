@@ -21,11 +21,13 @@ export const PreviewMessage = ({ message }: { message: UIMessage; }) => {
 
   // recall_all_tracks rendering
   let allRecallTracks: any[] = [];
+  let similar_artists: any[] = [];
+  let present_artists: any[] = [];
   (message.parts || []).forEach((part: any) => {
     if (
       part.type === 'tool-invocation' &&
       typeof part.toolInvocation === 'object' &&
-      part.toolInvocation?.toolName === 'recall_all_tracks'
+      (part.toolInvocation?.toolName === 'recall_all_tracks' || part.toolInvocation?.toolName === 'recall_tracks_based_on_artist_names')
     ) {
       const toolInvocation = part.toolInvocation;
       if (toolInvocation.state === 'result' && toolInvocation.result && toolInvocation.result.content) {
@@ -36,6 +38,8 @@ export const PreviewMessage = ({ message }: { message: UIMessage; }) => {
             if (data.success && data?.recall_tracks) {
               allRecallTracks = data?.recall_tracks;
               message.content = data?.content;
+              present_artists = data?.present_artists;
+              similar_artists = data?.similar_artists;
             }
           } catch (e) {
             // ignore
@@ -60,7 +64,9 @@ export const PreviewMessage = ({ message }: { message: UIMessage; }) => {
     (part: any) =>
       part.type === 'tool-invocation' &&
       typeof part.toolInvocation === 'object' &&
-      part.toolInvocation?.toolName === 'recall_all_tracks');
+      (part.toolInvocation?.toolName === 'recall_all_tracks' || part.toolInvocation?.toolName === 'recall_tracks_based_on_artist_names')
+  );
+  
 
   const handleAddTrack = async (track: any) => {
     if (!session?.accessToken) {
@@ -147,12 +153,12 @@ export const PreviewMessage = ({ message }: { message: UIMessage; }) => {
                     <div className="markdown-body">
                     <ReactMarkdown>
                       
-                    {part.toolInvocation.toolName !== 'recall_all_tracks' ? 
+                    {part.toolInvocation.toolName !== 'recall_all_tracks' && part.toolInvocation.toolName !== 'recall_tracks_based_on_artist_names' ? 
                       part.toolInvocation.result?.content?.map((item: any) => item.text).join('\n\n') :
                       (() => {
                         const state = part.toolInvocation.state;
                         if (state === 'call') {
-                          return "Recalling tracks, please wait...";
+                          return "Recalling tracks with [tool]: [" + part.toolInvocation.toolName + "] , please wait...";
                         } 
                         return "No more available recall tracks";
                       })()}
@@ -168,7 +174,12 @@ export const PreviewMessage = ({ message }: { message: UIMessage; }) => {
           {/* recall_all_tracks */}
           {visibleRecallTracks.length > 0 && (
             <div className="mb-4 border rounded-lg p-3 bg-gray-50 dark:bg-zinc-900">
-              <div className="font-bold mb-2">Recalled Tracks</div>
+              {/* if present artist, show present artist */}
+              {(present_artists?.length > 0 && similar_artists?.length > 0) ? (
+                <div className="font-bold mb-2">Recalled Tracks with {present_artists?.map((a: any) => a).join(', ')}</div>
+              ) : (
+                <div className="font-bold mb-2">Recalled Tracks</div>
+              )}
               <ul className="space-y-2">
                 {visibleRecallTracks.map((track: any) => (
                   <li key={track.id} className="flex items-center justify-between border-b last:border-b-0 py-1">

@@ -9,6 +9,11 @@ from selenium.common.exceptions import WebDriverException
 import requests
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
+import logging
+
+# Configure logging
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
 
 class MusicMapCrawler:
     """
@@ -102,7 +107,7 @@ class BoilTheFrogCrawler:
                 if artist and track:
                     items.append({"artist": artist, "track": track})
         except WebDriverException as e:
-            print(f"[ERROR] Selenium error: {e}")
+            logger.info(f"[ERROR] Selenium error: {e}")
             items = []
         finally:
             driver.quit()
@@ -122,30 +127,30 @@ if __name__ == "__main__":
     crawler = MusicMapCrawler()
     artist = input("Enter artist name (in English): ")
     result = crawler.get_similar_artists(artist)
-    print("Similar artists:")
+    logger.info("Similar artists:")
     for name in result:
-        print(name)
+        logger.info(name)
 
-    print("\n--- BoilTheFrogCrawler Artist-Track Demo ---")
+    logger.info("\n--- BoilTheFrogCrawler Artist-Track Demo ---")
     frog_crawler = BoilTheFrogCrawler()
     src = input("Enter source artist (in English): ")
     # dest = input("Enter destination artist (in English): ")
     pairs = frog_crawler.get_artist_and_track_path(src, "")
-    print("Artist - Track pairs:")
+    logger.info("Artist - Track pairs:")
     for pair in pairs:
-        print(f"{pair['artist']} - {pair['track']}")
+        logger.info(f"{pair['artist']} - {pair['track']}")
 
 
-    print('\n--- testing crawl_music_map_artists ---')
+    logger.info('\n--- testing crawl_music_map_artists ---')
     artist_name = input("Enter artist name for music-map.com: ")
     similar_artists = crawl_music_map_artists(artist_name)
-    print("Similar artists from music-map.com:")
+    logger.info("Similar artists from music-map.com:")
     for name in similar_artists:
-        print(name)
-    print('\n--- testing crawl_boil_the_frog_artists_and_tracks ---')
+        logger.info(name)
+    logger.info('\n--- testing crawl_boil_the_frog_artists_and_tracks ---')
     src_artist = input("Enter source artist for Boil the Frog: ")
     pairs = crawl_boil_the_frog_artists_and_tracks(src_artist, "")
-    print("Artist - Track pairs from Boil the Frog:")
+    logger.info("Artist - Track pairs from Boil the Frog:")
     for pair in pairs:
-        print(f"{pair['artist']} - {pair['track']}")
+        logger.info(f"{pair['artist']} - {pair['track']}")
         
