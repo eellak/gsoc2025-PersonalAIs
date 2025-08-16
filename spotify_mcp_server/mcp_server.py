@@ -900,7 +900,7 @@ class SpotifyMCPSuperServerV2(SpotifyMCPServer):
             data = tracks['data']
             search_tracks = data.get('tracks', [])
             logger.info(f'Found {len(search_tracks)} tracks')
-            logger.info(f'search_tracks: {search_tracks}')
+            logger.info(f'search_tracks[:10]: {search_tracks[:10]}')
             
             filtered_tracks = []
             flag_id = []
@@ -945,8 +945,8 @@ class SpotifyMCPSuperServerV2(SpotifyMCPServer):
                 range_center_y = (energy_range[0] + energy_range[1]) / 2
                 # get tracks in search_tracks but not in filtered_tracks
                 unselected_tracks = [track for track in search_tracks if track['id'] not in flag_id and track.get('features', {}).get('success', False) is True]
-                logger.info(f'filtered_tracks: {filtered_tracks}')
-                logger.info(f'unselected_tracks: {unselected_tracks}')
+                logger.info(f'filtered_tracks[:10]: {filtered_tracks[:10]}')
+                logger.info(f'unselected_tracks[:10]: {unselected_tracks[:10]}')
                 # calc distance to the center
                 for idx, track in enumerate(unselected_tracks):
                     unselected_tracks[idx]['distance'] = math.sqrt((track['features']['data']['valence'] - range_center_x)**2 + (track['features']['data']['energy'] - range_center_y)**2)

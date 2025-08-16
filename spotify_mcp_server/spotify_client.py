@@ -13,6 +13,7 @@ import random
 import requests
 from tqdm import tqdm
 import httpx
+import asyncio
 from util.third_party_crawler import crawl_music_map_artists, crawl_boil_the_frog_artists_and_tracks
 import json
 import logging
@@ -607,21 +608,34 @@ class SpotifyClient:
                     continue
         return artist_album_dict
     
-    async def get_tivo_tracks_in_albums(self, album_ids: List[str]):
-        """Get tivo track ids in a list of album ids (async)"""
+    async def get_tivo_tracks_in_albums(self, album_ids: List[str], max_retries: int = 3, timeout: int = 30):
+        """Get tivo track ids in a list of album ids (async) with retry mechanism"""
         tivo_tracks = []
-        async with httpx.AsyncClient() as client:
+        async with httpx.AsyncClient(timeout=timeout) as client:
             for album_id in tqdm(album_ids):
-                url = f'https://tivomusicapi-staging-elb.digitalsmiths.net/sd/tivomusicapi/taps/v3/lookup/album?albumId={album_id}&limit=10';            
-                response = await client.get(url)
-                data = response.json()
-                if data['hits'] and len(data['hits']) > 0 and 'tracks' in data['hits'][0]:
-                    if len(data['hits'][0]['tracks']) > 10:
-                        tivo_tracks.extend(random.sample(data['hits'][0]['tracks'], 10))  # id, title, ...
-                    else:
-                        tivo_tracks.extend(data['hits'][0]['tracks'])
-                else:
-                    continue
+                url = f'https://tivomusicapi-staging-elb.digitalsmiths.net/sd/tivomusicapi/taps/v3/lookup/album?albumId={album_id}&limit=10';
+                retries = 0
+                success = False
+                while retries <= max_retries and not success:
+                    try:
+                        response = await client.get(url)
+                        response.raise_for_status()  # Raise exception for 4XX/5XX responses
+                        data = response.json()
+                        if data['hits'] and len(data['hits']) > 0 and 'tracks' in data['hits'][0]:
+                            if len(data['hits'][0]['tracks']) > 10:
+                                tivo_tracks.extend(random.sample(data['hits'][0]['tracks'], 10))  # id, title, ...
+                            else:
+                                tivo_tracks.extend(data['hits'][0]['tracks'])
+                            success = True
+                        else:
+                            success = True  # No tracks found, but not an error
+                    except (httpx.TimeoutException, httpx.HTTPError) as e:
+                        retries += 1
+                        if retries > max_retries:
+                            logger.error(f"Failed to fetch tracks for album {album_id} after {max_retries} retries: {e}")
+                        else:
+                            logger.info(f"Retrying fetch for album {album_id} (attempt {retries}/{max_retries})...")
+                            await asyncio.sleep(1)  # Wait 1 second before retrying
         return tivo_tracks
 
     async def get_tivo_tracks_in_artist_album_dict(self, artist_album_dict: Dict[str, List[str]]) -> Set[str]:
