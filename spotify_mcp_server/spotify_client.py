@@ -3,6 +3,7 @@ Spotify Client Class
 Wrapper for spotipy library functionality
 """
 
+from math import log
 import os
 import spotipy
 from spotipy.oauth2 import SpotifyOAuth
@@ -15,6 +16,7 @@ import httpx
 from util.third_party_crawler import crawl_music_map_artists, crawl_boil_the_frog_artists_and_tracks
 import json
 import logging
+from lastfm_client import LastfmClient
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)
@@ -583,7 +585,8 @@ class SpotifyClient:
                 url = f'https://tivomusicapi-staging-elb.digitalsmiths.net/sd/tivomusicapi/taps/v3/search/artist?name={artist_name}&limit=1&includeAllFields=false';
                 response = await client.get(url)
                 data = response.json()
-                if data['hits'] and len(data['hits']) > 0:
+                logger.info(f'get tivo artist id for {artist_name}, response: {data}')
+                if 'hits' in data and data['hits'] and len(data['hits']) > 0:
                     tivo_artist_ids = data['hits'][0]['id']
                 else:
                     continue
@@ -666,7 +669,7 @@ class SpotifyClient:
 
 
 class SpotifySuperClient(SpotifyClient):
-    def recall_artists(self, top_limit: int = 5, recent_limit: int = 5, playlist_limit: int = 5, album_limit: int = 5, saved_tracks_limit: int = 5, lastfm_similar_artists: List[str] = []) -> List[str]:
+    def recall_artists(self, top_limit: int = 5, recent_limit: int = 5, playlist_limit: int = 5, album_limit: int = 5, saved_tracks_limit: int = 5) -> List[str]:
         """
         Maximize recall of user-related artist ids, including followed artists, all playlists, all saved albums, all saved tracks, top, recently played, etc.
         """
@@ -745,36 +748,12 @@ class SpotifySuperClient(SpotifyClient):
         # 8. third-party crawler to get artists
         # e.g. crawl_music_map_artists, crawl_boil_the_frog_artists_and_tracks
         logger.info('Crawling third-party artists...')
-        selected_artists = random.sample(artist_names, min(5, len(artist_names)))  # Randomly select 5 artists for crawling
-        # music_map_artists_list, boil_the_frog_artists_list = [], []
-        music_map_artists_list = []
-        for artist_name in selected_artists:
-            # Crawl music map artists
-            music_map_artists = crawl_music_map_artists(artist_name)
-            selected_music_map_artists = random.sample(music_map_artists, min(6, len(music_map_artists)))  # Randomly select 3 artists
-            # boil_the_frog_pairs = crawl_boil_the_frog_artists_and_tracks(artist_name)
-            # boil_the_frog_artists = [pair['artist'] for pair in boil_the_frog_pairs]
-            music_map_artists_list.extend(selected_music_map_artists)
-            # boil_the_frog_artists_list.extend(boil_the_frog_artists)
-        # De-duplicate third-party crawled artists
-        # third_party_crawled_artists = list(set(music_map_artists_list + boil_the_frog_artists_list))
-        third_party_crawled_artists = list(set(music_map_artists_list))
-        if lastfm_similar_artists:
-            third_party_crawled_artists.extend(lastfm_similar_artists)
-        logger.info('Lastfm similar artists: %s', lastfm_similar_artists)
-        logger.info('Crawled third-party artists: %s', third_party_crawled_artists)
-        for artist_name in tqdm(third_party_crawled_artists, desc="Crawling third-party artists"):
-            # # search spotify artist by name
-            # search_artist = self.search_artist(artist_name, limit=1)
-            # if search_artist["success"] and len(search_artist["data"]["artists"]["items"]) > 0:
-            #     artist = search_artist["data"]["artists"]["items"][0]
-            #     artist_ids.append(artist["id"])
-            #     artist_names.append(artist["name"])
+        selected_artists = random.sample(artist_names, min(10, len(artist_names)))  # Randomly select 10 artists for crawling
+        selected_artists = list(set(selected_artists))
+        logger.info('Crawled third-party artists: %s', selected_artists)
+        for artist_name in tqdm(selected_artists, desc="Crawling third-party artists"):
             artist_names.append(artist_name)
             artist_ids.append("-1")
-                
-
-
         # de-duplicate artist ids and names
         result_artist_ids = []
         result_artist_names = []
@@ -811,21 +790,36 @@ class SpotifySuperClient(SpotifyClient):
     #         #             track_set.update(album_tracks["data"]["items"])
     #     return track_set
 
-    async def recall_all_tracks(self) -> List[Dict[str, Any]]:
+    async def recall_all_tracks(self, lastfm_client: LastfmClient = None) -> List[Dict[str, Any]]:
         """
         Comprehensive recall of tracks, returning detailed track information.
         """
         # 1. recall artist
         _, artist_names = self.recall_artists()
+        # lastfm similar artists
+        if lastfm_client:
+            lastfm_artist_names = []
+            for artist_name in artist_names:
+                lastfm_similar_artists = await lastfm_client.get_similar_artists(artist_name, limit=10, include_original=True)
+                if lastfm_similar_artists:
+                    lastfm_artist_names.extend(lastfm_similar_artists)
+            artist_names.extend(lastfm_artist_names)
         #### 2. recall track based on artist ids  # NOTE: rate limited
         # track_set = self.recall_tracks(artist_ids, artist_top_limit=10, album_limit=5)
         # 2. spotify id to tivo id, artist to album to tracks
-        artist_ids = await self.get_tivo_artist_ids(artist_names[:10])  # third-party API to get tivo artist ids
+        logger.info(f'Number of artists: {len(artist_names)}')
+        logger.info(f'artist_names: {artist_names}')
+        # NOTE: not stable, often timeout
+        artist_ids = await self.get_tivo_artist_ids(random.sample(artist_names, min(10, len(artist_names))))  # third-party API to get tivo artist ids
         artist_album_dict = await self.get_tivo_artist_album_ids(artist_ids)
         tivo_tracks = await self.get_tivo_tracks_in_artist_album_dict(artist_album_dict)
         # tivo_tracks: dict_keys(['id', 'title', 'performers', 'composers', 'duration', 'disc', 'phyTrackNum', 'isPick'])
         random.shuffle(tivo_tracks)  # Shuffle tracks to ensure randomness
-        recall_track_titles = [track['title'] for track in tivo_tracks]
+        recall_track_titles = [track['title'] for track in tivo_tracks if 'title' in track]
+
+        # lastfm_artist_albums_dict = await lastfm_client.get_albums_of_artists(artist_names)
+        # albums = [album for artist_albums in lastfm_artist_albums_dict.values() for album in artist_albums]
+        # recall_track_titles = [await lastfm_client.get_track_titles_of_albums(albums=albums)]
 
         # # 3. third-party crawl to get more tracks by artist names
         # # e.g. crawl_boil_the_frog_artists_and_tracks
@@ -912,24 +906,14 @@ class SpotifySuperClient(SpotifyClient):
         Comprehensive recall of tracks based on a list of artist names, returning detailed track information.
         """
         artist_names = lastfm_similar_artists
-        artist_ids = await self.get_tivo_artist_ids(artist_names)  # third-party API to get tivo artist ids
+        artist_ids = await self.get_tivo_artist_ids(random.sample(artist_names, min(10, len(artist_names))))  # third-party API to get tivo artist ids
         artist_album_dict = await self.get_tivo_artist_album_ids(artist_ids)
         tivo_tracks = await self.get_tivo_tracks_in_artist_album_dict(artist_album_dict)
         # tivo_tracks: dict_keys(['id', 'title', 'performers', 'composers', 'duration', 'disc', 'phyTrackNum', 'isPick'])
         random.shuffle(tivo_tracks)  # Shuffle tracks to ensure randomness
-        recall_track_titles = [track['title'] for track in tivo_tracks]
-
-        # # 3. third-party crawl to get more tracks by artist names
-        # # e.g. crawl_boil_the_frog_artists_and_tracks
-        # print('Crawling third-party artists and tracks...')
-        # selected_artists = random.sample(artist_names, min(3, len(artist_names)))
-        # for artist_name in tqdm(selected_artists, desc="Crawling third-party artists and tracks"):
-        #     boil_the_frog_pairs = crawl_boil_the_frog_artists_and_tracks(artist_name)
-        #     boil_the_frog_tracks = [pair['track'] for pair in boil_the_frog_pairs]
-        #     recall_track_titles.extend(boil_the_frog_tracks)
-        # # De-duplicate track titles
-        # recall_track_titles = list(set(recall_track_titles))
-
+        logger.info(f'Number of tracks from tivo: {len(tivo_tracks)}')
+        # logger.info(f'tivo_tracks: {tivo_tracks}')
+        recall_track_titles = [track['title'] for track in tivo_tracks if 'title' in track]
 
         search_tracks = []  
         search_track_ids = []
@@ -975,9 +959,7 @@ class SpotifySuperClient(SpotifyClient):
         recall_all_artist_names = []
         seen_track_ids = set()
         if reccobeats_tracks['success']:
-            # time-consuming
-            # for track in tqdm(reccobeats_tracks['data']['tracks'][], desc="Adding Reccobeats tracks features"):
-            for track in tqdm(reccobeats_tracks['data']['tracks'][:50], desc="Adding Reccobeats tracks features"):
+            for track in tqdm(reccobeats_tracks['data']['tracks'], desc="Adding Reccobeats tracks features"):
                 # Skip duplicate tracks
                 if track['id'] in seen_track_ids:
                     continue
