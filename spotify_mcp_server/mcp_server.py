@@ -11,7 +11,10 @@ from spotify_client import SpotifySuperClient as SpotifyClient
 import os
 import sys
 import numpy as np
+import random
 from lastfm_client import LastfmClient
+from llm_client import LLMClient
+import math
 import logging
 
 logging.basicConfig(
@@ -339,7 +342,7 @@ class SpotifyMCPServer:
             """Create new playlist"""
             result = self.spotify_client.create_playlist(name, description, public)
             if not result["success"]:
-                return f"Failed to create playlist: {result['message']}"
+                return f"{result['message']}"
             
             playlist = result["data"]
             content = f"""# Playlist Created Successfully
@@ -531,7 +534,7 @@ class SpotifyMCPSuperServer(SpotifyMCPServer):
                 If 'point_meta.json' with 'start' and 'end' points exists, tracks are projected and filtered
                 along the valence-energy direction for relevance in MPC applications.
             """
-            tracks = await self.spotify_client.recall_all_tracks()
+            tracks = await self.spotify_client.recall_all_tracks(lastfm_client=self.lastfm_client)
             data = tracks['data']
             search_tracks = data.get('tracks', [])
             search_track_ids = data.get('track_ids', [])
@@ -726,3 +729,339 @@ class SpotifyMCPSuperServer(SpotifyMCPServer):
                 "present_artists": artists,
                 "similar_artists": similar_artists,
             }
+
+
+class SpotifyMCPSuperServerV2(SpotifyMCPServer):
+    """Super MCP Server with recommendation tools"""
+    def __init__(self, spotify_client: SpotifyClient, lastfm_client: LastfmClient, llm_client: LLMClient):
+        """
+        Initialize MCP server
+        
+        Args:
+            spotify_client: Spotify client instance
+            lastfm_client: Last.fm client instance
+            llm_client: LLM client instance for activity to valence/energy mapping
+        """
+        self.spotify_client = spotify_client
+        self.lastfm_client = lastfm_client
+        self.llm_client = llm_client
+        self.mcp = FastMCP("spotify-mcp-server")
+        self.setup_tools()
+
+    def setup_tools(self):
+        """Setup MCP tools"""
+        # @self.mcp.tool(enabled=False)
+        # async def recommend_tracks_with_artist_names(artists: List[str], limit: int = 20) -> Dict[str, Any]:
+        #     """
+        #     Recommend tracks based on artist names.
+
+        #     Args:
+        #         artists (List[str]): List of artist names.
+        #         limit (int): Maximum number of tracks to recommend.
+
+        #     Returns:
+        #         dict: {"success": bool, "message": str, "recommended_tracks": List[dict]}
+        #     """
+        #     logger.info(f'artists: {artists}')
+
+        #     similar_artists = await self.lastfm_client.get_similar_artists(artists, limit=10, include_original=True)
+        #     logger.info(f'similar_artists: {similar_artists}')
+        #     tracks = await self.spotify_client.recall_tracks_based_on_artist_names(lastfm_similar_artists=similar_artists)
+        #     data = tracks['data']
+        #     search_tracks = data.get('tracks', [])
+            
+        #     recall_tracks = []
+        #     flag_id = []
+        #     for track in search_tracks:
+        #         if track['id'] in flag_id:
+        #             continue
+        #         if track.get('features', {}).get('success', False) is False:
+        #             continue
+        #         flag_id.append(track['id'])
+                
+        #         acousticness = track['features']['data']['acousticness']
+        #         danceability = track['features']['data']['danceability']
+        #         energy = track['features']['data']['energy']
+        #         valence = track['features']['data']['valence']
+                
+        #         recall_tracks.append({
+        #             "id": track['id'],
+        #             "name": track['name'],
+        #             "artists": [artist['name'] for artist in track['artists']],
+        #             "duration_ms": track['duration_ms'],
+        #             "uri": track['uri'],
+        #             "valence": valence,
+        #             "energy": energy,
+        #         })
+            
+        #     # Default to random selection if no specific valence/energy range is provided
+        #     random.shuffle(recall_tracks)
+        #     recommended_tracks = recall_tracks[:limit]
+            
+        #     return {
+        #         "success": True,
+        #         "message": f"Successfully recommended {len(recommended_tracks)} tracks",
+        #         "recommended_tracks": recommended_tracks,
+        #         "present_artists": artists,
+        #         "similar_artists": similar_artists
+        #     }
+
+        @self.mcp.tool()
+        async def recommend_tracks(activity: str, limit: int = 20, genres: List[str] = [], specific_wanted_artists_in_prompt: List[str] = [], add_to_playlist_or_create: bool = False, playlist_name: Optional[str] = None) -> Dict[str, Any]:
+            """
+            Recommend tracks based on activity type with start and end emotional points.
+
+            Args:
+                activity (str): Activity type (e.g., "working out", "relaxing", "driving").
+                limit (int): Maximum number of tracks to recommend.
+                genres (List[str]): The genres of the tracks you want to recommend (e.g. "pop", "rock", "hip hop", "slow").
+                specific_wanted_artists_in_prompt (List[str]): The specific artists you want to recommend, only used when there is specific artist in prompt!
+                add_to_playlist_or_create (bool): Whether to create a new playlist or add to an existing one. True when you want to add tracks to a existing playlist, False when you want to create a new playlist. If True, playlist_name must be provided.
+                playlist_name (Optional[str]): Name of the playlist to add tracks to, only used when add_to_playlist_or_create is True. If add_to_playlist_or_create is False, playlist_name must be None. If add_to_playlist_or_create is True, playlist_name must be provided.
+            Returns:
+                dict: {"success": bool, "message": str, "playlist_id": str, "recommended_tracks": List[dict], "start_point": tuple, "end_point": tuple}
+            """
+            logger.info(f'activity: {activity}')
+            logger.info(f'limit: {limit}')
+            logger.info(f'genres: {genres}')
+            logger.info(f'specific_wanted_artists_in_prompt: {specific_wanted_artists_in_prompt}')
+            logger.info(f'add_to_playlist_or_create: {add_to_playlist_or_create}')
+            logger.info(f'playlist_name: {playlist_name}')
+            
+            # Map activity to valence and energy ranges using LLM
+            logger.info(f'Using LLM to determine valence and energy ranges for activity: {activity}')
+            
+            # # Prepare prompt for LLM
+            prompt = ""
+            with open('spotify_mcp_server/prompt.txt', 'r') as f:
+                prompt = f.read()
+
+
+            # Call LLM to get start and end points
+            try:
+                # Assuming we have an llm_client available
+                llm_response = self.llm_client.generate(prompt)["output"]["text"]
+                logger.info(f'LLM response: {llm_response}')
+                # Parse LLM response
+                points = json.loads(llm_response)
+                start_point = (points['start_valence'], points['start_energy'])
+                end_point = (points['end_valence'], points['end_energy'])
+                logger.info(f'Determined points: start={start_point}, end={end_point}')
+
+                # Derive ranges from points
+                valence_min = min(start_point[0], end_point[0])
+                valence_max = max(start_point[0], end_point[0])
+                energy_min = min(start_point[1], end_point[1])
+                energy_max = max(start_point[1], end_point[1])
+                valence_range = (valence_min, valence_max)
+                energy_range = (energy_min, energy_max)
+                
+                # Validate ranges
+                if not (0 <= valence_range[0] <= valence_range[1] <= 1 and 0 <= energy_range[0] <= energy_range[1] <= 1):
+                    raise ValueError("LLM returned invalid valence or energy ranges")
+                
+                logger.info(f'Determined ranges: valence={valence_range}, energy={energy_range}')
+            except Exception as e:
+                logger.error(f'Failed to determine ranges with LLM: {str(e)}')
+                # Fallback to default ranges and points based on activity type
+                # Check if activity involves mood change or emotional journey
+                mood_change_keywords = ['mood changing', 'emotional journey', 'from sad to happy', 'from happy to sad', 'relaxing after', 'calming down', 'getting energetic', 'winding down']
+                continuous_activity_keywords = ['working out', 'study', 'driving', 'running', 'walking', 'reading', 'coding', 'cycling', 'yoga', 'meditating']
+                
+                is_mood_change = any(keyword in activity.lower() for keyword in mood_change_keywords)
+                is_continuous = any(keyword in activity.lower() for keyword in continuous_activity_keywords)
+                
+                if is_mood_change:
+                    # For mood change activities, set different start and end points
+                    # Default for 'mood changing from sad to happy'
+                    start_point = (0.3, 0.2)
+                    end_point = (0.9, 0.7)
+                elif is_continuous:
+                    # For continuous activities, set same start and end points
+                    start_point = (0.7, 0.8)
+                    end_point = (0.7, 0.8)
+                else:
+                    # For other activities, use general default
+                    start_point = (0.5, 0.5)
+                    end_point = (0.5, 0.5)
+                
+                valence_range = (min(start_point[0], end_point[0]), max(start_point[0], end_point[0]))
+                energy_range = (min(start_point[1], end_point[1]), max(start_point[1], end_point[1]))
+                logger.info(f'Using default ranges: valence={valence_range}, energy={energy_range}')
+                logger.info(f'Using default points: start={start_point}, end={end_point}')
+            
+            # # Recall tracks and filter by valence and energy
+            if specific_wanted_artists_in_prompt and len(specific_wanted_artists_in_prompt) > 0:
+                similar_artists = await self.lastfm_client.get_similar_artists(specific_wanted_artists_in_prompt, limit=10, include_original=True)
+                tracks = await self.spotify_client.recall_tracks_based_on_artist_names(lastfm_similar_artists=similar_artists)
+            else:
+                tracks = await self.spotify_client.recall_all_tracks(self.lastfm_client)
+            # tracks = await self.spotify_client.recall_all_tracks(self.lastfm_client)
+            data = tracks['data']
+            search_tracks = data.get('tracks', [])
+            logger.info(f'Found {len(search_tracks)} tracks')
+            logger.info(f'search_tracks[:10]: {search_tracks[:10]}')
+            
+            filtered_tracks = []
+            flag_id = []
+            for track in search_tracks:
+                if track['id'] in flag_id:
+                    continue
+                if track.get('features', {}).get('success', False) is False:
+                    continue
+                
+                valence = track['features']['data']['valence']
+                energy = track['features']['data']['energy']
+                
+                # Check if track is within the desired valence and energy ranges
+                if valence_range[0] == valence_range[1] and energy_range[0] == energy_range[1]:
+                    # sort by distance to the point
+                    distance = math.sqrt((valence - start_point[0])**2 + (energy - start_point[1])**2)
+                    filtered_tracks.append({
+                        "id": track['id'],
+                        "name": track['name'],
+                        "artists": [artist['name'] for artist in track['artists']],
+                        "duration_ms": track['duration_ms'],
+                        "uri": track['uri'],
+                        "valence": valence,
+                        "energy": energy,
+                        "distance": distance,
+                    })
+                    continue
+                # Check if track is within the desired valence and energy ranges
+                if valence_range[0] <= valence <= valence_range[1] and energy_range[0] <= energy <= energy_range[1]:
+                    flag_id.append(track['id'])
+                    filtered_tracks.append({
+                        "id": track['id'],
+                        "name": track['name'],
+                        "artists": [artist['name'] for artist in track['artists']],
+                        "duration_ms": track['duration_ms'],
+                        "uri": track['uri'],
+                        "valence": valence,
+                        "energy": energy,
+                    })
+            if len(filtered_tracks) < limit:
+                range_center_x = (valence_range[0] + valence_range[1]) / 2
+                range_center_y = (energy_range[0] + energy_range[1]) / 2
+                # get tracks in search_tracks but not in filtered_tracks
+                unselected_tracks = [track for track in search_tracks if track['id'] not in flag_id and track.get('features', {}).get('success', False) is True]
+                logger.info(f'filtered_tracks[:10]: {filtered_tracks[:10]}')
+                logger.info(f'unselected_tracks[:10]: {unselected_tracks[:10]}')
+                # calc distance to the center
+                for idx, track in enumerate(unselected_tracks):
+                    unselected_tracks[idx]['distance'] = math.sqrt((track['features']['data']['valence'] - range_center_x)**2 + (track['features']['data']['energy'] - range_center_y)**2)
+                for idx, track in enumerate(filtered_tracks):
+                    filtered_tracks[idx]['distance'] = math.sqrt((track['valence'] - range_center_x)**2 + (track['energy'] - range_center_y)**2)
+                # sort by distance to the center
+                unselected_tracks.sort(key=lambda x: x['distance'])
+                # add unselected_tracks to filtered_tracks
+                filtered_tracks.extend(unselected_tracks)
+                # sort by distance
+                filtered_tracks.sort(key=lambda x: x['distance'])
+            
+            # # Shuffle and limit the results
+            # random.shuffle(filtered_tracks)
+            # logger.info(f'Number of tracks of filtered_tracks: {len(filtered_tracks)}')
+            # logger.info(f'filtered_tracks: {filtered_tracks}')
+            # if 'distance' in filtered_tracks[0]:
+            #     filtered_tracks.sort(key=lambda x: x['distance'])
+            #     recommended_tracks = filtered_tracks[:limit]
+            # else:
+            #     recommended_tracks = filtered_tracks[:limit]
+            
+            if add_to_playlist_or_create:
+                # find the playlist id
+                find_playlist_result = self.spotify_client.get_user_playlists(limit=50)
+                if not find_playlist_result["success"]:
+                    return {
+                        "success": False,
+                        "message": f"Failed to find playlist: {find_playlist_result['message']}",
+                    }
+                playlist_id = None
+                playlists = find_playlist_result["data"]["items"]
+                for playlist in playlists:
+                    if playlist["name"] == playlist_name:
+                        playlist_id = playlist["id"]
+                        break
+                if not playlist_id: # create playlist
+                    create_playlist_result = self.spotify_client.create_playlist(playlist_name, description=f"Playlist for {activity}")
+                    if not create_playlist_result["success"]:
+                        return {
+                            "success": False,
+                            "message": f"{create_playlist_result['message']}",
+                            # "recommended_tracks": recommended_tracks
+                        }
+                    playlist_id = create_playlist_result["data"]["id"]
+            else:
+                # create playlist
+                create_playlist_result = self.spotify_client.create_playlist(activity, description=f"Playlist for {activity}")
+                if not create_playlist_result["success"]:
+                    return {
+                        "success": False,
+                        "message": f"{create_playlist_result['message']}",
+                        # "recommended_tracks": recommended_tracks
+                    }
+                playlist_id = create_playlist_result["data"]["id"]
+
+            # check track names in playlist
+            track_names_in_playlist = self.spotify_client.get_playlist_tracks(playlist_id)
+            # json.dump(track_names_in_playlist, open('track_names_in_playlist.json', 'w'), indent=4)
+            exist_tracks = [track['track']['name'] for track in track_names_in_playlist['data']['items']]
+            filtered_tracks = [track for track in filtered_tracks if track['name'] not in exist_tracks]
+            # Shuffle and limit the results
+            random.shuffle(filtered_tracks)
+            logger.info(f'Number of tracks of filtered_tracks: {len(filtered_tracks)}')
+            logger.info(f'filtered_tracks[:10]: {filtered_tracks[:10]}')
+            if 'distance' in filtered_tracks[0]:
+                filtered_tracks.sort(key=lambda x: x['distance'])
+                recommended_tracks = filtered_tracks[:limit]
+            else:
+                recommended_tracks = filtered_tracks[:limit]
+
+            # logger.info(f'track_names_in_playlist: {track_names_in_playlist}')
+            # Add tracks to the playlist
+            track_uris = [track['uri'] for track in recommended_tracks]
+            logger.info(f"Number of tracks to add: {len(track_uris)}")
+            if not track_uris:
+                return {
+                    "success": False,
+                    "message": "No tracks to add to playlist: recommended_tracks is empty",
+                    "playlist_id": playlist_id
+                }
+            add_tracks_result = self.spotify_client.add_tracks_to_playlist(playlist_id, track_uris)
+            
+            if not add_tracks_result["success"]:
+                return {
+                    "success": False,
+                    "message": f"Failed to add tracks to playlist: {add_tracks_result['message']}",
+                    "playlist_id": playlist_id,
+                    # "recommended_tracks": recommended_tracks
+                }
+            
+            if add_to_playlist_or_create:   
+                message = f"Successfully added tracks to playlist '{playlist_name}' with {len(recommended_tracks)} tracks"
+                if specific_wanted_artists_in_prompt:
+                    message += f" related to {specific_wanted_artists_in_prompt}"
+                # return {
+                #     "success": True,
+                #     "message": message,
+                #     "playlist_id": playlist_id,
+                #     "recommended_tracks": recommended_tracks,
+                #     "start_point": start_point,
+                #     "end_point": end_point
+                # }
+                return message
+            else:
+                message = f"Successfully created playlist '{activity}' with {len(recommended_tracks)} tracks"
+                if specific_wanted_artists_in_prompt:
+                    message += f" related to {specific_wanted_artists_in_prompt}"
+                # return {
+                #     "success": True,
+                #     "message": message,
+                #     "playlist_id": playlist_id,
+                #     "recommended_tracks": recommended_tracks,
+                #     "start_point": start_point,
+                #     "end_point": end_point
+                # }
+                return message
+

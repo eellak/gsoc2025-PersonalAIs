@@ -46,3 +46,5 @@ __pycache__
 .cache
 .env
 point_meta.json
+track_names_in_playlist.json
+activity.json
