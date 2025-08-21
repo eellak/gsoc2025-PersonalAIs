@@ -809,17 +809,49 @@ class SpotifyMCPSuperServerV2(SpotifyMCPServer):
         @self.mcp.tool()
         async def recommend_tracks(activity: str, limit: int = 20, genres: List[str] = [], specific_wanted_artists_in_prompt: List[str] = [], add_to_playlist_or_create: bool = False, playlist_name: Optional[str] = None) -> Dict[str, Any]:
             """
-            Recommend tracks based on activity type with start and end emotional points.
-
+            IMPORTANT: This tool is ONLY triggered when the user EXPLICITLY requests music/song recommendations!
+            
+            DO NOT trigger this tool for:
+            - General mood expression (use mood_detection instead)
+            - Emotional state updates
+            - Playlist management requests
+            - Any other non-recommendation requests
+            
+            ONLY trigger when user says things like:
+            - "Recommend me some songs for..."
+            - "I want music for..."
+            - "Suggest tracks for..."
+            - "Give me music recommendations for..."
+            - "Find songs for..."
+            - "I need music for..."
+            
+            This tool creates personalized music recommendations based on activity context and emotional coordinates, then automatically creates or updates playlists.
+            
             Args:
-                activity (str): Activity type (e.g., "working out", "relaxing", "driving").
-                limit (int): Maximum number of tracks to recommend.
-                genres (List[str]): The genres of the tracks you want to recommend (e.g. "pop", "rock", "hip hop", "slow").
-                specific_wanted_artists_in_prompt (List[str]): The specific artists you want to recommend, only used when there is specific artist in prompt!
-                add_to_playlist_or_create (bool): Whether to create a new playlist or add to an existing one. True when you want to add tracks to a existing playlist, False when you want to create a new playlist. If True, playlist_name must be provided.
-                playlist_name (Optional[str]): Name of the playlist to add tracks to, only used when add_to_playlist_or_create is True. If add_to_playlist_or_create is False, playlist_name must be None. If add_to_playlist_or_create is True, playlist_name must be provided.
+                activity (str): The specific activity or context for music recommendation
+                    Examples: "working out", "relaxing", "driving", "studying", "running", "meditation"
+                limit (int): Maximum number of tracks to recommend (default: 20)
+                genres (List[str]): Preferred music genres (e.g., ["pop", "rock", "hip hop", "jazz"])
+                specific_wanted_artists_in_prompt (List[str]): Specific artists to include in recommendations
+                    Note: Only use when user explicitly mentions specific artists in their request
+                add_to_playlist_or_create (bool): Playlist management strategy
+                    - False: Create new playlist with activity name
+                    - True: Add to existing playlist (playlist_name required)
+                playlist_name (Optional[str]): Name of existing playlist to add tracks to
+                    Required when add_to_playlist_or_create is True
+            
             Returns:
-                dict: {"success": bool, "message": str, "playlist_id": str, "recommended_tracks": List[dict], "start_point": tuple, "end_point": tuple}
+                str: Success message with playlist details and track count
+            
+            How it works:
+            1. Maps activity to emotional coordinates (valence/energy) using LLM
+            2. Recalls tracks from user's music library and similar artists
+            3. Filters tracks based on emotional coordinates and preferences
+            4. Creates new playlist or adds to existing one
+            5. Returns confirmation message with playlist details
+            
+            Note: This tool automatically uses emotional coordinates from point_meta.json if available, 
+            or generates appropriate defaults based on the activity type.
             """
             logger.info(f'activity: {activity}')
             logger.info(f'limit: {limit}')
@@ -1065,3 +1097,210 @@ class SpotifyMCPSuperServerV2(SpotifyMCPServer):
                 # }
                 return message
 
+        @self.mcp.tool()
+        async def mood_detection(user_mood_expression: str) -> dict:
+            """
+            Detect user's mood from natural language expression and generate valence/energy coordinates for emotional state tracking.
+            
+            This tool is triggered when:
+            1. User wants to express their current emotional state (e.g., "I feel sad", "I'm hyped", "in a chill mood")
+            2. User wants to set up an emotional journey/transition (e.g., "I want to go from feeling down to feeling energetic", "help me transition from stressed to relaxed")
+            3. User wants to update their emotional baseline for music recommendations
+            
+            The tool maps natural language to valence (positivity: 0=sad/negative, 1=happy/positive) and energy (intensity: 0=calm/relaxed, 1=energetic/excited) coordinates.
+            
+            Args:
+                user_mood_expression (str): Natural language description of mood or emotional transition
+                    Examples:
+                    - Current state: "I feel sad", "I'm hyped", "feeling anxious", "in a good mood"
+                    - Emotional journey: "help me go from stressed to calm", "I want to transition from sad to happy"
+                    - Activity-based: "I need music for working out", "help me relax after a long day"
+            
+            Returns:
+                dict: JSON object containing:
+                    - success (bool): Whether the operation was successful
+                    - type (str): "single_mood" or "mood_transition"
+                    - message (str): Human-readable status message
+                    - coordinates (dict): Start and end valence/energy coordinates
+                    - file_path (str): Path to saved point_meta.json file
+            
+            Note:
+                - Single mood: Only updates the start point, preserves existing end point if available
+                - Mood transition: Updates both start and end points for emotional journey mapping
+                - Coordinates are saved to point_meta.json for use in music recommendation algorithms
+                - Valence and energy values range from 0.0 to 1.0
+            """
+            logger.info(f'User mood expression: {user_mood_expression}')
+            
+            try:
+                # Read the mood detection prompt
+                prompt_path = 'spotify_mcp_server/mood_detection_prompt.txt'
+                if not os.path.exists(prompt_path):
+                    return {
+                        "success": False,
+                        "error": "prompt_file_not_found",
+                        "message": f"Mood detection prompt file not found at {prompt_path}"
+                    }
+                
+                with open(prompt_path, 'r') as f:
+                    prompt = f.read()
+                
+                # Add the user's mood expression to the prompt
+                full_prompt = f"{prompt}\n\nUser: {user_mood_expression}\n"
+                
+                # Call LLM to get mood coordinates
+                logger.info('Using LLM to detect mood coordinates')
+                llm_response = self.llm_client.generate(full_prompt)["output"]["text"]
+                logger.info(f'LLM response: {llm_response}')
+                
+                # Parse LLM response to extract coordinates
+                coordinates = None
+                try:
+                    # Clean the response and parse as JSON
+                    # Remove any extra whitespace and newlines
+                    cleaned_response = llm_response.strip()
+                    coordinates = json.loads(cleaned_response)
+                    
+                    # Validate coordinates
+                    required_keys = ['start_valence', 'start_energy', 'end_valence', 'end_energy']
+                    coordinates_valid = True
+                    
+                    for key in required_keys:
+                        if key not in coordinates:
+                            logger.warning(f"LLM response missing required key '{key}', using default values")
+                            coordinates_valid = False
+                            break
+                        if not isinstance(coordinates[key], (int, float)):
+                            logger.warning(f"Invalid coordinate value for '{key}': {coordinates[key]}, using default values")
+                            coordinates_valid = False
+                            break
+                        if not (0.0 <= coordinates[key] <= 1.0):
+                            logger.warning(f"Coordinate value for '{key}' must be between 0.0 and 1.0, got {coordinates[key]}, using default values")
+                            coordinates_valid = False
+                            break
+                    
+                    if not coordinates_valid:
+                        coordinates = None
+                        
+                except json.JSONDecodeError as e:
+                    logger.error(f'Failed to parse LLM response as JSON: {e}, using default values')
+                    coordinates = None
+                
+                # Use default coordinates if parsing failed or validation failed
+                if coordinates is None:
+                    logger.info('Using default mood coordinates')
+                    # Default to neutral mood (0.5, 0.5)
+                    default_coordinates = {
+                        'start_valence': 0.5,
+                        'start_energy': 0.5,
+                        'end_valence': 0.5,
+                        'end_energy': 0.5
+                    }
+                    coordinates = default_coordinates
+                
+                # Determine if it's a single mood or mood transition
+                is_transition = (coordinates['start_valence'] != coordinates['end_valence'] or 
+                               coordinates['start_energy'] != coordinates['end_energy'])
+                
+                # Load existing point_meta.json if it exists
+                existing_point_meta = {}
+                point_meta_path = 'point_meta.json'
+                if os.path.exists(point_meta_path):
+                    try:
+                        with open(point_meta_path, 'r') as f:
+                            existing_point_meta = json.load(f)
+                        logger.info(f'Loaded existing point_meta from {point_meta_path}')
+                    except Exception as e:
+                        logger.warning(f'Failed to load existing point_meta: {e}, starting fresh')
+                        existing_point_meta = {}
+                
+                # Prepare data for point_meta.json based on transition type
+                if is_transition:
+                    # For mood transition, update both start and end
+                    point_meta_data = {
+                        "start": {
+                            "x": coordinates['start_valence'],
+                            "y": coordinates['start_energy'],
+                            "type": "start"
+                        },
+                        "end": {
+                            "x": coordinates['end_valence'],
+                            "y": coordinates['end_energy'],
+                            "type": "end"
+                        }
+                    }
+                    logger.info('Mood transition detected: updating both start and end points')
+                else:
+                    # For single mood, only update start point, keep existing end if available
+                    point_meta_data = {
+                        "start": {
+                            "x": coordinates['start_valence'],
+                            "y": coordinates['start_energy'],
+                            "type": "start"
+                        }
+                    }
+                    
+                    # Keep existing end point if it exists
+                    if 'end' in existing_point_meta:
+                        point_meta_data["end"] = existing_point_meta["end"]
+                        logger.info('Single mood detected: updating start point, keeping existing end point')
+                    else:
+                        # If no existing end point, set it same as start
+                        point_meta_data["end"] = {
+                            "x": coordinates['start_valence'],
+                            "y": coordinates['start_energy'],
+                            "type": "end"
+                        }
+                        logger.info('Single mood detected: setting both start and end to same point')
+                
+                logger.info(f'Point meta data prepared: {point_meta_data}')
+                # Save to point_meta.json
+                with open(point_meta_path, 'w') as f:
+                    json.dump(point_meta_data, f, indent=2)
+                
+                logger.info(f'Successfully saved mood coordinates to {point_meta_path}')
+                
+                if is_transition:
+                    result = {
+                        "success": True,
+                        "type": "mood_transition",
+                        "message": "Mood transition detected and coordinates saved!",
+                        "coordinates": {
+                            "start": {
+                                "valence": coordinates['start_valence'],
+                                "energy": coordinates['start_energy']
+                            },
+                            "end": {
+                                "valence": coordinates['end_valence'],
+                                "energy": coordinates['end_energy']
+                            }
+                        },
+                        "file_path": "point_meta.json"
+                    }
+                else:
+                    result = {
+                        "success": True,
+                        "type": "single_mood",
+                        "message": "Current mood detected and coordinates saved!",
+                        "coordinates": {
+                            "start": {
+                                "valence": coordinates['start_valence'],
+                                "energy": coordinates['start_energy']
+                            },
+                            "end": {
+                                "valence": coordinates['end_valence'],
+                                "energy": coordinates['end_energy']
+                            }
+                        },
+                        "file_path": "point_meta.json"
+                    }
+                
+                return result
+                
+            except Exception as e:
+                logger.error(f'Error in mood detection: {str(e)}')
+                return {
+                    "success": False,
+                    "error": "general_error",
+                    "message": f"Failed to detect mood: {str(e)}"
+                }
