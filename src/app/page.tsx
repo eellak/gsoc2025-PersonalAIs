@@ -36,8 +36,12 @@ const savePointMeta = async (startPoint: PointWithType | null, endPoint: PointWi
     
     const result = await response.json();
     console.log('Point meta saved:', result);
+    
+    // Return the result so we can use it for immediate state update
+    return result;
   } catch (error) {
     console.error('Error saving point meta:', error);
+    return null;
   }
 }
 
@@ -154,6 +158,35 @@ export default function Chat() {
   const [openQuestionnaire, setOpenQuestionnaire] = useState(false);
   const [startPoint, setStartPoint] = useState<PointWithType | null>(null);
   const [endPoint, setEndPoint] = useState<PointWithType | null>(null);
+
+  // Function to load point meta from file
+  const loadPointMeta = async () => {
+    try {
+      const response = await fetch('/api/point-meta');
+      if (response.ok) {
+        const data = await response.json();
+        if (data.start) {
+          setStartPoint({ x: data.start.x, y: data.start.y, type: 'start' } as PointWithType);
+        }
+        if (data.end) {
+          setEndPoint({ x: data.end.x, y: data.end.y, type: 'end' } as PointWithType);
+        }
+        console.log('Loaded point meta from file:', data);
+      }
+    } catch (error) {
+      console.error('Error loading point meta:', error);
+    }
+  };
+
+  // Load point meta when component mounts and set up periodic refresh
+  useEffect(() => {
+    loadPointMeta();
+    
+    // Set up periodic refresh every 5 seconds to sync with file changes
+    const interval = setInterval(loadPointMeta, 5000);
+    
+    return () => clearInterval(interval);
+  }, []);
 
   const isAtBottomRef = useRef(true);
   const scrollToBottom = () => {
@@ -447,7 +480,13 @@ export default function Chat() {
                       const y = scores[1] / filledCount;
                       console.log(`Normalized Scores: x=${x.toFixed(3)}, y=${y.toFixed(3)}`);
                       setStartPoint({ x: x, y: y, type: 'start' } as PointWithType);
-                      await savePointMeta({ x: x, y: y, type: 'start' } as PointWithType, null);
+                      const saveResult = await savePointMeta({ x: x, y: y, type: 'start' } as PointWithType, null);
+                      if (saveResult?.data) {
+                        // Update state with the saved data to ensure consistency
+                        if (saveResult.data.start) {
+                          setStartPoint({ x: saveResult.data.start.x, y: saveResult.data.start.y, type: 'start' } as PointWithType);
+                        }
+                      }
                       setOpenQuestionnaire(false);
                       
                       setMessages([...messages, 
@@ -483,10 +522,22 @@ export default function Chat() {
               onAddPoint={async (point) => {
                 if (point.type === 'start') {
                   setStartPoint(point);
-                  await savePointMeta(point, null);
+                  const saveResult = await savePointMeta(point, null);
+                  if (saveResult?.data) {
+                    // Update state with the saved data to ensure consistency
+                    if (saveResult.data.start) {
+                      setStartPoint({ x: saveResult.data.start.x, y: saveResult.data.start.y, type: 'start' } as PointWithType);
+                    }
+                  }
                 } else {
                   setEndPoint(point);
-                  await savePointMeta(null, point);
+                  const saveResult = await savePointMeta(null, point);
+                  if (saveResult?.data) {
+                    // Update state with the saved data to ensure consistency
+                    if (saveResult.data.end) {
+                      setEndPoint({ x: saveResult.data.end.x, y: saveResult.data.end.y, type: 'end' } as PointWithType);
+                    }
+                  }
                 }
               }}
               setStartPoint={setStartPoint}
