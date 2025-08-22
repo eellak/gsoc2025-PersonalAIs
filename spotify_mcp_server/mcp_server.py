@@ -974,6 +974,7 @@ class SpotifyMCPSuperServerV2(SpotifyMCPServer):
                         "energy": energy,
                     })
             if len(filtered_tracks) < limit:
+                logger.info(f'len(filtered_tracks) < limit, len(filtered_tracks): {len(filtered_tracks)}, limit: {limit}')
                 range_center_x = (valence_range[0] + valence_range[1]) / 2
                 range_center_y = (energy_range[0] + energy_range[1]) / 2
                 # get tracks in search_tracks but not in filtered_tracks
