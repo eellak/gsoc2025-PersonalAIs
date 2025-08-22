@@ -1012,6 +1012,8 @@ class SpotifyMCPSuperServerV2(SpotifyMCPServer):
                     }
                 playlist_id = None
                 playlists = find_playlist_result["data"]["items"]
+                if playlist_name is None:
+                    playlist_name = activity
                 for playlist in playlists:
                     if playlist["name"] == playlist_name:
                         playlist_id = playlist["id"]
@@ -1027,7 +1029,9 @@ class SpotifyMCPSuperServerV2(SpotifyMCPServer):
                     playlist_id = create_playlist_result["data"]["id"]
             else:
                 # create playlist
-                create_playlist_result = self.spotify_client.create_playlist(activity, description=f"Playlist for {activity}")
+                if playlist_name is None:
+                    playlist_name = activity
+                create_playlist_result = self.spotify_client.create_playlist(playlist_name, description=f"Playlist for {playlist_name}")
                 if not create_playlist_result["success"]:
                     return {
                         "success": False,
