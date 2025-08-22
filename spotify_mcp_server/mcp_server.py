@@ -809,7 +809,7 @@ class SpotifyMCPSuperServerV2(SpotifyMCPServer):
         @self.mcp.tool()
         async def recommend_tracks(activity: str, limit: int = 20, genres: List[str] = [], specific_wanted_artists_in_prompt: List[str] = [], add_to_playlist_or_create: bool = False, playlist_name: Optional[str] = None) -> Dict[str, Any]:
             """
-            IMPORTANT: This tool is ONLY triggered when the user EXPLICITLY requests music/song recommendations!
+            IMPORTANT: This tool is ONLY triggered when the user EXPLICITLY requests music/song recommendations, or ask for making a playlist for recommendation.
             
             DO NOT trigger this tool for:
             - General mood expression (use mood_detection instead)
@@ -837,8 +837,9 @@ class SpotifyMCPSuperServerV2(SpotifyMCPServer):
                 add_to_playlist_or_create (bool): Playlist management strategy
                     - False: Create new playlist with activity name
                     - True: Add to existing playlist (playlist_name required)
-                playlist_name (Optional[str]): Name of existing playlist to add tracks to
-                    Required when add_to_playlist_or_create is True
+                playlist_name (str): Name of existing playlist to add tracks to.
+                    Required when interacting with playlists (must not be None).
+                    Specifically required when add_to_playlist_or_create is True
             
             Returns:
                 str: Success message with playlist details and track count
@@ -1042,13 +1043,59 @@ class SpotifyMCPSuperServerV2(SpotifyMCPServer):
             filtered_tracks = [track for track in filtered_tracks if track['name'] not in exist_tracks]
             # Shuffle and limit the results
             random.shuffle(filtered_tracks)
-            logger.info(f'Number of tracks of filtered_tracks: {len(filtered_tracks)}')
-            logger.info(f'filtered_tracks[:10]: {filtered_tracks[:10]}')
+            # logger.info(f'Number of tracks of filtered_tracks: {len(filtered_tracks)}')
+            # logger.info(f'filtered_tracks[:10]: {filtered_tracks[:10]}')
             if 'distance' in filtered_tracks[0]:
                 filtered_tracks.sort(key=lambda x: x['distance'])
-                recommended_tracks = filtered_tracks[:limit]
+            logger.info(f'Number of tracks of filtered_tracks: {len(filtered_tracks)}')
+            logger.info(f'filtered_tracks[:10]: {filtered_tracks[:10]}')
+            # load point_meta
+            point_meta_path = 'point_meta.json'
+            point_start, point_end = None, None
+            if os.path.exists(point_meta_path):
+                with open(point_meta_path, 'r') as f:
+                    point_meta = json.load(f)
+                    point_start = point_meta.get('start', None)
+                    point_end = point_meta.get('end', None)
             else:
-                recommended_tracks = filtered_tracks[:limit]
+                point_meta = {}
+            if point_start and point_end:
+                point_start = np.array([point_start['x'], point_start['y']])
+                point_end = np.array([point_end['x'], point_end['y']])
+                logger.info('point: ', point_start, point_end)
+                filtered_tracks_valence, filtered_tracks_energy = [], []
+                filtered_tracks_list = []
+                for track in filtered_tracks:
+                    if 'features' in track and 'data' in track['features'] and 'valence' in track['features']['data'] and 'energy' in track['features']['data']:
+                        filtered_tracks_valence.append(track['features']['data']['valence'])
+                        filtered_tracks_energy.append(track['features']['data']['energy'])
+                        filtered_tracks_list.append(track)
+                filtered_tracks = filtered_tracks_list
+                filtered_tracks_valence = np.array(filtered_tracks_valence)
+                filtered_tracks_energy = np.array(filtered_tracks_energy)
+                filtered_tracks_points = np.column_stack((filtered_tracks_valence, filtered_tracks_energy))
+                direction = point_end - point_start
+                direction = direction / np.linalg.norm(direction)
+                relative_vecs = filtered_tracks_points - point_start
+                proj_dis = np.dot(relative_vecs, direction)
+                # valid_mask = (proj_dis >= 0) & (proj_dis <= 1)
+                valid_mask = list((proj_dis >= 0) & (proj_dis <= 1))
+                # valid_filtered_tracks_tracks = [filtered_tracks[i] for i in range(len(filtered_tracks)) if valid_mask[i]]
+                valid_filtered_tracks_tracks = []
+                for i in range(len(filtered_tracks)):
+                    if valid_mask[i]:
+                        valid_filtered_tracks_tracks.append(filtered_tracks[i])
+                valid_proj_dis = proj_dis[valid_mask]
+                sorted_indices = np.argsort(valid_proj_dis)
+                sorted_recommended_tracks = []
+                for i in sorted_indices:
+                    sorted_recommended_tracks.append(valid_filtered_tracks_tracks[i])
+                # sorted_recommended_tracks = [valid_filtered_tracks_tracks[i] for i in sorted_indices]
+                recommended_tracks = sorted_recommended_tracks
+            recommended_tracks = recommended_tracks[:limit]
+
+            logger.info(f'Number of tracks of recommended_tracks: {len(recommended_tracks)}')
+            logger.info(f'recommended_tracks[:10]: {recommended_tracks[:10]}')
 
             # logger.info(f'track_names_in_playlist: {track_names_in_playlist}')
             # Add tracks to the playlist
