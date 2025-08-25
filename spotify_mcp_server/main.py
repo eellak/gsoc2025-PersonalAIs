@@ -8,8 +8,9 @@ import os
 import asyncio
 from dotenv import load_dotenv
 from spotify_client import SpotifySuperClient as SpotifyClient
-from mcp_server import SpotifyMCPSuperServer as SpotifyMCPServer
+from mcp_server import SpotifyMCPSuperServer as SpotifyMCPServer, SpotifyMCPSuperServerV2
 from lastfm_client import LastfmClient
+from llm_client import LLMClient
 import logging
 
 # Configure logging
@@ -27,14 +28,17 @@ def main():
     redirect_uri = os.getenv("SPOTIFY_REDIRECT_URI")
     lastfm_api_key = os.getenv("LASTFM_API_KEY")
     lastfm_api_secret = os.getenv("LASTFM_API_SECRET")
+    dashscope_api_key = os.getenv("DASHSCOPE_API_KEY")
+    
     # logger.info(lastfm_api_key, lastfm_api_secret)
-    if not all([client_id, client_secret, redirect_uri, lastfm_api_key, lastfm_api_secret]):
+    if not all([client_id, client_secret, redirect_uri, lastfm_api_key, lastfm_api_secret, dashscope_api_key]):
         logger.info("Error: Please set the following environment variables:")
         logger.info("- SPOTIFY_CLIENT_ID")
         logger.info("- SPOTIFY_CLIENT_SECRET")
         logger.info("- SPOTIFY_REDIRECT_URI")
         logger.info("- LASTFM_API_KEY")
         logger.info("- LASTFM_API_SECRET")
+        logger.info("- DASHSCOPE_API_KEY")
         logger.info("\nPlease copy env.example to .env and fill in the corresponding values")
         return
     
@@ -49,9 +53,15 @@ def main():
         lastfm_client = LastfmClient(lastfm_api_key, lastfm_api_secret)
         logger.info("Lastfm client initialized successfully!")
         
+        # Create LLM client
+        logger.info("Initializing LLM client...")
+        llm_client = LLMClient(dashscope_api_key)
+        logger.info("LLM client initialized successfully!")
+        
         # Create MCP server
         logger.info("Starting MCP server...")
-        mcp_server = SpotifyMCPServer(spotify_client, lastfm_client)
+        # mcp_server = SpotifyMCPServer(spotify_client, lastfm_client, llm_client)
+        mcp_server = SpotifyMCPSuperServerV2(spotify_client, lastfm_client, llm_client)
         logger.info("MCP server initialized successfully!")
         
         # Run server
