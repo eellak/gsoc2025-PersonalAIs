@@ -19,15 +19,17 @@ export const PreviewMessage = ({ message }: { message: UIMessage; }) => {
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
   const { data: session } = useSession();
 
-  // recall_all_tracks rendering
+  // recommend_tracks_manual rendering
   let allRecallTracks: any[] = [];
   let similar_artists: any[] = [];
   let present_artists: any[] = [];
+  let playlist_id: string | null = null;
+  let playlist_name: string | null = null;
   (message.parts || []).forEach((part: any) => {
     if (
       part.type === 'tool-invocation' &&
       typeof part.toolInvocation === 'object' &&
-      (part.toolInvocation?.toolName === 'recall_all_tracks' || part.toolInvocation?.toolName === 'recall_tracks_based_on_artist_names')
+      (part.toolInvocation?.toolName === 'recommend_tracks_manual')
     ) {
       const toolInvocation = part.toolInvocation;
       if (toolInvocation.state === 'result' && toolInvocation.result && toolInvocation.result.content) {
@@ -35,11 +37,17 @@ export const PreviewMessage = ({ message }: { message: UIMessage; }) => {
         if (content) {
           try {
             const data = JSON.parse(content);
+            // // log
+            // console.log('=======================')
+            // console.log(JSON.stringify(data, null, 2));
+            // console.log('=======================')
             if (data.success && data?.recall_tracks) {
               allRecallTracks = data?.recall_tracks;
               message.content = data?.content;
               present_artists = data?.present_artists;
               similar_artists = data?.similar_artists;
+              playlist_id = data?.playlist_id;
+              playlist_name = data?.playlist_name;
             }
           } catch (e) {
             // ignore
@@ -59,12 +67,12 @@ export const PreviewMessage = ({ message }: { message: UIMessage; }) => {
     }
   }, [JSON.stringify(allRecallTracks)]);
 
-  // if using recall_all_tracks 
+  // if using recommend_tracks_manual or recommend_tracks_automatic
   const isRecalling = (message.parts || []).some(
     (part: any) =>
       part.type === 'tool-invocation' &&
       typeof part.toolInvocation === 'object' &&
-      (part.toolInvocation?.toolName === 'recall_all_tracks' || part.toolInvocation?.toolName === 'recall_tracks_based_on_artist_names')
+      (part.toolInvocation?.toolName === 'recommend_tracks_manual' || part.toolInvocation?.toolName === 'recommend_tracks_automatic')
   );
   
 
@@ -75,10 +83,10 @@ export const PreviewMessage = ({ message }: { message: UIMessage; }) => {
     }
     try {
       // get or create recommend playlist
-      const playlistId = await getOrCreateRecommendPlaylist(session.accessToken);
+      // const playlistId = await getOrCreateRecommendPlaylist(session.accessToken, playlist_id);
       // add tracks
-      await addTrackToPlaylist(session.accessToken, playlistId, track.uri);
-      toast.success(`Successfully to add "${track.name}" to recommend playlist`);
+      await addTrackToPlaylist(session.accessToken, playlist_id!, track.uri);
+      toast.success(`Successfully to add "${track.name}" to "${playlist_name}" playlist`);
       setVisibleRecallTracks(prev => {
         const idx = prev.findIndex(t => t.id === track.id);
         let next = prev.filter(t => t.id !== track.id);
@@ -153,13 +161,13 @@ export const PreviewMessage = ({ message }: { message: UIMessage; }) => {
                     <div className="markdown-body">
                     <ReactMarkdown>
                       
-                    {part.toolInvocation.toolName !== 'recall_all_tracks' && part.toolInvocation.toolName !== 'recall_tracks_based_on_artist_names' ? 
+                    {part.toolInvocation.toolName !== 'recommend_tracks_manual'? 
                       part.toolInvocation.result?.content?.map((item: any) => item.text).join('\n\n') :
                       (() => {
                         const state = part.toolInvocation.state;
                         if (state === 'call') {
                           return "Recalling tracks with [tool]: [" + part.toolInvocation.toolName + "] , please wait...";
-                        } 
+                        }
                         return "No more available recall tracks";
                       })()}
 
@@ -171,7 +179,7 @@ export const PreviewMessage = ({ message }: { message: UIMessage; }) => {
             </div>
           )}
 
-          {/* recall_all_tracks */}
+          {/* recommend_tracks_manual */}
           {visibleRecallTracks.length > 0 && (
             <div className="mb-4 border rounded-lg p-3 bg-gray-50 dark:bg-zinc-900">
               {/* if present artist, show present artist */}
@@ -180,6 +188,9 @@ export const PreviewMessage = ({ message }: { message: UIMessage; }) => {
               ) : (
                 <div className="font-bold mb-2">Recalled Tracks</div>
               )}
+              {
+                (playlist_name) && <div className="font-bold">from "{playlist_name}"</div>
+              }
               <ul className="space-y-2">
                 {visibleRecallTracks.map((track: any) => (
                   <li key={track.id} className="flex items-center justify-between border-b last:border-b-0 py-1">
@@ -221,7 +232,7 @@ export const PreviewMessage = ({ message }: { message: UIMessage; }) => {
             </div>
           )}
 
-          {/*  recall_all_tracks  */}
+          {/*  recommend  */}
           {!isRecalling && message.content && (
             <div className="flex flex-col gap-4 text-left">
               <ReactMarkdown>{message.content}</ReactMarkdown>
