@@ -15,12 +15,16 @@ class LastfmClient:
         self._init_lastfm_client()
 
     def _init_lastfm_client(self):
+        logger.info('api_key: %s', self.api_key)
+        logger.info('api_secret: %s', self.api_secret)
         self.lastfm = pylast.LastFMNetwork(
             api_key=self.api_key, api_secret=self.api_secret
         )
         SESSION_KEY_FILE = os.path.join(os.path.expanduser("~"), ".session_key")
+        logger.info('SESSION_KEY_FILE: %s', SESSION_KEY_FILE)
         if not os.path.exists(SESSION_KEY_FILE):
-            skg = pylast.SessionKeyGenerator(network)
+            logger.info('SESSION_KEY_FILE does not exist')
+            skg = pylast.SessionKeyGenerator(self.lastfm)
             url = skg.get_web_auth_url()
 
             logger.info(f"Please authorize this script to access your account: {url}\n")

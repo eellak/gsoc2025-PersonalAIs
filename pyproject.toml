@@ -15,4 +15,5 @@ dependencies = [
     "numpy>=2.3.2",
     "pylast>=5.5.0",
     "dashscope>=1.24.1",
+    "python-dotenv>=1.1.1",
 ]

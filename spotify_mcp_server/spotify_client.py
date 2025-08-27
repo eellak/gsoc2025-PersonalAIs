@@ -577,21 +577,34 @@ class SpotifyClient:
                 "message": f"Failed to get tracks for album {album_id}"
             }
         
-    async def get_tivo_artist_ids(self, artist_names: List[str]):
-        """Get tivo artist ids (async)"""
+    async def get_tivo_artist_ids(self, artist_names: List[str], max_retries: int = 3, timeout: int = 30):
+        """Get tivo artist ids (async) with retry mechanism"""
         artist_ids = []
-        async with httpx.AsyncClient() as client:
+        async with httpx.AsyncClient(timeout=timeout) as client:
             for artist_name in tqdm(artist_names):
                 artist_name = artist_name.replace(' ', '+')
                 url = f'https://tivomusicapi-staging-elb.digitalsmiths.net/sd/tivomusicapi/taps/v3/search/artist?name={artist_name}&limit=1&includeAllFields=false';
-                response = await client.get(url)
-                data = response.json()
-                logger.info(f'get tivo artist id for {artist_name}, response: {data}')
-                if 'hits' in data and data['hits'] and len(data['hits']) > 0:
-                    tivo_artist_ids = data['hits'][0]['id']
-                else:
-                    continue
-                artist_ids.append(tivo_artist_ids)
+                retries = 0
+                success = False
+                while retries <= max_retries and not success:
+                    try:
+                        response = await client.get(url)
+                        response.raise_for_status()  # Raise exception for 4XX/5XX responses
+                        data = response.json()
+                        logger.info(f'get tivo artist id for {artist_name}, response: {data}')
+                        if 'hits' in data and data['hits'] and len(data['hits']) > 0:
+                            tivo_artist_ids = data['hits'][0]['id']
+                            artist_ids.append(tivo_artist_ids)
+                            success = True
+                        else:
+                            success = True  # No artist found, but not an error
+                    except (httpx.TimeoutException, httpx.HTTPError) as e:
+                        retries += 1
+                        if retries > max_retries:
+                            logger.error(f"Failed to fetch artist {artist_name} after {max_retries} retries: {e}")
+                        else:
+                            logger.info(f"Retrying fetch for artist {artist_name} (attempt {retries}/{max_retries})...")
+                            await asyncio.sleep(1)  # Wait 1 second before retrying
         return artist_ids
     
     async def get_tivo_artist_album_ids(self, artist_ids: List[str]) -> Set[str]:
