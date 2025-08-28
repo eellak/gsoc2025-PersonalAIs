@@ -2,3 +2,8 @@ node_modules
 .venv
 __pycache__
 .history
+.env.local
+spotify_mcp_server/.env
+docker-compose.yaml
+.git
+.gitignore

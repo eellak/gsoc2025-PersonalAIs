@@ -1,6 +1,0 @@
-services:
-  app:
-    build: .
-    container_name: spotify-mcp-server
-    ports:
-      - "3000:3000"

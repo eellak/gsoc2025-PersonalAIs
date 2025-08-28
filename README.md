@@ -18,7 +18,20 @@ This project demonstrates how to deeply integrate AI technology with music servi
 
 ## Getting Started
 
-1. config env
+1. Config env
+
+**Important Security Notice**: Never commit your actual API keys to version control or Docker images. The example below shows placeholder values. For local development, create a `.env.local` file with your real keys, which is automatically ignored by git and Docker.
+
+```bash
+# Copy the example file and fill in your actual API keys
+
+cp .env.local.example .env.local
+
+# Then edit .env.local with your real API keys
+```
+
+Example `.env.local` content:
+
 ```bash
 # openai provider
 OPENAI_API_KEY=sk-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -44,6 +57,19 @@ SPOTIFY_ACCESS_TOKEN=xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 ```bash
 pnpm install
 pnpm run dev
+```
+
+## Docker Deployment
+
+When deploying with Docker, the `.env.local` and `spotify_mcp_server/.env` files are automatically excluded from the image for security. You can pass environment variables to the container at runtime:
+
+```bash
+docker run -d \
+  -e OPENAI_API_KEY=your_openai_key \
+  -e SPOTIFY_CLIENT_ID=your_spotify_client_id \
+  -e SPOTIFY_CLIENT_SECRET=your_spotify_client_secret \
+  -p 3000:3000 \
+  your-image-name
 ```
 
 
