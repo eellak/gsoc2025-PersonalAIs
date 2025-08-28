@@ -4,7 +4,7 @@ import { useChat } from '@ai-sdk/react';
 import { useRef, useState, useEffect } from 'react';
 import Image from 'next/image';
 import { cx } from 'classix';
-import { Trash2 } from 'lucide-react';
+import { Trash2, LogOut } from 'lucide-react';
 
 import { Textarea } from 'ui/textarea';
 import { toast } from 'sonner';
@@ -19,6 +19,7 @@ import Queue from '@/components/spotify/queue';
 import Greeting from '@/components/custom/greeting';
 import Questionnaire, { Question } from '@/components/custom/questionnaire';
 import CartesianPlane, { PointWithType } from '@/components/custom/cartesianplane';
+import { signOut } from 'next-auth/react';
 
 const savePointMeta = async (startPoint: PointWithType | null, endPoint: PointWithType | null) => {
   try {
@@ -264,7 +265,13 @@ export default function Chat() {
     };
   }, [isDragging, queueWidth]);
 
+  const handleLogout = async () => {
+    await signOut({ redirect: false });
+    const loginUri = process.env.NEXTAUTH_URL + '/login';
+    const spotifyLogoutUrl = `https://accounts.spotify.com/logout?continue=${encodeURIComponent(loginUri)}`;
 
+    window.location.href = spotifyLogoutUrl;
+  };
 
   return (
     <div className="flex flex-col h-screen min-h-screen overflow-hidden bg-background">
@@ -278,6 +285,19 @@ export default function Chat() {
           >
             <Trash2 className="w-4 h-4 mr-2" />
             Clear Chat
+          </Button>
+        </div>
+      )}
+      {(
+        <div className="fixed top-4 right-4 z-50">
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={handleLogout}
+            className="text-muted-foreground hover:text-foreground hover:cursor-pointer w-8 h-8 bg-transparent hover:bg-transparent"
+            title="Logout"
+          >
+            <LogOut className="w-4 h-4" />
           </Button>
         </div>
       )}
