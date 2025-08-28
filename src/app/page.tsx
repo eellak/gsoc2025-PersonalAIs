@@ -4,7 +4,7 @@ import { useChat } from '@ai-sdk/react';
 import { useRef, useState, useEffect } from 'react';
 import Image from 'next/image';
 import { cx } from 'classix';
-import { Trash2 } from 'lucide-react';
+import { Trash2, LogOut } from 'lucide-react';
 
 import { Textarea } from 'ui/textarea';
 import { toast } from 'sonner';
@@ -19,6 +19,7 @@ import Queue from '@/components/spotify/queue';
 import Greeting from '@/components/custom/greeting';
 import Questionnaire, { Question } from '@/components/custom/questionnaire';
 import CartesianPlane, { PointWithType } from '@/components/custom/cartesianplane';
+import { signOut } from 'next-auth/react';
 
 const savePointMeta = async (startPoint: PointWithType | null, endPoint: PointWithType | null) => {
   try {
@@ -36,8 +37,12 @@ const savePointMeta = async (startPoint: PointWithType | null, endPoint: PointWi
     
     const result = await response.json();
     console.log('Point meta saved:', result);
+    
+    // Return the result so we can use it for immediate state update
+    return result;
   } catch (error) {
     console.error('Error saving point meta:', error);
+    return null;
   }
 }
 
@@ -155,6 +160,35 @@ export default function Chat() {
   const [startPoint, setStartPoint] = useState<PointWithType | null>(null);
   const [endPoint, setEndPoint] = useState<PointWithType | null>(null);
 
+  // Function to load point meta from file
+  const loadPointMeta = async () => {
+    try {
+      const response = await fetch('/api/point-meta');
+      if (response.ok) {
+        const data = await response.json();
+        if (data.start) {
+          setStartPoint({ x: data.start.x, y: data.start.y, type: 'start' } as PointWithType);
+        }
+        if (data.end) {
+          setEndPoint({ x: data.end.x, y: data.end.y, type: 'end' } as PointWithType);
+        }
+        console.log('Loaded point meta from file:', data);
+      }
+    } catch (error) {
+      console.error('Error loading point meta:', error);
+    }
+  };
+
+  // Load point meta when component mounts and set up periodic refresh
+  useEffect(() => {
+    loadPointMeta();
+    
+    // Set up periodic refresh every 5 seconds to sync with file changes
+    const interval = setInterval(loadPointMeta, 5000);
+    
+    return () => clearInterval(interval);
+  }, []);
+
   const isAtBottomRef = useRef(true);
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -231,7 +265,13 @@ export default function Chat() {
     };
   }, [isDragging, queueWidth]);
 
+  const handleLogout = async () => {
+    await signOut({ redirect: false });
+    const loginUri = process.env.NEXTAUTH_URL + '/login';
+    const spotifyLogoutUrl = `https://accounts.spotify.com/logout?continue=${encodeURIComponent(loginUri)}`;
 
+    window.location.href = spotifyLogoutUrl;
+  };
 
   return (
     <div className="flex flex-col h-screen min-h-screen overflow-hidden bg-background">
@@ -245,6 +285,19 @@ export default function Chat() {
           >
             <Trash2 className="w-4 h-4 mr-2" />
             Clear Chat
+          </Button>
+        </div>
+      )}
+      {(
+        <div className="fixed top-4 right-4 z-50">
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={handleLogout}
+            className="text-muted-foreground hover:text-foreground hover:cursor-pointer w-8 h-8 bg-transparent hover:bg-transparent"
+            title="Logout"
+          >
+            <LogOut className="w-4 h-4" />
           </Button>
         </div>
       )}
@@ -325,9 +378,10 @@ export default function Chat() {
                   }
                 }}
               >
-                <div className="relative w-full flex flex-col gap-4">
+                <div className="relative w-full flex items-center gap-2">
+                  {/* 左侧文件预览 */}
                   {previewUrl && (
-                    <div className="absolute -left-14 top-1/2 -translate-y-1/2 w-12 h-12 rounded-lg overflow-hidden border shrink-0">
+                    <div className="w-12 h-12 rounded-lg overflow-hidden border shrink-0 relative">
                       <Image
                         src={previewUrl}
                         alt="preview-img"
@@ -346,55 +400,58 @@ export default function Chat() {
                       </button>
                     </div>
                   )}
-                  <input
-                    type="file"
-                    className="absolute top-1/2 transform -translate-y-1/2 text-gray-500 opacity-0 cursor-pointer pl-1 w-10"
-                    onChange={handleFileChange}
-                    multiple
-                    ref={fileInputRef}
-                    accept="image/*"
-                  />
 
-                  <div className="absolute top-1/2 left-3 transform -translate-y-1/2 items-center justify-center text-gray-500 group-hover:text-black pointer-events-none">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="20"
-                      height="20"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="2"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    >
-                      <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
-                      <polyline points="17 8 12 3 7 8" />
-                      <line x1="12" y1="3" x2="12" y2="15" />
-                    </svg>
+                  {/* 上传 input 和图标 */}
+                  <div className="relative flex items-center">
+                    <input
+                      type="file"
+                      className="absolute w-6 h-6 opacity-0 cursor-pointer"
+                      onChange={handleFileChange}
+                      multiple
+                      ref={fileInputRef}
+                      accept="image/*"
+                    />
+                    <div className="w-6 h-6 flex items-center justify-center text-gray-500 group-hover:text-black pointer-events-none">
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="20"
+                        height="20"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      >
+                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                        <polyline points="17 8 12 3 7 8" />
+                        <line x1="12" y1="3" x2="12" y2="15" />
+                      </svg>
+                    </div>
                   </div>
 
+                  {/* 文本框 */}
                   <Textarea
                     placeholder="Send a message..."
                     className={cx(
-                      'border-gray-300 min-h-[24px] max-h-[calc(75dvh)] overflow-hidden resize-none rounded-xl text-base bg-muted pl-10 focus-visible:ring-2 focus-visible:ring-black focus-visible:ring-offset-0',
+                      'flex-1 border-gray-300 min-h-[24px] max-h-[75dvh] resize-none rounded-xl text-base bg-muted pl-3 focus-visible:ring-2 focus-visible:ring-black focus-visible:ring-offset-0',
                     )}
                     value={input}
                     onChange={(e) => setInput(e.target.value)}
                     onKeyDown={(e) => {
                       if (e.key === 'Enter' && !e.shiftKey) {
                         e.preventDefault();
-                        const form = e.currentTarget.form;
-                        if (form) {
-                          form.requestSubmit();
-                        }
+                        e.currentTarget.form?.requestSubmit();
                       }
                     }}
                     rows={3}
                     autoFocus
                   />
+
+                  {/* 发送按钮 */}
                   <Button
                     type="submit"
-                    className="rounded-full p-1.5 h-8 w-8 flex items-center justify-center border dark:border-zinc-600 cursor-pointer absolute top-1/2 transform -translate-y-1/2 right-1 mr-1"
+                    className="rounded-full p-1.5 h-8 w-8 flex items-center justify-center border dark:border-zinc-600 cursor-pointer"
                     disabled={input.length === 0}
                   >
                     <ArrowUpIcon size={14} />
@@ -407,9 +464,10 @@ export default function Chat() {
                   type="button"
                   variant="outline"
                   onClick={() => setOpenQuestionnaire(true)}
-                  className="cursor-pointer focus-visible:ring-2 focus-visible:ring-black hover:ring-2"
+                  className="cursor-pointer focus-visible:ring-2 focus-visible:ring-black hover:ring-2 text-sm"
                 >
-                  Detect
+                  Detect <br />
+                  Mood
                 </Button>
               </div>
             </div>
@@ -447,7 +505,13 @@ export default function Chat() {
                       const y = scores[1] / filledCount;
                       console.log(`Normalized Scores: x=${x.toFixed(3)}, y=${y.toFixed(3)}`);
                       setStartPoint({ x: x, y: y, type: 'start' } as PointWithType);
-                      await savePointMeta({ x: x, y: y, type: 'start' } as PointWithType, null);
+                      const saveResult = await savePointMeta({ x: x, y: y, type: 'start' } as PointWithType, null);
+                      if (saveResult?.data) {
+                        // Update state with the saved data to ensure consistency
+                        if (saveResult.data.start) {
+                          setStartPoint({ x: saveResult.data.start.x, y: saveResult.data.start.y, type: 'start' } as PointWithType);
+                        }
+                      }
                       setOpenQuestionnaire(false);
                       
                       setMessages([...messages, 
@@ -483,10 +547,22 @@ export default function Chat() {
               onAddPoint={async (point) => {
                 if (point.type === 'start') {
                   setStartPoint(point);
-                  await savePointMeta(point, null);
+                  const saveResult = await savePointMeta(point, null);
+                  if (saveResult?.data) {
+                    // Update state with the saved data to ensure consistency
+                    if (saveResult.data.start) {
+                      setStartPoint({ x: saveResult.data.start.x, y: saveResult.data.start.y, type: 'start' } as PointWithType);
+                    }
+                  }
                 } else {
                   setEndPoint(point);
-                  await savePointMeta(null, point);
+                  const saveResult = await savePointMeta(null, point);
+                  if (saveResult?.data) {
+                    // Update state with the saved data to ensure consistency
+                    if (saveResult.data.end) {
+                      setEndPoint({ x: saveResult.data.end.x, y: saveResult.data.end.y, type: 'end' } as PointWithType);
+                    }
+                  }
                 }
               }}
               setStartPoint={setStartPoint}

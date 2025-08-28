@@ -1,0 +1,16 @@
+{
+  "success": true,
+  "type": "mood_transition",
+  "message": "Mood transition detected and coordinates saved!",
+  "coordinates": {
+    "start": {
+      "valence": 0.2,
+      "energy": 0.3
+    },
+    "end": {
+      "valence": 0.8,
+      "energy": 0.7
+    }
+  },
+  "file_path": "point_meta.json"
+} 

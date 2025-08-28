@@ -29,6 +29,10 @@ export async function POST(req: Request) {
           const stdioTransport = new StdioClientTransport({
             command: s.command,
             args: [...s.args],
+            env: {
+              ...process.env,
+              ...(s.env || {}),
+            },
           });
           client = await experimental_createMCPClient({
             transport: stdioTransport,
