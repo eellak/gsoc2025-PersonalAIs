@@ -35,7 +35,7 @@ Example `.env.local` content:
 ```bash
 # openai provider
 OPENAI_API_KEY=sk-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-# qwen provider
+# qwen provider (default use qwen as LLM backend)
 DASHSCOPE_API_KEY=sk-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
 
@@ -47,30 +47,65 @@ SPOTIFY_REDIRECT_URI=xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 # NextAuth configuration
 NEXTAUTH_URL=xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 NEXTAUTH_SECRET=xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+```
 
-# automatically generated Spotify access token when login
-SPOTIFY_ACCESS_TOKEN=xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+And prepare `spotify_mcp_server/.env`
+```bash
+# qwen provider
+DASHSCOPE_API_KEY=xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+# Spotify API configuration
+SPOTIFY_CLIENT_ID=xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+SPOTIFY_CLIENT_SECRET=xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+SPOTIFY_REDIRECT_URI=http://127.0.0.1:3000/api/auth/callback/spotify
+
+# Last.fm API configuration
+LASTFM_API_KEY=xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+LASTFM_API_SECRET=xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 ```
 
 2. install and run the project
 
+For MCP server, install `uv` following [official guidance](https://docs.astral.sh/uv/#installation).
+
+For frontend, install `pnpm` following [official guidance](https://pnpm.io/installation)
+
 ```bash
-pnpm install
+uv sync       # install dependencies for MCP server
+pnpm install  # install dependencies for frontend
 pnpm run dev
 ```
 
 ## Docker Deployment
 
-When deploying with Docker, the `.env.local` and `spotify_mcp_server/.env` files are automatically excluded from the image for security. You can pass environment variables to the container at runtime:
+Prepare the `docker-compose.yaml` file.
 
-```bash
-docker run -d \
-  -e OPENAI_API_KEY=your_openai_key \
-  -e SPOTIFY_CLIENT_ID=your_spotify_client_id \
-  -e SPOTIFY_CLIENT_SECRET=your_spotify_client_secret \
-  -p 3000:3000 \
-  your-image-name
+```yaml
+services:
+  app:
+    build: .
+    image: cocoshe/spotify-client
+    container_name: spotify-client
+    ports:
+      - "3000:3000"
+    environment:
+      # qwen provider
+      - DASHSCOPE_API_KEY=${DASHSCOPE_API_KEY}
+      # Spotify API configuration
+      - SPOTIFY_CLIENT_ID=${SPOTIFY_CLIENT_ID}
+      - SPOTIFY_CLIENT_SECRET=${SPOTIFY_CLIENT_SECRET}
+      - SPOTIFY_REDIRECT_URI=http://127.0.0.1:3000/api/auth/callback/spotify
+      # NextAuth configuration
+      - NEXTAUTH_URL=http://127.0.0.1:3000
+      - NEXTAUTH_SECRET=${NEXTAUTH_SECRET}
+      # Last.fm API configuration
+      - LASTFM_API_KEY=${LASTFM_API_KEY}
+      - LASTFM_API_SECRET=${LASTFM_API_SECRET}
 ```
 
+Pull and run the image.
 
+```bash
+docker compose up
+```
 
