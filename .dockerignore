@@ -6,3 +6,4 @@ __pycache__
 spotify_mcp_server/.env
 .git
 .gitignore
+public/static/*

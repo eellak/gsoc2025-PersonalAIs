@@ -3,6 +3,8 @@
 [GSoC Proposal](public/static/proposal.pdf)
 
 
+[Introduction Video](public/static/intro.mp4)
+
 SpotifyAgent is an intelligent music recommendation assistant, integrating Spotify API and AI conversation systems. Users can interact with AI through natural language to receive personalized music recommendations and playback control services.
 
 ## Key Features
