@@ -2,6 +2,8 @@
 
 # 🎵 SpotifyAgent 🤖
 
+***Your Personal Music Assistant***
+
 ![SpotifyAgent](public/static/SpotifyAgent_logo.png)
 
 [![GSoC Proposal](https://img.shields.io/badge/GSoC-Proposal-blue)](public/static/proposal.pdf)
