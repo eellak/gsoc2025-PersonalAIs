@@ -31,6 +31,19 @@ const Questionnaire: React.FC<QuestionnaireProps> = ({ questions, onSubmit, subm
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    
+    // Check if at least one question is answered
+    const isAnyQuestionAnswered = Object.keys(form).some(key => {
+      const value = form[key];
+      return value !== undefined && value !== null && value !== '' && 
+             !(Array.isArray(value) && value.length === 0);
+    });
+
+    if (!isAnyQuestionAnswered) {
+      alert('Please answer at least one question before submitting.');
+      return;
+    }
+    
     onSubmit(form);
   };
 
@@ -104,4 +117,4 @@ const Questionnaire: React.FC<QuestionnaireProps> = ({ questions, onSubmit, subm
   );
 };
 
-export default Questionnaire; 
+export default Questionnaire;
