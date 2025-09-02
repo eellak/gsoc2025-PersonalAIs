@@ -1,16 +1,21 @@
+<div align="center">
+
 # 🎵 SpotifyAgent 🤖
 
 ![SpotifyAgent](public/static/SpotifyAgent_logo.png)
 
-[📄 GSoC Proposal](public/static/proposal.pdf)
-
-
+[![GSoC Proposal](https://img.shields.io/badge/GSoC-Proposal-blue)](public/static/proposal.pdf)
+</div>
 
 https://github.com/user-attachments/assets/ef206c1d-2060-4090-87cc-aabcd0feb5b3
 
 
 
-🌟 SpotifyAgent is an intelligent music recommendation assistant, integrating Spotify API and AI conversation systems. Users can interact with AI through natural language to receive personalized music recommendations and playback control services.
+> 🌟 **Discover Your Next Favorite Song with AI-Powered Recommendations** 🌟
+
+SpotifyAgent is an intelligent music recommendation assistant, integrating Spotify API and AI conversation systems. Users can interact with AI through natural language to receive personalized music recommendations and playback control services.
+
+---
 
 ## 🚀 Key Features
 
@@ -19,7 +24,19 @@ https://github.com/user-attachments/assets/ef206c1d-2060-4090-87cc-aabcd0feb5b3
 - **🔧 MCP Toolchain**: Model Context Protocol support with extensible tool ecosystem
 - **😊 Mood-based Recommendations**: Personalized recommendations based on user mood and user personal Spotify profile.
 
+---
+
+## 🧠 Tech Stack
+
+- **🧠 AI Models**: Qwen2.5-7B-Instruct for intelligent conversation
+- **🎵 Spotify API**: For music playback and user data
+- **🌐 Next.js**: Frontend framework
+- **🐍 Python**: Backend services
+- **🐳 Docker**: Containerization
+
 This project demonstrates how to deeply integrate AI technology with music services to provide users with an intelligent music experience.
+
+---
 
 ## 🛠️ Getting Started
 
@@ -91,6 +108,8 @@ uv sync       # install dependencies for MCP server
 pnpm install  # install dependencies for frontend
 pnpm run dev
 ```
+
+---
 
 ## 🐳 Docker Deployment (more easy to use)
 
