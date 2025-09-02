@@ -1,6 +1,8 @@
-# SpotifyAgent
+# 🎵 SpotifyAgent 🤖
 
-[GSoC Proposal](public/static/proposal.pdf)
+![SpotifyAgent](public/static/SpotifyAgent_logo.png)
+
+[📄 GSoC Proposal](public/static/proposal.pdf)
 
 
 
@@ -8,21 +10,20 @@ https://github.com/user-attachments/assets/ef206c1d-2060-4090-87cc-aabcd0feb5b3
 
 
 
+🌟 SpotifyAgent is an intelligent music recommendation assistant, integrating Spotify API and AI conversation systems. Users can interact with AI through natural language to receive personalized music recommendations and playback control services.
 
-SpotifyAgent is an intelligent music recommendation assistant, integrating Spotify API and AI conversation systems. Users can interact with AI through natural language to receive personalized music recommendations and playback control services.
+## 🚀 Key Features
 
-## Key Features
-
-- **AI Conversation Interface**: Support for text interactions with intelligent suggestions
-- **Deep Spotify Integration**: Complete user authentication, playback control, and queue management
-- **MCP Toolchain**: Model Context Protocol support with extensible tool ecosystem
-- **Mood-based Recommendations**: Personalized recommendations based on user mood and user personal Spotify profile.
+- **🤖 AI Conversation Interface**: Support for text interactions with intelligent suggestions
+- **🎵 Deep Spotify Integration**: Complete user authentication, playback control, and queue management
+- **🔧 MCP Toolchain**: Model Context Protocol support with extensible tool ecosystem
+- **😊 Mood-based Recommendations**: Personalized recommendations based on user mood and user personal Spotify profile.
 
 This project demonstrates how to deeply integrate AI technology with music services to provide users with an intelligent music experience.
 
-## Getting Started
+## 🛠️ Getting Started
 
-1. Config env
+1. ⚙️ Config env
 
 **Important Security Notice**: Never commit your actual API keys to version control or Docker images. The example below shows placeholder values. For local development, create a `.env.local` file with your real keys, which is automatically ignored by git and Docker.
 
@@ -91,7 +92,7 @@ pnpm install  # install dependencies for frontend
 pnpm run dev
 ```
 
-## Docker Deployment (more easy to use)
+## 🐳 Docker Deployment (more easy to use)
 
 Make sure you've install Docker related packages.
 
