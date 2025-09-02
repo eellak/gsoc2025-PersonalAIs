@@ -2,7 +2,7 @@
 
 # 🎵 SpotifyAgent 🤖
 
-***Your Personal Music Assistant***
+<ins>***Your Personal Music Assistant***</ins>
 
 ![SpotifyAgent](public/static/SpotifyAgent_logo.png)
 
