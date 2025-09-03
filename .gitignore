@@ -48,4 +48,3 @@ __pycache__
 point_meta.json
 track_names_in_playlist.json
 activity.json
-docker-compose.yaml

@@ -18,6 +18,7 @@ import { MusicIcon } from 'lucide-react';
 import Queue from '@/components/spotify/queue';
 import Greeting from '@/components/custom/greeting';
 import Questionnaire, { Question } from '@/components/custom/questionnaire';
+import ImageQuestionnaire from '@/components/custom/image-questionnaire';
 import CartesianPlane, { PointWithType } from '@/components/custom/cartesianplane';
 import { signOut } from 'next-auth/react';
 
@@ -159,6 +160,7 @@ export default function Chat() {
   const [openQuestionnaire, setOpenQuestionnaire] = useState(false);
   const [startPoint, setStartPoint] = useState<PointWithType | null>(null);
   const [endPoint, setEndPoint] = useState<PointWithType | null>(null);
+  const [textQuestionnaireCompleted, setTextQuestionnaireCompleted] = useState(false);
 
   // Function to load point meta from file
   const loadPointMeta = async () => {
@@ -474,61 +476,118 @@ export default function Chat() {
             {openQuestionnaire && (
               <div style={{position: 'fixed', top: 0, left: 0, width: '100vw', height: '100vh', background: 'rgba(0,0,0,0.15)', zIndex: 1000, display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
                 <div style={{background: '#fff', padding: 24, borderRadius: 8, minWidth: 320, minHeight: 150, maxHeight: '90vh', position: 'relative', boxShadow: '0 2px 8px rgba(0,0,0,0.15)', overflowY: 'auto'}}>
-                  <button style={{position: 'absolute', top: 8, right: 8, border: 'none', background: 'transparent', fontSize: 20, cursor: 'pointer'}} onClick={() => setOpenQuestionnaire(false)}>×</button>
+                  <button style={{position: 'absolute', top: 8, right: 8, border: 'none', background: 'transparent', fontSize: 20, cursor: 'pointer'}} onClick={() => {
+                    setOpenQuestionnaire(false);
+                    setTextQuestionnaireCompleted(false);
+                  }}>
+                    ×
+                  </button>
                   <h3 style={{marginBottom: 16}}>Detect Your Mood</h3>
-                  <Questionnaire
-                    questions={[
-                      { type: 'radio', label: 'I don’t feel like doing anything.', name: 'q1', options: ['Strongly Agree', 'Agree', 'Can’t Say', 'Disagree', 'Strongly Disagree'] },
-                      { type: 'radio', label: 'I am feeling bored.', name: 'q2', options: ['Strongly Agree', 'Agree', 'Can’t Say', 'Disagree', 'Strongly Disagree'] },
-                      { type: 'radio', label: 'Nothing seems fun anymore. / I hardly enjoy anything.', name: 'q3', options: ['Strongly Agree', 'Agree', 'Can’t Say', 'Disagree', 'Strongly Disagree'] },
-                      { type: 'radio', label: 'I find beauty in things around me.', name: 'q4', options: ['Strongly Agree', 'Agree', 'Can’t Say', 'Disagree', 'Strongly Disagree'] },
-                      { type: 'radio', label: 'I feel loved.', name: 'q5', options: ['Strongly Agree', 'Agree', 'Can’t Say', 'Disagree', 'Strongly Disagree'] },
-                      { type: 'radio', label: 'I’ve been feeling confident.', name: 'q6', options: ['Strongly Agree', 'Agree', 'Can’t Say', 'Disagree', 'Strongly Disagree'] },
-                      { type: 'radio', label: 'I feel like my opinion/efforts are not appreciated.', name: 'q7', options: ['Strongly Agree', 'Agree', 'Can’t Say', 'Disagree', 'Strongly Disagree'] },
-                      { type: 'radio', label: 'I have completed today’s agenda.', name: 'q8', options: ['Strongly Agree', 'Agree', 'Can’t Say', 'Disagree', 'Strongly Disagree'] },
-                      { type: 'radio', label: 'I get irritated easily.', name: 'q9', options: ['Strongly Agree', 'Agree', 'Can’t Say', 'Disagree', 'Strongly Disagree'] }
-                    ]}
-                    onSubmit={async result => {
-                      const filteredEntries = Object.entries(result).filter(
-                        ([_, value]) => value !== "Can’t Say"
-                      );
-                      const filledCount = filteredEntries.length;
-                      const scores = Object.entries(result).reduce((acc, [key, value]) => {
-                        const score = questionnaireScores[key]?.[value] || [0, 0];
-                        acc[0] += score[0];
-                        acc[1] += score[1];
-                        return acc;
-                      }, [0, 0]);
-                      console.log('Scores:', scores);
-                      console.log('filledCount:', filledCount);
-                      const x = scores[0] / filledCount;
-                      const y = scores[1] / filledCount;
-                      console.log(`Normalized Scores: x=${x.toFixed(3)}, y=${y.toFixed(3)}`);
-                      setStartPoint({ x: x, y: y, type: 'start' } as PointWithType);
-                      const saveResult = await savePointMeta({ x: x, y: y, type: 'start' } as PointWithType, null);
-                      if (saveResult?.data) {
-                        // Update state with the saved data to ensure consistency
-                        if (saveResult.data.start) {
-                          setStartPoint({ x: saveResult.data.start.x, y: saveResult.data.start.y, type: 'start' } as PointWithType);
+                  
+                  {/* 文字问卷 */}
+                  {!textQuestionnaireCompleted && (
+                    <Questionnaire
+                      questions={[
+                        { type: 'radio', label: 'I don’t feel like doing anything.', name: 'q1', options: ['Strongly Agree', 'Agree', 'Can’t Say', 'Disagree', 'Strongly Disagree'] },
+                        { type: 'radio', label: 'I am feeling bored.', name: 'q2', options: ['Strongly Agree', 'Agree', 'Can’t Say', 'Disagree', 'Strongly Disagree'] },
+                        { type: 'radio', label: 'Nothing seems fun anymore. / I hardly enjoy anything.', name: 'q3', options: ['Strongly Agree', 'Agree', 'Can’t Say', 'Disagree', 'Strongly Disagree'] },
+                        { type: 'radio', label: 'I find beauty in things around me.', name: 'q4', options: ['Strongly Agree', 'Agree', 'Can’t Say', 'Disagree', 'Strongly Disagree'] },
+                        { type: 'radio', label: 'I feel loved.', name: 'q5', options: ['Strongly Agree', 'Agree', 'Can’t Say', 'Disagree', 'Strongly Disagree'] },
+                        { type: 'radio', label: 'I’ve been feeling confident.', name: 'q6', options: ['Strongly Agree', 'Agree', 'Can’t Say', 'Disagree', 'Strongly Disagree'] },
+                        { type: 'radio', label: 'I feel like my opinion/efforts are not appreciated.', name: 'q7', options: ['Strongly Agree', 'Agree', 'Can’t Say', 'Disagree', 'Strongly Disagree'] },
+                        { type: 'radio', label: 'I have completed today’s agenda.', name: 'q8', options: ['Strongly Agree', 'Agree', 'Can’t Say', 'Disagree', 'Strongly Disagree'] },
+                        { type: 'radio', label: 'I get irritated easily.', name: 'q9', options: ['Strongly Agree', 'Agree', 'Can’t Say', 'Disagree', 'Strongly Disagree'] }
+                      ]}
+                      onSubmit={async result => {
+                        const filteredEntries = Object.entries(result).filter(
+                          ([_, value]) => value !== "Can’t Say"
+                        );
+                        const filledCount = filteredEntries.length;
+                        const scores = Object.entries(result).reduce((acc, [key, value]) => {
+                          const score = questionnaireScores[key]?.[value] || [0, 0];
+                          acc[0] += score[0];
+                          acc[1] += score[1];
+                          return acc;
+                        }, [0, 0]);
+                        console.log('Scores:', scores);
+                        console.log('filledCount:', filledCount);
+                        const x = scores[0] / filledCount;
+                        const y = scores[1] / filledCount;
+                        console.log(`Normalized Scores: x=${x.toFixed(3)}, y=${y.toFixed(3)}`);
+                        setStartPoint({ x: x, y: y, type: 'start' } as PointWithType);
+                        const saveResult = await savePointMeta({ x: x, y: y, type: 'start' } as PointWithType, null);
+                        if (saveResult?.data) {
+                          // Update state with the saved data to ensure consistency
+                          if (saveResult.data.start) {
+                            setStartPoint({ x: saveResult.data.start.x, y: saveResult.data.start.y, type: 'start' } as PointWithType);
+                          }
                         }
-                      }
-                      setOpenQuestionnaire(false);
-                      
-                      setMessages([...messages, 
-                      {
-                        role: 'user',
-                        // random id
-                        id: Math.random().toString(36).substring(2),
-                        content: `Detect my mood with the questionnaire.`,
-                      },
-                      {
-                        role: 'assistant',
-                        // random id
-                        id: Math.random().toString(36).substring(2),
-                        content: `Are you feeling ${coordinateToEmotion(x, y)} about your mood?`,
-                      }]);
-                    }}
-                  />
+                        
+                        setMessages([...messages, 
+                        {
+                          role: 'user',
+                          // random id
+                          id: Math.random().toString(36).substring(2),
+                          content: `Detect my mood with the questionnaire.`,
+                        },
+                        {
+                          role: 'assistant',
+                          // random id
+                          id: Math.random().toString(36).substring(2),
+                          content: `So you may feel ${coordinateToEmotion(x, y)} now.`,
+                        }]);
+                        
+
+                        setTextQuestionnaireCompleted(true);
+                      }}
+                    />
+                  )}
+                  
+                  {/* image questionnaire */}
+                  {textQuestionnaireCompleted && (
+                    <div>
+                      <div style={{marginTop: 24, paddingTop: 24, borderTop: '1px solid #eee'}}>
+                        <h4 style={{marginBottom: 16, fontWeight: 'bold'}}>Picture-based psychology</h4>
+                        <ImageQuestionnaire 
+                          onSubmit={(result) => {
+                            console.log('Image questionnaire result:', result);
+                            let interpretation = '';
+
+                            if (result.circle === 'quickly') {
+                              interpretation += 'Maybe you have been under a lot of pressure and need to relax. It\'s best to take a few days off.\n\n';
+                            } else if (result.circle === 'slowly') {
+                              interpretation += 'Maybe you have encountered some trouble and some pressure, but you can overcome it on your own and treat it with a calm mind.\n\n';
+                            } else if (result.circle === 'still') {
+                              interpretation += 'Maybe you have strong self-regulation ability, live a relaxed and comfortable life.\n\n';
+                            }
+                            
+                            if (result.figure === 'girl') {
+                              interpretation += 'And maybe you\'re happy and relax now.';
+                            } else if (result.figure === 'both') {
+                              interpretation += 'And maybe you\'re a bit depress, so you can see things in another way.';
+                            }
+                            
+                            setMessages(prev => [...prev, 
+                              {
+                                role: 'user',
+                                id: Math.random().toString(36).substring(2),
+                                content: `Complete the picture-based psychology test.`,
+                              },
+                              {
+                                role: 'assistant',
+                                id: Math.random().toString(36).substring(2),
+                                content: interpretation,
+                              }
+                            ]);
+                            
+                            // 关闭问卷模态框并重置状态
+                            setOpenQuestionnaire(false);
+                            setTextQuestionnaireCompleted(false);
+                          }}
+                        />
+                      </div>
+                    </div>
+                  )}
                 </div>
               </div>
             )}

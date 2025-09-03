@@ -1,0 +1,9 @@
+services:
+  app:
+    build: .
+    image: cocoshe/spotify-client
+    container_name: spotify-client
+    ports:
+      - "3000:3000"
+    env_file:
+      - .env.local
