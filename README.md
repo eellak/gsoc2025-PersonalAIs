@@ -17,6 +17,12 @@ https://github.com/user-attachments/assets/ef206c1d-2060-4090-87cc-aabcd0feb5b3
 
 SpotifyAgent is an intelligent music recommendation assistant, integrating Spotify API and AI conversation systems. Users can interact with AI through natural language to receive personalized music recommendations and playback control services.
 
+This project was implemented during **Google Summer of Code 2025**
+- **PersonalAls**: Generative Al Agent for Personalized Music Recommendations
+- Organisation: **GFOSS**
+- Mentors: **Thanos Aidinis** & **Giannis Prokopiou**
+- Applicant: **Ke Ye**
+
 ---
 
 ## 🚀 Key Features
