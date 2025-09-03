@@ -340,10 +340,12 @@ const CartesianPlane: React.FC<CartesianPlaneProps> = ({ points = [], onAddPoint
     ctx.fillText('relax', toCanvasX(0.75), toCanvasY(0.25) + 15);
 
     points.forEach(({ x, y, type }) => {
-      if (x < 0 || x > 1 || y < 0 || y > 1) return;
+      const renderX = x === null ? 0.5 : x;
+      const renderY = y === null ? 0.5 : y;
+      if (renderX < 0 || renderX > 1 || renderY < 0 || renderY > 1) return;
       ctx.fillStyle = type === 'start' ? 'blue' : 'red';
       ctx.beginPath();
-      ctx.arc(toCanvasX(x), toCanvasY(y), 4, 0, 2 * Math.PI);
+      ctx.arc(toCanvasX(renderX), toCanvasY(renderY), 4, 0, 2 * Math.PI);
       ctx.fill();
       
       ctx.fillStyle = type === 'start' ? 'blue' : 'red';
@@ -351,7 +353,7 @@ const CartesianPlane: React.FC<CartesianPlaneProps> = ({ points = [], onAddPoint
       ctx.textAlign = 'left';
       ctx.textBaseline = 'middle';
       const label = type === 'start' ? 'S' : 'E';
-      ctx.fillText(label, toCanvasX(x) + 8, toCanvasY(y));
+      ctx.fillText(label, toCanvasX(renderX) + 8, toCanvasY(renderY));
     });
 
     // Draw audio features point (valence and energy)

@@ -74,6 +74,7 @@ const coordinateToEmotion = (x: number, y: number) => {
   if (x >= 0.5 && y >= 0.5) {
     return 'happy';
   }
+  return 'neutral';
 };
 
 // Questionnaire score mapping, double dictionary structure
@@ -169,10 +170,14 @@ export default function Chat() {
       if (response.ok) {
         const data = await response.json();
         if (data.start) {
-          setStartPoint({ x: data.start.x, y: data.start.y, type: 'start' } as PointWithType);
+          const startX = data.start.x === null ? 0.5 : data.start.x;
+          const startY = data.start.y === null ? 0.5 : data.start.y;
+          setStartPoint({ x: startX, y: startY, type: 'start' } as PointWithType);
         }
         if (data.end) {
-          setEndPoint({ x: data.end.x, y: data.end.y, type: 'end' } as PointWithType);
+          const endX = data.end.x === null ? 0.5 : data.end.x;
+          const endY = data.end.y === null ? 0.5 : data.end.y;
+          setEndPoint({ x: endX, y: endY, type: 'end' } as PointWithType);
         }
         console.log('Loaded point meta from file:', data);
       }
