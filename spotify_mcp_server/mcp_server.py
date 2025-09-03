@@ -1064,6 +1064,10 @@ class SpotifyMCPSuperServerV2(SpotifyMCPServer):
             else:
                 point_meta = {}
             if point_start and point_end:
+                if point_start['x'] is None or point_start['y'] is None or point_end['x'] is None or point_end['y'] is None:
+                    point_start['x'], point_start['y'] = 0.5, 0.5
+                if point_end['x'] is None or point_end['y'] is None:
+                    point_end['x'], point_end['y'] = 0.5, 0.5
                 point_start = np.array([point_start['x'], point_start['y']])
                 point_end = np.array([point_end['x'], point_end['y']])
                 logger.info('point: %s, %s', point_start, point_end)
@@ -1414,6 +1418,10 @@ class SpotifyMCPSuperServerV2(SpotifyMCPServer):
             else:
                 point_meta = {}
             if point_start and point_end:
+                if point_start['x'] is None or point_start['y'] is None or point_end['x'] is None or point_end['y'] is None:
+                    point_start['x'], point_start['y'] = 0.5, 0.5
+                if point_end['x'] is None or point_end['y'] is None:
+                    point_end['x'], point_end['y'] = 0.5, 0.5
                 point_start = np.array([point_start['x'], point_start['y']])
                 point_end = np.array([point_end['x'], point_end['y']])
                 logger.info('point: %s, %s', point_start, point_end)    

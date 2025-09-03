@@ -6,4 +6,5 @@ __pycache__
 spotify_mcp_server/.env
 .git
 .gitignore
-public/static/*
+public/static/intro.mp4
+public/static/proposal.pdf
