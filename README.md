@@ -20,7 +20,7 @@ SpotifyAgent is an intelligent music recommendation assistant, integrating Spoti
 This project was implemented during **Google Summer of Code 2025**
 - **PersonalAls**: Generative Al Agent for Personalized Music Recommendations
 - Organisation: **GFOSS**
-- Mentors: **Thanos Aidinis** & **Giannis Prokopiou**
+- **Mentors**: [Thanos Aidinis](https://github.com/ThanAid) & [Giannis Prokopiou](https://github.com/GiannisProkopiou)
 - Applicant: **Ke Ye**
 
 ---
