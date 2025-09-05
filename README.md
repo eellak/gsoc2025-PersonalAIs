@@ -134,3 +134,4 @@ Pull and run the image.
 docker compose up
 ```
 
+⚠️ Note: You need to have a premium Spotify account.
