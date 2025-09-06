@@ -6,7 +6,7 @@ Using fastmcp library
 
 import os
 import asyncio
-from dotenv import load_dotenv
+# from dotenv import load_dotenv
 from spotify_client import SpotifySuperClient as SpotifyClient
 from mcp_server import SpotifyMCPSuperServer as SpotifyMCPServer, SpotifyMCPSuperServerV2
 from lastfm_client import LastfmClient
@@ -20,7 +20,7 @@ logger = logging.getLogger(__name__)
 def main():
     """main"""
     # Load environment variables
-    load_dotenv()
+    # load_dotenv()
     
     # Get Spotify API configuration
     client_id = os.getenv("SPOTIFY_CLIENT_ID")
@@ -29,23 +29,35 @@ def main():
     lastfm_api_key = os.getenv("LASTFM_API_KEY")
     lastfm_api_secret = os.getenv("LASTFM_API_SECRET")
     dashscope_api_key = os.getenv("DASHSCOPE_API_KEY")
+    username = os.getenv("SPOTIFY_USERNAME")
+
+    logger.info(f"""
+    client_id: {client_id}
+    client_secret: {client_secret}
+    redirect_uri: {redirect_uri}
+    lastfm_api_key: {lastfm_api_key}
+    lastfm_api_secret: {lastfm_api_secret}
+    dashscope_api_key: {dashscope_api_key}
+    username: {username}
+    """)
     
     # logger.info(lastfm_api_key, lastfm_api_secret)
-    if not all([client_id, client_secret, redirect_uri, lastfm_api_key, lastfm_api_secret, dashscope_api_key]):
+    if not all([client_id, client_secret, redirect_uri, lastfm_api_key, lastfm_api_secret, dashscope_api_key, username]):
         logger.info("Error: Please set the following environment variables:")
         logger.info("- SPOTIFY_CLIENT_ID")
         logger.info("- SPOTIFY_CLIENT_SECRET")
         logger.info("- SPOTIFY_REDIRECT_URI")
+        logger.info("- SPOTIFY_USERNAME")
         logger.info("- LASTFM_API_KEY")
         logger.info("- LASTFM_API_SECRET")
         logger.info("- DASHSCOPE_API_KEY")
-        logger.info("\nPlease copy env.example to .env and fill in the corresponding values")
+        logger.info("\nPlease set the missing environment variables")
         return
     
     try:
         # Create Spotify client
         logger.info("Initializing Spotify client...")
-        spotify_client = SpotifyClient(client_id, client_secret, redirect_uri)
+        spotify_client = SpotifyClient(client_id, client_secret, redirect_uri, username)
         logger.info("Spotify client initialized successfully!")
         
         # Create Lastfm client

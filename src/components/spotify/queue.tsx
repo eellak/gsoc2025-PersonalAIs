@@ -1,6 +1,6 @@
 'use client';
 
-import { useSession, signOut } from 'next-auth/react';
+import { useSession } from 'next-auth/react';
 import { useEffect, useState, useRef } from 'react';
 import { getQueue, getCurrentPlayback, getUserSubscription } from '@/lib/spotify';
 import Image from 'next/image';
@@ -446,14 +446,6 @@ export default function Queue() {
               className="h-8 w-8 cursor-pointer"
             >
               <RefreshCw className={`h-4 w-4 ${refreshing ? 'animate-spin' : ''}`} />
-            </Button>
-            <Button
-              variant="ghost"
-              size="icon"
-              onClick={() => signOut()}
-              className="h-8 w-8 cursor-pointer"
-            >
-              <LogOut className="h-4 w-4" />
             </Button>
           </div>
         </div>

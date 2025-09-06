@@ -26,7 +26,7 @@ logger = logging.getLogger(__name__)
 class SpotifyClient:
     """Spotify Client Class"""
     
-    def __init__(self, client_id: str, client_secret: str, redirect_uri: str):
+    def __init__(self, client_id: str, client_secret: str, redirect_uri: str, username: str):
         """
         Initialize Spotify client
         
@@ -38,7 +38,8 @@ class SpotifyClient:
         self.client_id = client_id
         self.client_secret = client_secret
         self.redirect_uri = redirect_uri
-        
+        self.username = username
+
         # Spotify API permission scopes
         self.scopes = [
             "user-read-email",
@@ -70,9 +71,18 @@ class SpotifyClient:
                     client_id=self.client_id,
                     client_secret=self.client_secret,
                     redirect_uri=self.redirect_uri,
-                    scope=" ".join(self.scopes)
+                    scope=" ".join(self.scopes),
+                    username=self.username,
                 )
             )
+            logger.info('-----============')
+            logger.info('Spotify client initialized')
+            logger.info(f'client_id: {self.client_id}')
+            logger.info(f'client_secret: {self.client_secret}')
+            logger.info(f'redirect_uri: {self.redirect_uri}')
+            logger.info(self.sp.me())
+            logger.info('-----============')
+
         except Exception as e:
             raise Exception(f"Spotify client initialization failed: {e}")
     
@@ -720,6 +730,7 @@ class SpotifySuperClient(SpotifyClient):
 
         # 3. top artists
         top_artists = self.get_top_artists(time_range="long_term", limit=top_limit)
+        logger.info('top_artists: %s', top_artists)
         if top_artists["success"]:
             for artist in top_artists["data"]["items"]:
                 artist_ids.append(artist["id"])
