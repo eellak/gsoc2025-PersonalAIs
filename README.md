@@ -20,7 +20,7 @@ PersonalAIs is an intelligent music recommendation assistant, integrating Spotif
 This project was implemented during **Google Summer of Code 2025**
 - **PersonalAls**: Generative Al Agent for Personalized Music Recommendations
 - Organisation: **GFOSS**
-- Mentors: **Thanos Aidinis** & **Giannis Prokopiou**
+- **Mentors**: [Thanos Aidinis](https://github.com/ThanAid) & [Giannis Prokopiou](https://github.com/GiannisProkopiou)
 - Applicant: **Ke Ye**
 
 ---
@@ -135,3 +135,4 @@ Pull and run the image.
 docker compose up
 ```
 
+⚠️ Note: You need to have a premium Spotify account.
