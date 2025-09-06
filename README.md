@@ -20,8 +20,8 @@ PersonalAIs is an intelligent music recommendation assistant, integrating Spotif
 This project was implemented during **Google Summer of Code 2025**
 - **PersonalAls**: Generative Al Agent for Personalized Music Recommendations
 - Organisation: **GFOSS**
-- **Mentors**: [Thanos Aidinis](https://github.com/ThanAid) & [Giannis Prokopiou](https://github.com/GiannisProkopiou)
-- Applicant: **Ke Ye**
+- Mentors: **[Thanos Aidinis](https://github.com/ThanAid)** & **[Giannis Prokopiou](https://github.com/GiannisProkopiou)**
+- Applicant: **[Ke Ye](https://github.com/cocoshe)**
 
 ---
 
