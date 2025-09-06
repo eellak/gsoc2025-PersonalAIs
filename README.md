@@ -34,7 +34,7 @@ This project was implemented during **Google Summer of Code 2025**
 
 ---
 
-## 🧠 Tech Stack
+## 🛠️ Tech Stack
 
 - **🧠 AI Models**: Qwen2.5-7B-Instruct for intelligent conversation
 - **🎵 Spotify API**: For music playback and user data
@@ -72,6 +72,7 @@ OPENAI_API_KEY=xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 SPOTIFY_CLIENT_ID=xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 SPOTIFY_CLIENT_SECRET=xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 SPOTIFY_REDIRECT_URI=http://127.0.0.1:3000/api/auth/callback/spotify
+SPOTIFY_USERNAME=xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
 # NextAuth configuration
 NEXTAUTH_URL=http://127.0.0.1:3000
