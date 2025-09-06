@@ -43,7 +43,7 @@ next-env.d.ts
 .history
 __pycache__
 .python-version
-.cache
+.cache*
 .env
 point_meta.json
 track_names_in_playlist.json

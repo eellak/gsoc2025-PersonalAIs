@@ -466,17 +466,17 @@ export default function Chat() {
                 </div>
               </form>
               {/* Questionnaire modal button */}
-              <div className="flex items-center ml-2 mt-0">
-                <Button
-                  type="button"
-                  variant="outline"
-                  onClick={() => setOpenQuestionnaire(true)}
-                  className="cursor-pointer focus-visible:ring-2 focus-visible:ring-black hover:ring-2 text-sm"
-                >
-                  Detect <br />
-                  Mood
-                </Button>
-              </div>
+              <div className="flex items-center ml-2 self-center">
+              <Button
+                type="button"
+                variant="outline"
+                onClick={() => setOpenQuestionnaire(true)}
+                className="cursor-pointer focus-visible:ring-2 focus-visible:ring-black hover:ring-2 text-sm"
+              >
+                Detect <br />
+                Mood
+              </Button>
+            </div>
             </div>
             {openQuestionnaire && (
               <div style={{position: 'fixed', top: 0, left: 0, width: '100vw', height: '100vh', background: 'rgba(0,0,0,0.15)', zIndex: 1000, display: 'flex', alignItems: 'center', justifyContent: 'center'}}>

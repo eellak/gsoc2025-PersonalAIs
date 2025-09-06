@@ -1,10 +1,10 @@
 <div align="center">
 
-# 🎵 SpotifyAgent 🤖
+# 🎵 PersonalAIs 🤖
 
 <ins>***Your Personal Music Assistant***</ins>
 
-![SpotifyAgent](public/static/SpotifyAgent_logo.png)
+![PersonalAIs](public/static/PersonalAIs_logo.png)
 
 [![GSoC Proposal](https://img.shields.io/badge/GSoC-Proposal-blue)](public/static/proposal.pdf)
 </div>
@@ -15,13 +15,13 @@ https://github.com/user-attachments/assets/ef206c1d-2060-4090-87cc-aabcd0feb5b3
 
 > 🌟 **Discover Your Next Favorite Song with AI-Powered Recommendations** 🌟
 
-SpotifyAgent is an intelligent music recommendation assistant, integrating Spotify API and AI conversation systems. Users can interact with AI through natural language to receive personalized music recommendations and playback control services.
+PersonalAIs is an intelligent music recommendation assistant, integrating Spotify API and AI conversation systems. Users can interact with AI through natural language to receive personalized music recommendations and playback control services.
 
 This project was implemented during **Google Summer of Code 2025**
 - **PersonalAls**: Generative Al Agent for Personalized Music Recommendations
 - Organisation: **GFOSS**
-- **Mentors**: [Thanos Aidinis](https://github.com/ThanAid) & [Giannis Prokopiou](https://github.com/GiannisProkopiou)
-- Applicant: **Ke Ye**
+- Mentors: **[Thanos Aidinis](https://github.com/ThanAid)** & **[Giannis Prokopiou](https://github.com/GiannisProkopiou)**
+- Applicant: **[Ke Ye](https://github.com/cocoshe)**
 
 ---
 
@@ -34,7 +34,7 @@ This project was implemented during **Google Summer of Code 2025**
 
 ---
 
-## 🧠 Tech Stack
+## 🛠️ Tech Stack
 
 - **🧠 AI Models**: Qwen2.5-7B-Instruct for intelligent conversation
 - **🎵 Spotify API**: For music playback and user data
@@ -72,6 +72,7 @@ OPENAI_API_KEY=xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 SPOTIFY_CLIENT_ID=xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 SPOTIFY_CLIENT_SECRET=xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 SPOTIFY_REDIRECT_URI=http://127.0.0.1:3000/api/auth/callback/spotify
+SPOTIFY_USERNAME=xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
 # NextAuth configuration
 NEXTAUTH_URL=http://127.0.0.1:3000
