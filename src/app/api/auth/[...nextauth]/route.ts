@@ -3,7 +3,6 @@ import SpotifyProvider from "next-auth/providers/spotify";
 import fs from "fs";
 import path from "path";
 
-// 自动刷新 access token
 async function refreshAccessToken(token: any) {
   console.log("[JWT] Refreshing access token...", token);
 
