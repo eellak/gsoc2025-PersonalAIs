@@ -22,7 +22,7 @@ This project was implemented during **Google Summer of Code 2025**
 - Organisation: **GFOSS**
 - Mentors: **[Thanos Aidinis](https://github.com/ThanAid)** & **[Giannis Prokopiou](https://github.com/GiannisProkopiou)**
 - Contributor: **[Ke Ye](https://github.com/cocoshe)**
-- Medium **[Blog]([https://github.com/cocoshe](https://medium.com/@giannis.prokopiou/personalais-generative-ai-agent-for-personalized-music-recommendations-c96ff2b39e86))**
+- Medium **[Blog](https://medium.com/@giannis.prokopiou/personalais-generative-ai-agent-for-personalized-music-recommendations-c96ff2b39e86)**
 
 ---
 
